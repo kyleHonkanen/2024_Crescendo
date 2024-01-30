@@ -41,11 +41,47 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Telescope;
 
 public class Robot extends TimedRobot {
+  Climber climber;
+  Pivot pivot;
+  Shooter shooter;
+  Telescope telescope;
+  Setup setup;
+
+  public void updateAllSubsystems(){
+    climber.updateSubsystem();
+    pivot.updateSubsystem();
+    shooter.updateSubsystem();
+    telescope.updateSubsystem();
+  }
+
+  public void stopAllSubsystems(){
+    climber.stop();
+    pivot.stop();
+    shooter.stop();
+    telescope.stop();
+  }
+
+  public void outputAllSmartDashboard(){
+    climber.outputToSmartDashboard();
+    pivot.outputToSmartDashboard();
+    shooter.outputToSmartDashboard();
+    telescope.outputToSmartDashboard();
+  }
 
   @Override
-  public void robotInit() {}
+  public void robotInit() {
+    climber = Climber.getInstance();
+    pivot = Pivot.getInstance();
+    shooter = Shooter.getInstance();
+    telescope = Telescope.getInstance();
+    setup = Setup.getInstance();
+  }
 
   @Override
   public void robotPeriodic() {}
@@ -60,23 +96,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
-
-  @Override
-  public void disabledInit() {}
-
-  @Override
-  public void disabledPeriodic() {}
-
-  @Override
-  public void testInit() {}
-
-  @Override
-  public void testPeriodic() {}
-
-  @Override
-  public void simulationInit() {}
-
-  @Override
-  public void simulationPeriodic() {}
+  public void teleopPeriodic() {
+    updateAllSubsystems();
+    outputAllSmartDashboard();
+  }
 }

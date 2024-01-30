@@ -21,15 +21,106 @@ public class Setup {
 
 
 
+
  //----------------------------------------------------------Controls----------------------------------------------------------------------
 
     //Flight Stick (Primary)
     private static Joystick primaryJoystick = new Joystick(0);
 
+    public Joystick getPrimaryJoystick() {
+        return primaryJoystick;
+    }
+    
+    public double getPrimaryX(){
+        return primaryJoystick.getRawAxis(0);
+    }
+    
+    public double getPrimaryY(){
+        return primaryJoystick.getRawAxis(1);
+    }
+    
+    public double getPrimaryZ(){
+        return primaryJoystick.getRawAxis(5);
+    }
+
+
     //Xbox Controller (Secondary)
     private static Joystick secondaryJoystick = new Joystick(1);
 
+
+    //Pivot
+    public Joystick getSecondaryJoystick() {
+        return secondaryJoystick;
+    }
+
+    public boolean getSecondaryAButton(){
+        return secondaryJoystick.getRawButton(1);
+    }
+
+    public boolean getSecondaryBButton(){
+        return secondaryJoystick.getRawButton(2);
+    }
+
+    public boolean getSecondaryXButton(){
+        return secondaryJoystick.getRawButton(3);
+    }
+
+    public boolean getSecondaryYButton(){
+        return secondaryJoystick.getRawButton(4);
+    }
+
+    public double getSecondaryManualPivot(){
+        return secondaryJoystick.getRawAxis(5);
+    }
+
+
+    //Telescope
+    public double getSecondaryTelescope(){
+        return secondaryJoystick.getRawAxis(1);
+    }
+
+
+    //Shooter
+    public double getSecondarySpeaker(){
+        return secondaryJoystick.getRawAxis(2);
+    }
+
+    public boolean getSecondarySpeakerShoot(){
+        return secondaryJoystick.getRawButton(5);
+    }
+    
+    public double getSecondaryAmp(){
+        return secondaryJoystick.getRawAxis(3);
+    }
+
+    public boolean getSecondaryAmpShoot(){
+        return secondaryJoystick.getRawButton(6);
+    }
+
+
+    //Climber
+    public boolean getSecondaryToggleClimberMode(){
+        return secondaryJoystick.getRawButton(8);
+    }
+
+    public double getSecondaryRightClimber(){
+        return secondaryJoystick.getRawAxis(5);
+    }
+
+    public double getSecondaryLeftClimber(){
+        return secondaryJoystick.getRawAxis(1);
+    }
+
+    public boolean getSecondaryRightClimberButton(){
+        return secondaryJoystick.getRawButton(10);
+    }
+
+    public boolean getSecondaryLeftClimberButton(){
+        return secondaryJoystick.getRawButton(9);
+    }
+
  //---------------------------------------------------------Hardware------------------------------------------------------------------------
+
 
 
 
