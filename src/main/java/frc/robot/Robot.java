@@ -52,12 +52,16 @@ public class Robot extends TimedRobot {
   Shooter shooter;
   Telescope telescope;
   Setup setup;
+  private boolean toggle;
 
-  public void updateAllSubsystems(){
+  public void updateSubsystemsA(){
     climber.updateSubsystem();
     pivot.updateSubsystem();
     shooter.updateSubsystem();
     telescope.updateSubsystem();
+  }
+  public void updateSubsystemsB() {
+    climber.updateSubsystem();
   }
 
   public void stopAllSubsystems(){
@@ -93,11 +97,24 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {}
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    toggle=true;
+  }
 
   @Override
   public void teleopPeriodic() {
-    updateAllSubsystems();
+    //TOGGLE
+    if (toggle) {
+      updateSubsystemsA();
+      if (setup.getSecondaryToggleClimberMode()) {
+        toggle=false;
+      }
+    } else {
+      updateSubsystemsB();
+      if (setup.getSecondaryToggleClimberMode()) {
+        toggle=true;
+      }
+    }
     outputAllSmartDashboard();
   }
 }
