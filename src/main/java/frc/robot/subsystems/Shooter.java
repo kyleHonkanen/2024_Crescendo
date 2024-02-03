@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -8,17 +7,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Setup;
 
 public class Shooter extends Subsystem {
-    public static XboxController controller;
     CANSparkMax leftShooterMotor;
     CANSparkMax rightShooterMotor;
     RelativeEncoder leftShooterEncoder;
     RelativeEncoder rightShooterEncoder;
     public Solenoid Solenoid;
     public boolean pushSolenoid;
+    public double leftTrig;
     public boolean leftPush;
+    public boolean leftShoot;
+    public double rightTrig;
     public boolean rightPush;
+    public boolean rightShoot;
     public boolean succ;
     public boolean unSuccFast;
     public boolean unSuccSlow;
@@ -38,60 +41,64 @@ public class Shooter extends Subsystem {
     }
 
     public Shooter(){
-        controller = new XboxController(0);
-        leftShooterMotor = new CANSparkMax(22, MotorType.kBrushless);
+        leftShooterMotor = new CANSparkMax(Setup.ClimberMotorLeftID, MotorType.kBrushless);
         leftShooterEncoder = leftShooterMotor.getEncoder();
-        rightShooterMotor = new CANSparkMax(23, MotorType.kBrushless);
+        rightShooterMotor = new CANSparkMax(Setup.ClimberMotorRightID, MotorType.kBrushless);
         rightShooterEncoder = rightShooterMotor.getEncoder();
         Solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
     }
+    public boolean TimetoSpeakerShoot(){
+        return rightShooterEncoder.getVelocity() == speakerSpeed;
+    }
     public void SpeakerShoot() {
-        ShooterFlywheelSpeed = speakerSpeed;  
-  
-        if(rightShooterEncoder.getVelocity() == speakerSpeed){
-            //tell smartdashboard its time
-            SmartDashboard.putBoolean("time to shoot?", timeToShoot);
+        if (unSuccFast){
+            ShooterFlywheelSpeed = speakerSpeed;  
+            
         }
-  
+    }
+    public boolean TimetoAmpShoot(){
+        return leftShooterEncoder.getVelocity() == ampSpeed;
     }
     public void AmpShoot() {
-        ShooterFlywheelSpeed = ampSpeed;
-        if(rightShooterEncoder.getVelocity() == ampSpeed){
-            //tell smartdashboard its time
-            SmartDashboard.putBoolean("time to shoot?", timeToShoot);
-        } 
+        if (unSuccSlow){
+            ShooterFlywheelSpeed = ampSpeed;
+        }
   
     }
   
     public void Intake() {
-        ShooterFlywheelSpeed = intakeSpeed;  
+        if (succ){
+            ShooterFlywheelSpeed = intakeSpeed; 
+        }
     }
 
     @Override
     public void updateSubsystem(){
-        leftPush = controller.getLeftBumperPressed(); 
-        rightPush = controller.getRightBumperPressed(); 
-        succ = controller.getLeftY()<-0.4;//along with telescoping?
-        if(controller.getRightTriggerAxis()> 0.7){
+        leftPush = Setup.getInstance().getSecondaryAmpShoot(); 
+        leftTrig = Setup.getInstance().getSecondaryAmp();
+        leftShoot = leftTrig >0.7;
+        rightPush = Setup.getInstance().getSecondarySpeakerShoot(); 
+        rightTrig = Setup.getInstance().getSecondarySpeaker();
+        rightShoot = rightTrig >0.7;
+        succ = Setup.getInstance().getSecondaryTelescope()<-0.4;//along with telescoping?
+        if(leftShoot){
           unSuccFast = true;
-        }
-        if (controller.getRightTriggerAxis()< 0.5){
+        }else{
           unSuccFast = false;
         }
-        if(controller.getLeftTriggerAxis()> 0.7){
+        if(rightShoot){
           unSuccSlow = true;
-        }
-        if(controller.getLeftTriggerAxis()< 0.5){
+        }else{
           unSuccSlow = false;
         }
         
         //Decide flywheel speeds
-        if(succ){
+        if (succ){
             Intake();
-        }else if (unSuccSlow){
-            AmpShoot();
         }else if (unSuccFast){
             SpeakerShoot();
+        }else if (unSuccSlow){
+            AmpShoot();
         }else{
             stop();
         }
@@ -103,13 +110,17 @@ public class Shooter extends Subsystem {
         }
     
         //Set all speeds
-        leftShooterMotor.set(-ShooterFlywheelSpeed);
+        leftShooterMotor.set(ShooterFlywheelSpeed);
         rightShooterMotor.set(ShooterFlywheelSpeed);
         //Solenoid.set(pushSolenoid);
     }
 
     @Override
-    public void outputToSmartDashboard(){}
+    public void outputToSmartDashboard(){
+       
+        SmartDashboard.putBoolean("time to shoot?", timeToShoot);
+
+    }
 
     @Override
     public void stop(){
