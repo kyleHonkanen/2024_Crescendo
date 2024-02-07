@@ -41,18 +41,26 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.util.Utilities;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Telescope;
+import frc.robot.subsystems.Drivetrain;
 
 public class Robot extends TimedRobot {
+  boolean FieldOrientedONS = false;
+  double forward, strafe, rotation, flTurn, frTurn, blTurn, brTurn;
+  boolean orient, toggle;
+
   Climber climber;
   Pivot pivot;
   Shooter shooter;
   Telescope telescope;
+  Drivetrain drivetrain;
   Setup setup;
-  private boolean toggle;
 
   public void updateSubsystemsA(){
     climber.updateSubsystem();
@@ -60,6 +68,7 @@ public class Robot extends TimedRobot {
     shooter.updateSubsystem();
     telescope.updateSubsystem();
   }
+
   public void updateSubsystemsB() {
     climber.updateSubsystem();
   }
@@ -79,7 +88,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotInit() {
+   public void robotInit() {
     climber = Climber.getInstance();
     pivot = Pivot.getInstance();
     shooter = Shooter.getInstance();
@@ -88,7 +97,19 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    // SparkMax SmartDashboard Output
+    SmartDashboard.putNumber("flMotAng", (drivetrain.getInstance().flSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("frMotAng", (drivetrain.getInstance().frSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("blMotAng", (drivetrain.getInstance().blSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("brMotAng", (drivetrain.getInstance().brSens.getVoltage()*109.090909091));
+
+    // Roborio SmartDashboard output
+    // SmartDashboard.putNumber("flMotAng", (DrivetrainSubsystem.getInstance().flSens.getVoltage()*72));
+    // SmartDashboard.putNumber("frMotAng", (DrivetrainSubsystem.getInstance().frSens.getVoltage()*72));
+    // SmartDashboard.putNumber("blMotAng", (DrivetrainSubsystem.getInstance().blSens.getVoltage()*72));
+    // SmartDashboard.putNumber("brMotAng", (DrivetrainSubsystem.getInstance().brSens.getVoltage()*72));
+  }
 
   @Override
   public void autonomousInit() {}
@@ -98,9 +119,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    Setup.getInstance();
     toggle=true;
   }
-
+  
   @Override
   public void teleopPeriodic() {
     //TOGGLE
@@ -115,6 +137,30 @@ public class Robot extends TimedRobot {
         toggle=true;
       }
     }
+
     outputAllSmartDashboard();
+  
+    if (Setup.getInstance().getPrimaryJoystick().getRawButton(15)) {
+      Drivetrain.getInstance().drive(new Translation2d(.00000000000000000000000001, 0), 0, false, 0);
+    } else {
+      double speed = Drivetrain.getInstance().getSpeed(Drivetrain.getInstance().getSpeedSetting());
+      boolean fieldoriented = FieldOrientedONS;
+
+      forward = setup.getPrimaryY();
+      forward = Math.copySign(Math.pow(forward, 2.0), forward);
+      forward = Utilities.deadband(forward);
+
+      strafe = setup.getPrimaryX();
+      strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
+
+      rotation = setup.getPrimaryZ();
+      rotation = Utilities.deadband(rotation);
+      rotation = Drivetrain.getInstance().getRotation(Drivetrain.getInstance().getSpeedSetting(), rotation);
+
+      Drivetrain.getInstance().drive(new Translation2d(-forward, -strafe), -rotation, false, speed);
+      Drivetrain.getInstance().periodic();
+
+      SmartDashboard.putBoolean("FieldOriented", fieldoriented);
+    }
   }
 }

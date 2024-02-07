@@ -1,6 +1,10 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.util.drivers.Gyroscope;
+import frc.robot.util.drivers.NavX;
 
 public class Setup {
     
@@ -15,12 +19,26 @@ public class Setup {
 
  //---------------------------------------------------------Swerve Drive------------------------------------------------------------------
 
+  //measurments of robot in meters from center of wheel (19.25 inches squared, 39.37 inches in a meter)
+  public double TRACKWIDTH = 0.635;
+  public double WHEELBASE = 0.489;
+  
 
+  
+  //offset of wheels sets the angle to start - CHANGE DIS BRO
+  public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(0);
+  public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(0);
+  public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(0);
+  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(180);
 
+  //finds position of the wheels based on the position of the center
+  public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 
-
-
-
+    new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
+    new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0),        
+    new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
+    new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0)
+  );
 
  //----------------------------------------------------------Controls----------------------------------------------------------------------
 
@@ -28,19 +46,43 @@ public class Setup {
     private static Joystick primaryJoystick = new Joystick(0);
 
     public Joystick getPrimaryJoystick() {
-        return primaryJoystick;
+      return primaryJoystick;
     }
-    
+  
     public double getPrimaryX(){
-        return primaryJoystick.getRawAxis(0);
+      return primaryJoystick.getRawAxis(0);
     }
-    
+  
     public double getPrimaryY(){
-        return primaryJoystick.getRawAxis(1);
+      return primaryJoystick.getRawAxis(1);
     }
-    
+  
     public double getPrimaryZ(){
-        return primaryJoystick.getRawAxis(5);
+      return primaryJoystick.getRawAxis(6);
+    }
+  
+    public boolean getPrimaryDriverXButton(){
+      return primaryJoystick.getRawButton(5);
+    }
+
+    public boolean getPrimaryDriverAButton(){
+      return primaryJoystick.getRawButton(6);
+    }
+
+    public boolean getPrimaryDriverBButton(){
+      return primaryJoystick.getRawButton(7);
+    }
+
+    public boolean getPrimaryDriverYButton(){
+      return primaryJoystick.getRawButton(8);
+    }
+
+    public boolean getFieldOrientedOn(){
+      return primaryJoystick.getRawButton(1);
+    }
+
+    public boolean getFieldOrientedOff(){
+      return primaryJoystick.getRawButton(4);
     }
 
 
@@ -122,7 +164,8 @@ public class Setup {
  //---------------------------------------------------------Hardware------------------------------------------------------------------------
 
 
-
+  //Gyroscope
+  public final Gyroscope gyroscope = NavX.getInstance();
 
 
 

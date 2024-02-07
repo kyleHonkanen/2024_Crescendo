@@ -50,11 +50,11 @@ public class Telescope extends Subsystem{
     public void updateSubsystem(){
         armExtend = Setup.getInstance().getSecondaryTelescope();
         
-        if(armExtend < -.1 && ArmMax.get() == true ){ // If the joystick is being pushed forwards and the arm is not at the maximum then make the arm move.
+        if (armExtend < -.1 && ArmMax.get() == true) { // If the joystick is being pushed forwards and the arm is not at the maximum then make the arm move.
             telescopeMotor.set(-armExtend/2); // As a safety pre-caution the robot will extend very slowly. Please edit this if you want it to go faster (not reccomended)
         
          } else {
-            if(ArmMin.get() == false) { // If the arm is at it's minimum set the motor to false.
+            if (ArmMin.get() == false) { // If the arm is at it's minimum set the motor to false.
                 telescopeMotor.set(0);
 
              } else {         
@@ -63,9 +63,7 @@ public class Telescope extends Subsystem{
 
                 } 
             }
-
         } 
-
     }
 
     @Override
