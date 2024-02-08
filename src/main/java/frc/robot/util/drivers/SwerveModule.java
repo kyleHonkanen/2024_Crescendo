@@ -148,11 +148,12 @@ public abstract class SwerveModule {
     }
 
     public final void setTargetVelocity(double speed, double angle) {
-        if (speed < 0.0) {
-            speed *= -1.0;
+        //DON'T USE THIS... unless you want snappy wheels, which you don't want.
+        // if (speed < 0.0) {
+        //     speed *= -1.0;
 
-            angle += Math.PI;
-        }
+        //     angle += Math.PI;
+        // }
 
         angle %= 2.0 * Math.PI;
         if (angle < 0.0) {

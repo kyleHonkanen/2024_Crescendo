@@ -49,18 +49,31 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoSource;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.TimedRobot;
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 public class Robot extends TimedRobot {
   boolean FieldOrientedONS = false;
   double forward, strafe, rotation, flTurn, frTurn, blTurn, brTurn;
   boolean orient, toggle;
-
+  CameraServer cServer;
   Climber climber;
   Pivot pivot;
   Shooter shooter;
   Telescope telescope;
   Drivetrain drivetrain;
   Setup setup;
+
+
 
   public void updateSubsystemsA(){
     climber.updateSubsystem();
@@ -125,6 +138,9 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic() {
+
+
+
     //TOGGLE
     if (toggle) {
       updateSubsystemsA();
@@ -137,9 +153,7 @@ public class Robot extends TimedRobot {
         toggle=true;
       }
     }
-
     outputAllSmartDashboard();
-  
     if (Setup.getInstance().getPrimaryJoystick().getRawButton(15)) {
       Drivetrain.getInstance().drive(new Translation2d(.00000000000000000000000001, 0), 0, false, 0);
     } else {
@@ -162,5 +176,10 @@ public class Robot extends TimedRobot {
 
       SmartDashboard.putBoolean("FieldOriented", fieldoriented);
     }
+
+
+
+
+
   }
 }

@@ -43,9 +43,9 @@ public class Shooter extends Subsystem {
 
     public Shooter(){
         //initializes all physical pieces
-        leftShooterMotor = new CANSparkMax(Setup.ClimberMotorLeftID, MotorType.kBrushless);
+        leftShooterMotor = new CANSparkMax(Setup.ShooterMotorLeftID, MotorType.kBrushless);
         leftShooterEncoder = leftShooterMotor.getEncoder();
-        rightShooterMotor = new CANSparkMax(Setup.ClimberMotorRightID, MotorType.kBrushless);
+        rightShooterMotor = new CANSparkMax(Setup.ShooterMotorRightID, MotorType.kBrushless);
         rightShooterEncoder = rightShooterMotor.getEncoder();
         Solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
     }
