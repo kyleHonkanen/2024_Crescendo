@@ -115,6 +115,10 @@ public class Setup {
         return secondaryJoystick.getRawAxis(5);
     }
 
+    public boolean getSecondaryRightStickPressed(){
+        return secondaryJoystick.getRawButton(10);
+    }
+
 
     //Telescope
     public double getSecondaryTelescope(){
