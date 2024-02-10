@@ -112,10 +112,10 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // SparkMax SmartDashboard Output
-    SmartDashboard.putNumber("flMotAng", (drivetrain.getInstance().flSens.getVoltage()*109.090909091));
-    SmartDashboard.putNumber("frMotAng", (drivetrain.getInstance().frSens.getVoltage()*109.090909091));
-    SmartDashboard.putNumber("blMotAng", (drivetrain.getInstance().blSens.getVoltage()*109.090909091));
-    SmartDashboard.putNumber("brMotAng", (drivetrain.getInstance().brSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("flMotAng", (Drivetrain.getInstance().flSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
+    SmartDashboard.putNumber("brMotAng", (Drivetrain.getInstance().brSens.getVoltage()*109.090909091));
 
     // Roborio SmartDashboard output
     // SmartDashboard.putNumber("flMotAng", (DrivetrainSubsystem.getInstance().flSens.getVoltage()*72));

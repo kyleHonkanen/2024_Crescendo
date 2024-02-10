@@ -1,23 +1,16 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAnalogSensor;
-import com.revrobotics.SparkMaxAlternateEncoder;
-import com.revrobotics.SparkMaxAnalogSensor;
-import com.revrobotics.CANAnalog.AnalogMode;
-
-import edu.wpi.first.wpilibj.AnalogEncoder;
-import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Setup;
 import frc.robot.util.math.Vector2;
+import frc.robot.util.Utilities;
 import frc.robot.util.drivers.Mk2SwerveModuleBuilder;
 import frc.robot.util.drivers.SwerveModule;
 
@@ -81,27 +74,26 @@ public class Drivetrain {
                 /*sets up the swerve modules for CANbus, sets a frame rate limit to prevent errors, establishes a center point for vector math, 
                 *gets encoder position, makes motor objects for rotation and translation, the compiles into one object.*/
 
-                         flMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-                         frMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-                         blMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_LEFT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-                         brMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_RIGHT_ANGLE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+                         flMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_LEFT_ANGLE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+                         frMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_RIGHT_ANGLE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+                         blMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_LEFT_ANGLE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+                         brMotAng = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_RIGHT_ANGLE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
 
-                         flMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-                         frMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-                         blMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_LEFT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
-                         brMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_RIGHT_DRIVE_MOTOR, CANSparkMaxLowLevel.MotorType.kBrushless);
+                         flMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_LEFT_DRIVE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+                         frMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_FRONT_RIGHT_DRIVE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+                         blMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_LEFT_DRIVE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
+                         brMotDri = new CANSparkMax(Setup.DrivetrainSubsystem_BACK_RIGHT_DRIVE_MOTOR, CANSparkLowLevel.MotorType.kBrushless);
                         
-                         flSens = flMotAng.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
-                         frSens = frMotAng.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
-                         blSens = blMotAng.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
-                         brSens = brMotAng.getAnalog(SparkMaxAnalogSensor.Mode.kAbsolute);
+                         flSens = flMotAng.getAnalog(SparkAnalogSensor.Mode.kAbsolute);
+                         frSens = frMotAng.getAnalog(SparkAnalogSensor.Mode.kAbsolute);
+                         blSens = blMotAng.getAnalog(SparkAnalogSensor.Mode.kAbsolute);
+                         brSens = brMotAng.getAnalog(SparkAnalogSensor.Mode.kAbsolute);
 
                         //Backup for Roborio
                         //brSens = new AnalogInput(2);
                         //blSens = new AnalogInput(3);
                         //flSens = new AnalogInput(0);
                         //frSens = new AnalogInput(1);
-
 
 
                 //CANCoder frontLeftCANCoder = new CANCoder(Setup.DrivetrainSubsystem_FRONT_LEFT_ANGLE_ENCODER);
@@ -194,18 +186,19 @@ public class Drivetrain {
                 //makes speed grow exponentially 
                 speedChanger = (speedChanger*speedChanger);
 
-                double x = Setup.getInstance().getPrimaryX();
-                double y = Setup.getInstance().getPrimaryY();
-                double z = Setup.getInstance().getPrimaryZ();
+                //deadbanding these values is VERY important, otherwise it'll never spin
+                double x = Utilities.deadband(Setup.getInstance().getPrimaryX(),.5);
+                double y = Utilities.deadband(Setup.getInstance().getPrimaryY(),.5);
+                double z = Utilities.deadband(Setup.getInstance().getPrimaryZ(),.5);
 
                 //sets the modules and motors target velocity and angle in accordance with the joystick
-                // if(x==0 && y==0 && z!=0){
-                //         frontLeftModule.setTargetVelocity(z*speedChanger, -.25 * Math.PI);
-                //         frontRightModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
-                //         backLeftModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
-                //         backRightModule.setTargetVelocity(-z*speedChanger, -.25 * Math.PI);
+                if(x==0 && y==0 && z!=0){
+                        frontLeftModule.setTargetVelocity(z*speedChanger, -.25 * Math.PI);
+                        frontRightModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
+                        backLeftModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
+                        backRightModule.setTargetVelocity(-z*speedChanger, -.25 * Math.PI);
                 
-                //  } else 
+                } else 
                 if (speeds.omegaRadiansPerSecond!=0 || speeds.vxMetersPerSecond!=0 || speeds.vyMetersPerSecond!=0){
                         frontLeftModule.setTargetVelocity(states[0].speedMetersPerSecond*speedChanger, states[0].angle.getRadians());
                         frontRightModule.setTargetVelocity(-states[1].speedMetersPerSecond*speedChanger, states[1].angle.getRadians());
@@ -218,11 +211,44 @@ public class Drivetrain {
                         backRightMotor = states[3].angle.getRadians();
 
                 //if the joystick is not moving set velocity to 0        
-                //  }else {
-                //         frontLeftModule.setTargetVelocity(0, frontLeftMotor);
-                //         frontRightModule.setTargetVelocity(0, fronttRightMotor);
-                //         backLeftModule.setTargetVelocity(0, backRightMotor);
-                //         backRightModule.setTargetVelocity(0, backLeftMotor);
+                }else {
+                        frontLeftModule.setTargetVelocity(0, frontLeftMotor);
+                        frontRightModule.setTargetVelocity(0, fronttRightMotor);
+                        backLeftModule.setTargetVelocity(0, backRightMotor);
+                        backRightModule.setTargetVelocity(0, backLeftMotor);
+                }
+        }
+
+        public void driveForAuto(ChassisSpeeds moveSpeeds) {
+                double rotation = moveSpeeds.omegaRadiansPerSecond *=-12 /
+                Math.hypot(Setup.instance.WHEELBASE, Setup.instance.TRACKWIDTH);
+                
+                speeds = new ChassisSpeeds(-moveSpeeds.vxMetersPerSecond,moveSpeeds.vyMetersPerSecond, rotation);
+                
+                //swerve module states are a list of angles and speeds converted from the variables used in chassis. speeds below calculates them
+                states = Setup.instance.kinematics.toSwerveModuleStates(speeds, new Translation2d(Setup.instance.TRACKWIDTH/2,0));
+
+                //deadbanding these values is VERY important, otherwise it'll never spin
+                double x = Utilities.deadband(Setup.getInstance().getPrimaryX());
+                double y = Utilities.deadband(Setup.getInstance().getPrimaryY());
+                double z = Utilities.deadband(Setup.getInstance().getPrimaryZ());
+
+                if(x==0 && y==0 && z!=0){
+                        frontLeftModule.setTargetVelocity(z*speedChanger, -.25 * Math.PI);
+                        frontRightModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
+                        backLeftModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
+                        backRightModule.setTargetVelocity(-z*speedChanger, -.25 * Math.PI);
+                }
+                if (speeds.omegaRadiansPerSecond!=0 || speeds.vxMetersPerSecond!=0 || speeds.vyMetersPerSecond!=0){
+                        frontLeftModule.setTargetVelocity(states[0].speedMetersPerSecond*speedChanger, states[0].angle.getRadians());
+                        frontRightModule.setTargetVelocity(-states[1].speedMetersPerSecond*speedChanger, states[1].angle.getRadians());
+                        backLeftModule.setTargetVelocity(states[2].speedMetersPerSecond*speedChanger, states[2].angle.getRadians());
+                        backRightModule.setTargetVelocity(states[3].speedMetersPerSecond*speedChanger, states[3].angle.getRadians());
+
+                        frontLeftMotor = states[0].angle.getRadians();
+                        fronttRightMotor = states[1].angle.getRadians();
+                        backLeftMotor = states[2].angle.getRadians();
+                        backRightMotor = states[3].angle.getRadians();
                 }
         }
 

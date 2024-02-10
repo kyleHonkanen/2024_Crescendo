@@ -58,7 +58,7 @@ public class Setup {
     }
   
     public double getPrimaryZ(){
-      return primaryJoystick.getRawAxis(6);
+      return primaryJoystick.getRawAxis(5);
     }
   
     public boolean getPrimaryDriverXButton(){

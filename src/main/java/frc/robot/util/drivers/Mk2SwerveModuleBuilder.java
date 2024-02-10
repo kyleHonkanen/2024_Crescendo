@@ -1,13 +1,9 @@
 package frc.robot.util.drivers;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkBase.ControlType;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import frc.robot.util.control.PidConstants;
@@ -54,8 +50,6 @@ public class Mk2SwerveModuleBuilder {
      * Default constants for angle pid running on a Spark MAX using NEOs.
      */
     private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(1.5, 0.0, 0.5);
-
-    private static final PidConstants DEFAULT_FALCON_ANGLE_CONSTANTS = new PidConstants(0.1, 0.0, 0.5);
 
     private final Vector2 modulePosition;
 
@@ -139,7 +133,7 @@ public class Mk2SwerveModuleBuilder {
         RelativeEncoder encoder = ((CANSparkMax) motor).getEncoder();
         encoder.setPositionConversionFactor(2.0 * Math.PI / reduction);
 
-        SparkMaxPIDController controller = ((CANSparkMax) motor).getPIDController();
+        SparkPIDController controller = ((CANSparkMax) motor).getPIDController();
 
         controller.setP(constants.p);
         controller.setI(constants.i);
@@ -166,45 +160,6 @@ public class Mk2SwerveModuleBuilder {
             controller.setReference(newTarget, ControlType.kPosition);
         };
         initializeAngleCallback = encoder::setPosition;
-
-        return this;
-    }
-
-    public Mk2SwerveModuleBuilder angleMotor(TalonFX motor) {
-        return angleMotor(motor, DEFAULT_FALCON_ANGLE_CONSTANTS, DEFAULT_ANGLE_REDUCTION);
-    }
-
-    public Mk2SwerveModuleBuilder angleMotor(TalonFX motor, PidConstants constants, double reduction) {
-        final double sensorCoefficient = (2.0 * Math.PI) / (reduction * 2048.0);
- 
-        TalonFXConfiguration config = new TalonFXConfiguration();
-        config.slot0.kP = constants.p;
-        config.slot0.kI = constants.i;
-        config.slot0.kD = constants.d;
-
-        motor.setNeutralMode(NeutralMode.Brake);
-
-        motor.configAllSettings(config);
-
-        targetAngleConsumer = targetAngle -> {
-            double currentAngle = sensorCoefficient * motor.getSensorCollection().getIntegratedSensorPosition();
-            // Calculate the current angle in the range [0, 2pi)
-            double currentAngleMod = currentAngle % (2.0 * Math.PI);
-            if (currentAngleMod < 0.0) {
-                currentAngleMod += 2.0 * Math.PI;
-            }
-
-            // Figure out target to send to TalonFX because the encoder is continuous
-            double newTarget = targetAngle + currentAngle - currentAngleMod;
-            if (targetAngle - currentAngleMod > Math.PI) {
-                newTarget -= 2.0 * Math.PI;
-            } else if (targetAngle - currentAngleMod < -Math.PI) {
-                newTarget += 2.0 * Math.PI;
-            }
-
-            motor.set(TalonFXControlMode.Position, newTarget / sensorCoefficient);
-        };
-        initializeAngleCallback = angle -> motor.getSensorCollection().setIntegratedSensorPosition(angle / sensorCoefficient, 50);
 
         return this;
     }
@@ -312,22 +267,6 @@ public class Mk2SwerveModuleBuilder {
         return this;
     }
 
-    public Mk2SwerveModuleBuilder driveMotor(TalonFX motor) {
-        return driveMotor(motor, DEFAULT_DRIVE_REDUCTION, DEFAULT_WHEEL_DIAMETER);
-    }
-
-    public Mk2SwerveModuleBuilder driveMotor(TalonFX motor, double reduction, double wheelDiameter) {
-        TalonFXConfiguration config = new TalonFXConfiguration();
-        motor.configAllSettings(config);
-        motor.setNeutralMode(NeutralMode.Brake);
-
-        currentDrawSupplier = motor::getSupplyCurrent;
-        distanceSupplier = () -> (Math.PI * wheelDiameter * motor.getSensorCollection().getIntegratedSensorPosition()) / (2048.0 * reduction);
-        velocitySupplier = () -> (10.0 * Math.PI * wheelDiameter * motor.getSensorCollection().getIntegratedSensorVelocity()) / (2048.0 * reduction);
-        driveOutputConsumer = output -> motor.set(TalonFXControlMode.PercentOutput, output);
-
-        return this;
-    }
 
     /**
      * Configures the swerve module to use a generic speed controller driving the specified motor.
