@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
   }
 
   public void outputAllSmartDashboard(){
+    SmartDashboard.putBoolean("ClimberMode TM", Setup.getInstance().getSecondaryToggleClimberMode());
     climber.outputToSmartDashboard();
     pivot.outputToSmartDashboard();
     shooter.outputToSmartDashboard();
@@ -116,12 +117,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
     SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
     SmartDashboard.putNumber("brMotAng", (Drivetrain.getInstance().brSens.getVoltage()*109.090909091));
-
-    // Roborio SmartDashboard output
-    // SmartDashboard.putNumber("flMotAng", (DrivetrainSubsystem.getInstance().flSens.getVoltage()*72));
-    // SmartDashboard.putNumber("frMotAng", (DrivetrainSubsystem.getInstance().frSens.getVoltage()*72));
-    // SmartDashboard.putNumber("blMotAng", (DrivetrainSubsystem.getInstance().blSens.getVoltage()*72));
-    // SmartDashboard.putNumber("brMotAng", (DrivetrainSubsystem.getInstance().brSens.getVoltage()*72));
   }
 
   @Override
@@ -139,8 +134,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-
-
     //TOGGLE
     if (toggle) {
       updateSubsystemsA();
@@ -153,7 +146,9 @@ public class Robot extends TimedRobot {
         toggle=true;
       }
     }
+
     outputAllSmartDashboard();
+
     if (Setup.getInstance().getPrimaryJoystick().getRawButton(15)) {
       Drivetrain.getInstance().drive(new Translation2d(.00000000000000000000000001, 0), 0, false, 0);
     } else {
@@ -176,10 +171,5 @@ public class Robot extends TimedRobot {
 
       SmartDashboard.putBoolean("FieldOriented", fieldoriented);
     }
-
-
-
-
-
   }
 }

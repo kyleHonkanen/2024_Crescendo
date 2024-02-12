@@ -20,14 +20,11 @@ public class Climber extends Subsystem{
     AnalogPotentiometer ClimberPotentiometerRight;
     CANSparkMax LeftClimbermotor;
     CANSparkMax RightClimbermotor;
-    double LY;
-    double RY;
-    double Leftmin = 1;
-    double Rightmin = 1;
-    double Leftmax = 50;
-    double Rightmax = 50;
-    double Leftspeed = 2;
-    double Rightspeed = 2;
+    double LY, RY;
+    boolean LFast, RFast;
+    double min = 2;
+    double max = 50;
+    double speed = 2;
 
     public double getPotentiometerLeft(){
         return ClimberPotentiometerLeft.get();
@@ -46,40 +43,39 @@ public class Climber extends Subsystem{
 
     @Override
     public void updateSubsystem(){
-        // To give a Variable the climbers stick 
-        LY = Setup.getInstance().getSecondaryLeftClimber()*Leftspeed;
-        RY = Setup.getInstance().getSecondaryRightClimber()*Rightspeed;
+        LY = Setup.getInstance().getSecondaryLeftClimber()*speed;
+        RY = Setup.getInstance().getSecondaryRightClimber()*speed;
+        LFast = Setup.getInstance().getSecondaryLeftClimberButton();
+        RFast = Setup.getInstance().getSecondaryRightClimberButton();
 
-        // To Set a length to the analongPotentiometer for both Left and right climber
-        if ((ClimberPotentiometerLeft.get()<50)&&(LY<0)) {
-            LeftClimbermotor.set(LY);
-        } else if ((LY>0)&&(ClimberPotentiometerLeft.get()>10)) {
-            LeftClimbermotor.set(LY);
-        }
-
-        if ((ClimberPotentiometerRight.get()<50)&&(RY<0)) {
-            RightClimbermotor.set(RY);
-         }else if ((RY>0)&&(ClimberPotentiometerRight.get()>10)) {
-            RightClimbermotor.set(RY);
-        }
-
-        // To change the speed of both left and right climber 
-        if (Setup.getInstance().getSecondaryLeftClimberButton()) {
-            Leftspeed=2;
+        //Left Limits
+        if (getPotentiometerLeft()>=max && LY<0) {
+            LeftClimbermotor.set(0);
+        } else if (getPotentiometerLeft()<=min && LY>0) {
+            LeftClimbermotor.set(0);
         } else {
-            Leftspeed=.5;
+            LeftClimbermotor.set(LY);
         }
 
-        if (Setup.getInstance().getSecondaryRightClimberButton()) {
-            Rightspeed=2;
+        //Right Limits
+        if (getPotentiometerRight()>=max && RY<0) {
+            RightClimbermotor.set(0);
+         }else if (getPotentiometerRight()<=min && RY>0) {
+            RightClimbermotor.set(0);
         } else {
-            Rightspeed=.5;
+            RightClimbermotor.set(RY);
+        }
+
+        //change speed when either joystick is held down
+        if (LFast || RFast) {
+            speed=2;
+        } else {
+            speed=.5;
         }
     }
 
     @Override
     public void outputToSmartDashboard(){
-        // To send numbers to SmartDashboard
         SmartDashboard.putNumber("ClimberPotentiometerLeft", ClimberPotentiometerLeft.get());
         SmartDashboard.putNumber("ClimberPotentiometerRight", ClimberPotentiometerRight.get());
     }

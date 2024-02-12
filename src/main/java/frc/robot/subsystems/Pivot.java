@@ -37,7 +37,7 @@ public class Pivot extends Subsystem {
    
    public Pivot() {
       pivotMotor = new CANSparkMax(Setup.PivotMotorID, MotorType.kBrushless);
-      encoder = pivotMotor.getAbsoluteEncoder(com.revrobotics.SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+      encoder = pivotMotor.getAbsoluteEncoder(com.revrobotics.SparkAbsoluteEncoder.Type.kDutyCycle);
    }
 
    public CANSparkMax getPivotMotor(){
