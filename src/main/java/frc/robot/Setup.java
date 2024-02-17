@@ -80,12 +80,8 @@ public class Setup {
 
 
   //field oriented
-  public boolean getFieldOrientedOn(){
-    return primaryJoystick.getRawButton(1);
-  }
-
-  public boolean getFieldOrientedOff(){
-    return primaryJoystick.getRawButton(4);
+  public boolean getFieldOriented(){
+    return primaryJoystick.getRawButtonPressed(2);
   }
 
   //-----------------------------------------------------secondary--------------------------------------------------------------------
@@ -150,7 +146,7 @@ public class Setup {
 
   //Climber
   public boolean getSecondaryToggleClimberMode(){
-    return secondaryJoystick.getRawButton(8);
+    return secondaryJoystick.getRawButtonPressed(8);
   }
 
   public double getSecondaryRightClimber(){

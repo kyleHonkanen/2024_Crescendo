@@ -62,9 +62,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 public class Robot extends TimedRobot {
-  boolean FieldOrientedONS = false;
+  boolean fieldOriented = false;
   double forward, strafe, rotation, flTurn, frTurn, blTurn, brTurn;
-  boolean orient, toggle;
+  boolean orient = false, toggle = false;
   CameraServer cServer;
   Climber climber;
   Pivot pivot;
@@ -92,7 +92,7 @@ public class Robot extends TimedRobot {
   }
 
   public void outputAllSmartDashboard(){
-    SmartDashboard.putBoolean("ClimberMode TM", Setup.getInstance().getSecondaryToggleClimberMode());
+    SmartDashboard.putBoolean("ClimberMode TM", toggle);
     climber.outputToSmartDashboard();
     pivot.outputToSmartDashboard();
     shooter.outputToSmartDashboard();
@@ -126,7 +126,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     Setup.getInstance();
-    toggle=true;
   }
   
   @Override
@@ -138,10 +137,23 @@ public class Robot extends TimedRobot {
       if (setup.getSecondaryToggleClimberMode()) {
         toggle=false;
       }
-    } else {
+    } else if (!toggle) {
       updateSubsystemsB();
       if (setup.getSecondaryToggleClimberMode()) {
         toggle=true;
+      }
+    }
+
+    //field oriented
+    if (orient) {
+      fieldOriented = true;
+      if(setup.getFieldOriented()){
+        orient = false;
+      }
+    } else if (!orient) {
+      fieldOriented = false;
+      if(setup.getFieldOriented()) {
+        orient = true;
       }
     }
 
@@ -151,7 +163,6 @@ public class Robot extends TimedRobot {
       Drivetrain.getInstance().drive(new Translation2d(.00000000000000000000000001, 0), 0, false, 0);
     } else {
       double speed = Drivetrain.getInstance().getSpeed(Drivetrain.getInstance().getSpeedSetting());
-      boolean fieldoriented = FieldOrientedONS;
 
       forward = setup.getPrimaryY();
       forward = Math.copySign(Math.pow(forward, 2.0), forward);
@@ -164,10 +175,10 @@ public class Robot extends TimedRobot {
       rotation = Utilities.deadband(rotation);
       rotation = Drivetrain.getInstance().getRotation(Drivetrain.getInstance().getSpeedSetting(), rotation);
 
-      Drivetrain.getInstance().drive(new Translation2d(-forward, -strafe), -rotation, false, speed);
+      Drivetrain.getInstance().drive(new Translation2d(-forward, -strafe), -rotation, fieldOriented, speed);
       Drivetrain.getInstance().periodic();
 
-      SmartDashboard.putBoolean("FieldOriented", fieldoriented);
+      SmartDashboard.putBoolean("FieldOriented", fieldOriented);
     }
   }
 }
