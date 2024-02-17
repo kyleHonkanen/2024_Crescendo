@@ -18,19 +18,19 @@ public class Pivot extends Subsystem {
    public CANSparkMax pivotMotor;
    public AbsoluteEncoder encoder;
    private double pivotMotorSpeed = 0;
-   
    public boolean sourceButton;
    public boolean ampButton;
    public boolean speakerButton1;
    public boolean speakerButton2;
 
-   /* -------------------------------- Variables - All angles not final ---------------------------------- */
+   //Variables - All angles not final
    public double pivotMaxAngle = 260;
    public double pivotMinAngle = 105;
    public double sourceAngle = 340;
    public double ampAngle = 280;
    public double speakerAngle1 = 300;
    public double speakerAngle2 = 320;
+
    //Speed for preset angle positions
    public double buttonSpeed = 0.3;
    public double slowButtonSpeed = 0.1;
@@ -63,7 +63,7 @@ public class Pivot extends Subsystem {
       speakerButton1 = Setup.getInstance().getSecondaryBButton();
       speakerButton2 = Setup.getInstance().getSecondaryXButton();
 
-/* ---------------------------------------------- Preset Angles -------------------------------------------------- */
+    /* ---------------------------------------------- Preset Angles -------------------------------------------------- */
       if (sourceButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
          //Source
          if(sourceButton == true){
@@ -126,7 +126,7 @@ public class Pivot extends Subsystem {
                }
             }
          }
-/* ---------------------------------------------- Manual Pivot -------------------------------------------------- */
+    /* ---------------------------------------------- Manual Pivot -------------------------------------------------- */
       } else if (pivotMotorSpeed < -.1 || pivotMotorSpeed > .1){
 
          //Crescendo Limits & Soft Stops
@@ -170,6 +170,6 @@ public class Pivot extends Subsystem {
 
    @Override
    public void stop(){
-   pivotMotorSpeed = 0;
+   pivotMotor.set(0);
    }
 }

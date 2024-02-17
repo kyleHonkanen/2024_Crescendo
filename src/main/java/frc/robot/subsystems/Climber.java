@@ -81,5 +81,8 @@ public class Climber extends Subsystem{
     }
 
     @Override
-    public void stop(){}
+    public void stop(){
+        RightClimbermotor.set(0);
+        LeftClimbermotor.set(0);
+    }
 }

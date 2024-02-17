@@ -74,7 +74,6 @@ public class Shooter extends Subsystem {
             ShooterFlywheelSpeed = ampSpeedInput;
         }
         timeToShoot = TimetoAmpShoot();
-  
     }
 
     public void Intake(){
@@ -98,19 +97,19 @@ public class Shooter extends Subsystem {
         
         //if the correct button is pressed or released, conditionals will be changed for next section
         if (leftShoot) {
-          unSuccFast = true;
+            unSuccFast = true;
         } else {
-          unSuccFast = false;
+            unSuccFast = false;
         }
         if (rightShoot) {
-          unSuccSlow = true;
+            unSuccSlow = true;
         } else {
-          unSuccSlow = false;
+            unSuccSlow = false;
         }
         
         //Decide flywheel speeds and/or direction
         if (succ) {
-            Intake();
+             Intake();
         } else if (unSuccFast) {
             SpeakerShoot();
         } else if (unSuccSlow) {

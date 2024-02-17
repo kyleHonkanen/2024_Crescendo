@@ -73,8 +73,6 @@ public class Robot extends TimedRobot {
   Drivetrain drivetrain;
   Setup setup;
 
-
-
   public void updateSubsystemsA(){
     climber.updateSubsystem();
     pivot.updateSubsystem();

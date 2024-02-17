@@ -4,7 +4,7 @@ import frc.robot.Setup;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 
 public class Telescope extends Subsystem{
 
@@ -17,17 +17,18 @@ public class Telescope extends Subsystem{
 
     public CANSparkMax telescopeMotor;
     public RelativeEncoder encoder;
-    public DigitalInput ArmMax;
-    public DigitalInput ArmMin;
+    public AnalogPotentiometer potentiometer;
+    public double telescopePotentiometer;
+    public double armExtend;
 
-    double armExtend = 0;
-    double armRetract = 0;
+    //telescope limit variables
+    public double telescopeMax = 80;
+    public double telescopeMin = 5;
 
     public Telescope(){
         telescopeMotor = new CANSparkMax(Setup.TelescopeMotorID, MotorType.kBrushless);
         encoder = telescopeMotor.getEncoder();
-        ArmMax = new DigitalInput(Setup.TelescopeMaximumID);
-        ArmMin = new DigitalInput(Setup.TelescopeMinimumID);
+        potentiometer = new AnalogPotentiometer(0, 180, 30);
     }
     
     public CANSparkMax getTelescopeMotor(){
@@ -38,27 +39,24 @@ public class Telescope extends Subsystem{
         return encoder;
     }
 
-    public boolean getArmMax(){
-        return ArmMax.get();
-    }
-
-    public boolean getArmMin(){
-        return ArmMin.get();
+    public double getPotentiometer(){
+        return potentiometer.get();
     }
 
     @Override
     public void updateSubsystem(){
+        telescopePotentiometer = getPotentiometer();
         armExtend = Setup.getInstance().getSecondaryTelescope();
         
-        if (armExtend < -.1 && ArmMax.get() == true) { // If the joystick is being pushed forwards and the arm is not at the maximum then make the arm move.
+        if (armExtend < -.1 && telescopePotentiometer < telescopeMax) { // If the joystick is being pushed forwards and the arm is not at the maximum then make the arm move.
             telescopeMotor.set(-armExtend/2); // As a safety pre-caution the robot will extend very slowly. Please edit this if you want it to go faster (not reccomended)
         
-         } else {
-            if (ArmMin.get() == false) { // If the arm is at it's minimum set the motor to false.
+        } else {
+            if (telescopePotentiometer < telescopeMin) { // If the arm is at it's minimum set the motor to false.
                 telescopeMotor.set(0);
 
-             } else {         
-                if (armExtend > -0.01) { // If the joystick is in the middle begin to pull the arm backwards.
+            } else {         
+                if (armExtend > -0.05) { // If the joystick is in the middle begin to pull the arm backwards.
                     telescopeMotor.set(-0.25);
 
                 } 
