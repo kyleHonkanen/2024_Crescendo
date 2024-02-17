@@ -199,7 +199,8 @@ public class Setup {
   //Shooter
   public static final int ShooterMotorLeftID = 22;
   public static final int ShooterMotorRightID = 23;
-  public static final int ShooterSolenoidID = 0;
+  public static final int ShooterSolenoidSlowID = 0;
+  public static final int ShooterSolenoidFastID = 1;
 
   //Climber
   public static final int ClimberMotorLeftID = 24;

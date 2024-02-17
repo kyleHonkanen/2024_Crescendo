@@ -24,7 +24,7 @@ public class Climber extends Subsystem{
     boolean LFast, RFast;
     double min = 2;
     double max = 50;
-    double speed = 2;
+    double speed = 1.5;
 
     public double getPotentiometerLeft(){
         return ClimberPotentiometerLeft.get();
@@ -54,7 +54,7 @@ public class Climber extends Subsystem{
         } else if (getPotentiometerLeft()<=min && LY>0) {
             LeftClimbermotor.set(0);
         } else {
-            LeftClimbermotor.set(LY);
+            LeftClimbermotor.set(LY/speed);
         }
 
         //Right Limits
@@ -63,14 +63,14 @@ public class Climber extends Subsystem{
          }else if (getPotentiometerRight()<=min && RY>0) {
             RightClimbermotor.set(0);
         } else {
-            RightClimbermotor.set(RY);
+            RightClimbermotor.set(RY/speed);
         }
 
         //change speed when either joystick is held down
         if (LFast || RFast) {
-            speed=2;
-        } else {
             speed=.5;
+        } else {
+            speed=1.5;
         }
     }
 

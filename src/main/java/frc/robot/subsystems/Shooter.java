@@ -22,23 +22,23 @@ public class Shooter extends Subsystem {
     CANSparkMax rightShooterMotor;
     RelativeEncoder leftShooterEncoder;
     RelativeEncoder rightShooterEncoder;
-    Solenoid Solenoid;
+    Solenoid solenoidSlow;
+    Solenoid solenoidFast;
 
     //naming mutible variables (assigned later)
-    public boolean pushSolenoid;
+    public boolean pushSolenoidSlow, pushSolenoidFast;
     public double leftTrig, rightTrig; // how much is each trigger held down
-    public boolean leftPush, rightPush, leftShoot, rightShoot; //is a bumper pressed?, is a trigger pressed enough?
-    public boolean succ, unSuccFast, unSuccSlow; // intake, speaker shoot , amp shoot
-    public boolean timeToShoot;
+    public boolean leftPush, rightPush, leftShoot, rightShoot, succ; //is a bumper pressed?, is a trigger pressed enough?
+    public boolean timeToShoot; 
     public double ShooterFlywheelSpeed;
     public double leftSpeed = -ShooterFlywheelSpeed;
     public double rightSpeed = ShooterFlywheelSpeed;
 
     //initializing constants
-    public double speakerSpeedInput = -0.6; //all 3 values are pretty much placeholders
-    public double speakerSpeedOutput = -3300;
-    public double ampSpeedInput = -0.2;  // must be slower than speaker
-    public double ampSpeedOutput = -1100;
+    public double speakerSpeed = -0.6; //all 3 values are pretty much placeholders
+    public double speakerTargetSpeed = -3300;
+    public double ampSpeed = -0.2;  // must be slower than speaker
+    public double ampTargetSpeed = -1100;
     public double intakeSpeed = 0.07; // must be opposite of speaker speed
 
     public Shooter(){
@@ -47,88 +47,76 @@ public class Shooter extends Subsystem {
         leftShooterEncoder = leftShooterMotor.getEncoder();
         rightShooterMotor = new CANSparkMax(Setup.ShooterMotorRightID, MotorType.kBrushless);
         rightShooterEncoder = rightShooterMotor.getEncoder();
-        Solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+        solenoidSlow = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
+        solenoidFast = new Solenoid(PneumaticsModuleType.CTREPCM,1);
     }
 
     //tests if a flywheel is up to speed and the system is ready to shoot
     public boolean TimetoSpeakerShoot(){
-        return rightShooterEncoder.getVelocity() <= speakerSpeedOutput;
+        return rightShooterEncoder.getVelocity() <= speakerTargetSpeed;
     }
 
     //sets motor to correct speed
     public void SpeakerShoot(){
-        if (unSuccFast) {
-            ShooterFlywheelSpeed = speakerSpeedInput;   
-        } 
+        ShooterFlywheelSpeed = speakerSpeed;   
         timeToShoot = TimetoSpeakerShoot();
     }
 
     //tests if a flywheel is up to speed and the system is ready to shoot
     public boolean TimetoAmpShoot(){
-        return rightShooterEncoder.getVelocity() <= ampSpeedOutput;
+        return rightShooterEncoder.getVelocity() <= ampTargetSpeed;
     }
 
     //sets motor to correct speed
     public void AmpShoot(){
-        if (unSuccSlow){
-            ShooterFlywheelSpeed = ampSpeedInput;
-        }
+        ShooterFlywheelSpeed = ampSpeed;
         timeToShoot = TimetoAmpShoot();
     }
 
     public void Intake(){
-        if (succ) {
-            //sets motor to correct speed
-            ShooterFlywheelSpeed = intakeSpeed; 
-        }
+        ShooterFlywheelSpeed = intakeSpeed; 
     }
 
     @Override
     public void updateSubsystem(){
-        //Assigning functions to buttons on secondary contoller 
-        // left and right shoot show if the trigger is pressed down enough
-        leftPush = Setup.getInstance().getSecondaryAmpShoot(); 
-        leftTrig = Setup.getInstance().getSecondaryAmp();
-        leftShoot = leftTrig >0.7;
-        rightPush = Setup.getInstance().getSecondarySpeakerShoot(); 
-        rightTrig = Setup.getInstance().getSecondarySpeaker();
-        rightShoot = rightTrig >0.7;
-        succ = Setup.getInstance().getSecondaryTelescope()<-0.4;//along with telescoping?
+        //amp
+        rightPush = Setup.getInstance().getSecondaryAmpShoot(); 
+        rightTrig = Setup.getInstance().getSecondaryAmp();
+        rightShoot = rightTrig > 0.7;
+
+        //speaker
+        leftPush = Setup.getInstance().getSecondarySpeakerShoot(); 
+        leftTrig = Setup.getInstance().getSecondarySpeaker();
+        leftShoot = leftTrig > 0.7;
         
-        //if the correct button is pressed or released, conditionals will be changed for next section
-        if (leftShoot) {
-            unSuccFast = true;
-        } else {
-            unSuccFast = false;
-        }
-        if (rightShoot) {
-            unSuccSlow = true;
-        } else {
-            unSuccSlow = false;
-        }
+        succ = Setup.getInstance().getSecondaryTelescope()<-0.4;//along with telescoping?
         
         //Decide flywheel speeds and/or direction
         if (succ) {
              Intake();
-        } else if (unSuccFast) {
+        } else if (leftShoot) {
             SpeakerShoot();
-        } else if (unSuccSlow) {
+        } else if (rightShoot) {
             AmpShoot();
         } else {
             stop();
         }
 
         //piston
-        if (leftPush||rightPush) {
-            pushSolenoid = true;
+        if (leftPush) {
+            pushSolenoidFast = true;
+        } else if(rightPush){
+            pushSolenoidSlow = true;
         } else {
-            pushSolenoid = false;
+            pushSolenoidFast = false;
+            pushSolenoidSlow = false;
         }
     
         //Set all speeds
         leftShooterMotor.set(ShooterFlywheelSpeed);
         rightShooterMotor.set(ShooterFlywheelSpeed);
-        Solenoid.set(pushSolenoid);
+        solenoidFast.set(pushSolenoidFast);
+        solenoidSlow.set(pushSolenoidSlow);
     }
 
     @Override
@@ -140,6 +128,9 @@ public class Shooter extends Subsystem {
     @Override
     public void stop(){
         ShooterFlywheelSpeed = 0;
-        Solenoid.set(false);
+
+        //removed for testing - prevents pneumatics from firing without flywheels moving
+        //solenoidFast.set(false);
+        //solenoidSlow.set(false);
     }
 }

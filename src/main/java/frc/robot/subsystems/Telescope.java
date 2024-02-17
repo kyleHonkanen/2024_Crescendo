@@ -54,7 +54,7 @@ public class Telescope extends Subsystem{
         } else {
             if (telescopePotentiometer < telescopeMin) { // If the arm is at it's minimum set the motor to false.
                 telescopeMotor.set(0);
-
+ 
             } else {         
                 if (armExtend > -0.05) { // If the joystick is in the middle begin to pull the arm backwards.
                     telescopeMotor.set(-0.25);
