@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Telescope extends Subsystem{
 
@@ -28,7 +29,7 @@ public class Telescope extends Subsystem{
     public Telescope(){
         telescopeMotor = new CANSparkMax(Setup.TelescopeMotorID, MotorType.kBrushless);
         encoder = telescopeMotor.getEncoder();
-        potentiometer = new AnalogPotentiometer(0, 180, 30);
+        potentiometer = new AnalogPotentiometer(0, 180, 0);
     }
     
     public CANSparkMax getTelescopeMotor(){
@@ -57,7 +58,7 @@ public class Telescope extends Subsystem{
  
             } else {         
                 if (armExtend > -0.05) { // If the joystick is in the middle begin to pull the arm backwards.
-                    telescopeMotor.set(-0.25);
+                    //telescopeMotor.set(-0.25);
 
                 } 
             }
@@ -65,7 +66,9 @@ public class Telescope extends Subsystem{
     }
 
     @Override
-    public void outputToSmartDashboard(){}
+    public void outputToSmartDashboard(){
+        SmartDashboard.putNumber("TelescopePot", getPotentiometer());
+    }
 
     @Override
     public void stop(){}

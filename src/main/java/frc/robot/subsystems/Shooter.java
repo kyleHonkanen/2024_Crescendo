@@ -122,7 +122,8 @@ public class Shooter extends Subsystem {
     @Override
     public void outputToSmartDashboard(){
         SmartDashboard.putBoolean("time to shoot?", timeToShoot);
-        SmartDashboard.putNumber("RPM", rightShooterEncoder.getVelocity());
+        SmartDashboard.putNumber("RRPM", rightShooterEncoder.getVelocity());
+        SmartDashboard.putNumber("LRPM",leftShooterEncoder.getVelocity());
     }
 
     @Override

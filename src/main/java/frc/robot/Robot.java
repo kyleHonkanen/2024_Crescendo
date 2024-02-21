@@ -64,7 +64,7 @@ import org.opencv.imgproc.Imgproc;
 public class Robot extends TimedRobot {
   boolean fieldOriented = false;
   double forward, strafe, rotation, flTurn, frTurn, blTurn, brTurn;
-  boolean orient = false, toggle = false;
+  boolean orient = false, toggle = true;
   CameraServer cServer;
   Climber climber;
   Pivot pivot;

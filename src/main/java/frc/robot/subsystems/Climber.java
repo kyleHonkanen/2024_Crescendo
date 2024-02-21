@@ -36,15 +36,15 @@ public class Climber extends Subsystem{
 
     public Climber(){
         LeftClimbermotor = new CANSparkMax(Setup.ClimberMotorLeftID, MotorType.kBrushless);
-        ClimberPotentiometerLeft = new AnalogPotentiometer(2, 180, -2.6);
+        ClimberPotentiometerLeft = new AnalogPotentiometer(2, 180,0);
         RightClimbermotor = new CANSparkMax(Setup.ClimberMotorRightID, MotorType.kBrushless);
-        ClimberPotentiometerRight = new AnalogPotentiometer(3,180,-2.6);
+        ClimberPotentiometerRight = new AnalogPotentiometer(3,180,0);
     }
 
     @Override
     public void updateSubsystem(){
-        LY = Setup.getInstance().getSecondaryLeftClimber()*speed;
-        RY = Setup.getInstance().getSecondaryRightClimber()*speed;
+        LY = Setup.getInstance().getSecondaryLeftClimber();
+        RY = Setup.getInstance().getSecondaryRightClimber();
         LFast = Setup.getInstance().getSecondaryLeftClimberButton();
         RFast = Setup.getInstance().getSecondaryRightClimberButton();
 
