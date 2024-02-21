@@ -64,7 +64,7 @@ import org.opencv.imgproc.Imgproc;
 public class Robot extends TimedRobot {
   boolean fieldOriented = false;
   double forward, strafe, rotation, flTurn, frTurn, blTurn, brTurn;
-  boolean orient = false, toggle = true;
+  boolean orient = false, toggle = false;
   CameraServer cServer;
   Climber climber;
   Pivot pivot;
@@ -74,10 +74,11 @@ public class Robot extends TimedRobot {
   Setup setup;
 
   public void updateSubsystemsA(){
-    climber.updateSubsystem();
+    //climber.updateSubsystem();
     pivot.updateSubsystem();
     shooter.updateSubsystem();
     telescope.updateSubsystem();
+    climber.stop();
   }
 
   public void updateSubsystemsB() {
@@ -133,12 +134,12 @@ public class Robot extends TimedRobot {
 
     //TOGGLE
     if (toggle) {
-      updateSubsystemsA();
+      updateSubsystemsB();
       if (setup.getSecondaryToggleClimberMode()) {
         toggle=false;
       }
     } else if (!toggle) {
-      updateSubsystemsB();
+      updateSubsystemsA();
       if (setup.getSecondaryToggleClimberMode()) {
         toggle=true;
       }

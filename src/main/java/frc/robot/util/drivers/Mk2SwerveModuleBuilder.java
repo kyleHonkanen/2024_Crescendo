@@ -19,12 +19,12 @@ public class Mk2SwerveModuleBuilder {
     /**
      /* The gear ratio of the angle motor that ships with the standard kit.
      */
-    private static final double DEFAULT_ANGLE_REDUCTION = 18 / 1.0;
+    private static final double DEFAULT_ANGLE_REDUCTION = 6.12 / 1.0;
 
     /**
      * The gear ratio of the drive motor that ships with the standard kit.
      */
-    private static final double DEFAULT_DRIVE_REDUCTION = 6.75 / 1.0;
+    private static final double DEFAULT_DRIVE_REDUCTION = 6.12 / 1.0;
 
     /**
      * The diameter of the standard wheel in inches.

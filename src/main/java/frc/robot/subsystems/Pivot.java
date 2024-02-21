@@ -24,12 +24,12 @@ public class Pivot extends Subsystem {
    public boolean speakerButton2;
 
    //Variables - All angles not final
-   public double pivotMaxAngle = 260;
-   public double pivotMinAngle = 105;
-   public double sourceAngle = 340;
-   public double ampAngle = 280;
-   public double speakerAngle1 = 300;
-   public double speakerAngle2 = 320;
+   public double pivotMaxAngle = 340;
+   public double pivotMinAngle = 260;
+   public double sourceAngle = 50;
+   public double ampAngle = 100;
+   public double speakerAngle1 = 80;
+   public double speakerAngle2 = 100;
 
    //Speed for preset angle positions
    public double buttonSpeed = 0.3;
@@ -130,26 +130,14 @@ public class Pivot extends Subsystem {
       } else if (pivotMotorSpeed < -.1 || pivotMotorSpeed > .1){
 
          //Crescendo Limits & Soft Stops
-///* 
-         if(armPosition > pivotMaxAngle || armPosition < pivotMinAngle){
+         if(armPosition > pivotMaxAngle && pivotMotorSpeed > 0){
             pivotMotorSpeed = 0;
-         } else if((armPosition > (pivotMaxAngle - 15)) || (armPosition < (pivotMinAngle + 15))){
+         } else if (armPosition < pivotMinAngle && pivotMotorSpeed < 0){
+            pivotMotorSpeed = 0;
+         } else if((armPosition > (pivotMaxAngle - 5)) || (armPosition < (pivotMinAngle + 5))){
             pivotMotorSpeed /= 2;
          }
-//*/
-         //Dr. Claw Limits & Soft Stops (For Testing Purposes)
-/*
-         if(armPosition<260 && armPosition>180 && pivotMotorSpeed>0){
-            pivotMotorSpeed = 0;
-         } else if(armPosition>105 && armPosition<180 && pivotMotorSpeed<0){
-            pivotMotorSpeed = 0; 
-         
-         } else if (armPosition<280 && armPosition>180){
-            pivotMotorSpeed = pivotMotorSpeed/2;
-         } else if(armPosition>85 && armPosition<180){
-            pivotMotorSpeed = pivotMotorSpeed/2;
-         }
-//*/
+
          //Double Speed when Pressed
          if(Setup.getInstance().getSecondaryRightStickPressed()){
             pivotMotorSpeed *= 2;

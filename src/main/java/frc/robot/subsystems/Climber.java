@@ -21,9 +21,10 @@ public class Climber extends Subsystem{
     CANSparkMax LeftClimbermotor;
     CANSparkMax RightClimbermotor;
     double LY, RY;
+    double LPot, RPot;
     boolean LFast, RFast;
-    double min = 2;
-    double max = 50;
+    double min = 15;
+    double max = 40;
     double speed = 1.5;
 
     public double getPotentiometerLeft(){
@@ -35,10 +36,11 @@ public class Climber extends Subsystem{
     }
 
     public Climber(){
+        //scaled in quargajohns
         LeftClimbermotor = new CANSparkMax(Setup.ClimberMotorLeftID, MotorType.kBrushless);
-        ClimberPotentiometerLeft = new AnalogPotentiometer(2, 180,0);
+        ClimberPotentiometerLeft = new AnalogPotentiometer(1,100);
         RightClimbermotor = new CANSparkMax(Setup.ClimberMotorRightID, MotorType.kBrushless);
-        ClimberPotentiometerRight = new AnalogPotentiometer(3,180,0);
+        ClimberPotentiometerRight = new AnalogPotentiometer(2,100);
     }
 
     @Override
@@ -47,6 +49,17 @@ public class Climber extends Subsystem{
         RY = Setup.getInstance().getSecondaryRightClimber();
         LFast = Setup.getInstance().getSecondaryLeftClimberButton();
         RFast = Setup.getInstance().getSecondaryRightClimberButton();
+        LPot = ClimberPotentiometerLeft.get();
+        RPot = ClimberPotentiometerRight.get();
+
+
+        //deadband
+        if(LY > -0.1 && LY < 0.1){
+            LY = 0;
+        }
+        if (RY > -0.1 && RY < 0.1){
+            RY = 0;
+        }
 
         //Left Limits
         if (getPotentiometerLeft()>=max && LY<0) {
@@ -60,10 +73,10 @@ public class Climber extends Subsystem{
         //Right Limits
         if (getPotentiometerRight()>=max && RY<0) {
             RightClimbermotor.set(0);
-         }else if (getPotentiometerRight()<=min && RY>0) {
+         } else if (getPotentiometerRight()<=min && RY>0) {
             RightClimbermotor.set(0);
         } else {
-            RightClimbermotor.set(RY/speed);
+            RightClimbermotor.set(-RY/speed);
         }
 
         //change speed when either joystick is held down
@@ -76,8 +89,8 @@ public class Climber extends Subsystem{
 
     @Override
     public void outputToSmartDashboard(){
-        SmartDashboard.putNumber("ClimberPotentiometerLeft", ClimberPotentiometerLeft.get());
-        SmartDashboard.putNumber("ClimberPotentiometerRight", ClimberPotentiometerRight.get());
+        SmartDashboard.putNumber("ClimberPotentiometerLeft", LPot);
+        SmartDashboard.putNumber("ClimberPotentiometerRight", RPot);
     }
 
     @Override

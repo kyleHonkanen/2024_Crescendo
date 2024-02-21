@@ -32,7 +32,7 @@ public class Shooter extends Subsystem {
     public boolean timeToShoot; 
     public double ShooterFlywheelSpeed;
     public double leftSpeed = -ShooterFlywheelSpeed;
-    public double rightSpeed = ShooterFlywheelSpeed;
+    public double rightSpeed = -ShooterFlywheelSpeed;
 
     //initializing constants
     public double speakerSpeed = -0.6; //all 3 values are pretty much placeholders
@@ -47,8 +47,8 @@ public class Shooter extends Subsystem {
         leftShooterEncoder = leftShooterMotor.getEncoder();
         rightShooterMotor = new CANSparkMax(Setup.ShooterMotorRightID, MotorType.kBrushless);
         rightShooterEncoder = rightShooterMotor.getEncoder();
-        solenoidSlow = new Solenoid(PneumaticsModuleType.CTREPCM, 0);
-        solenoidFast = new Solenoid(PneumaticsModuleType.CTREPCM,1);
+        solenoidSlow = new Solenoid(PneumaticsModuleType.REVPH, 0);
+        solenoidFast = new Solenoid(PneumaticsModuleType.REVPH,1);
     }
 
     //tests if a flywheel is up to speed and the system is ready to shoot
@@ -114,7 +114,7 @@ public class Shooter extends Subsystem {
     
         //Set all speeds
         leftShooterMotor.set(ShooterFlywheelSpeed);
-        rightShooterMotor.set(ShooterFlywheelSpeed);
+        rightShooterMotor.set(-ShooterFlywheelSpeed);
         solenoidFast.set(pushSolenoidFast);
         solenoidSlow.set(pushSolenoidSlow);
     }

@@ -29,7 +29,7 @@ public class Telescope extends Subsystem{
     public Telescope(){
         telescopeMotor = new CANSparkMax(Setup.TelescopeMotorID, MotorType.kBrushless);
         encoder = telescopeMotor.getEncoder();
-        potentiometer = new AnalogPotentiometer(0, 180, 0);
+        potentiometer = new AnalogPotentiometer(3);
     }
     
     public CANSparkMax getTelescopeMotor(){

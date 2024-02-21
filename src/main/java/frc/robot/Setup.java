@@ -2,9 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.util.drivers.Gyroscope;
 import frc.robot.util.drivers.NavX;
+import edu.wpi.first.wpilibj.Compressor;
 
 public class Setup {
     
@@ -27,7 +30,7 @@ public class Setup {
   public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(0);
   public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(0);
   public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(0);
-  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(180);
+  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(0);
 
   //finds position of the wheels based on the position of the center
   public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
@@ -170,6 +173,12 @@ public class Setup {
   //Gyroscope
   public final Gyroscope gyroscope = NavX.getInstance();
 
+  public Compressor CompressorHardware;
+
+    public void setupCompressor(){
+    CompressorHardware = new Compressor(2, PneumaticsModuleType.CTREPCM);
+  }
+
   //-----------------------------------------------------------IDs------------------------------------------------------------------------------
 
   //Swerve Drive
@@ -179,8 +188,9 @@ public class Setup {
   public static final int DrivetrainSubsystem_BACK_LEFT_DRIVE_MOTOR = 12; 
   public static final int DrivetrainSubsystem_BACK_LEFT_ANGLE_MOTOR = 13; 
 
-  public static final int DrivetrainSubsystem_BACK_RIGHT_DRIVE_MOTOR = 14; 
-  public static final int DrivetrainSubsystem_BACK_RIGHT_ANGLE_MOTOR = 15; 
+  //wired wrong so bad
+  public static final int DrivetrainSubsystem_BACK_RIGHT_DRIVE_MOTOR = 15; 
+  public static final int DrivetrainSubsystem_BACK_RIGHT_ANGLE_MOTOR = 14; 
 
   public static final int DrivetrainSubsystem_FRONT_RIGHT_DRIVE_MOTOR = 16; 
   public static final int DrivetrainSubsystem_FRONT_RIGHT_ANGLE_MOTOR = 17; 
