@@ -26,14 +26,17 @@ public class Pivot extends Subsystem {
    //Variables - All angles not final
    public double pivotMaxAngle = 340;
    public double pivotMinAngle = 260;
-   public double sourceAngle = 50;
-   public double ampAngle = 100;
-   public double speakerAngle1 = 80;
-   public double speakerAngle2 = 100;
+   public double sourceAngle = 316.5;
+   public double ampAngle = 270;
+   public double speakerAngle1 = 300;
+   public double speakerAngle2 = 330;
+   public double slowZone = 10;
+   public double extraSlowZone = 2;
 
    //Speed for preset angle positions
-   public double buttonSpeed = 0.3;
-   public double slowButtonSpeed = 0.1;
+   public double buttonSpeed = 0.5;
+   public double slowButtonSpeed = 0.15;
+   public double extraSlowButtonSpeed = 0.025;
    
    public Pivot() {
       pivotMotor = new CANSparkMax(Setup.PivotMotorID, MotorType.kBrushless);
@@ -67,63 +70,95 @@ public class Pivot extends Subsystem {
       if (sourceButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
          //Source
          if(sourceButton == true){
-            if(armPosition > sourceAngle){
-               if(armPosition < (sourceAngle + 10)){
+            if(armPosition < sourceAngle){
+
+               if(armPosition > (sourceAngle - extraSlowZone)){
+                  pivotMotor.set(extraSlowButtonSpeed);
+               } else if(armPosition > (sourceAngle - slowZone)){ 
                   pivotMotor.set(slowButtonSpeed);
-               } else{
+               } else{ 
                pivotMotor.set(buttonSpeed);
                }
-            } else if(armPosition < sourceAngle){
-               if(armPosition > (sourceAngle - 10)){
+
+            } else if(armPosition > sourceAngle){
+
+               if(armPosition < (sourceAngle + extraSlowZone)){
+                  pivotMotor.set(-extraSlowButtonSpeed);
+               } else if(armPosition < (sourceAngle + slowZone)){
                   pivotMotor.set(-slowButtonSpeed);
-               } else{
+               }else{
                pivotMotor.set(-buttonSpeed);
+
                }
             }
          //Amp
          } else if(ampButton==true){
-            if(armPosition > ampAngle){
-               if(armPosition < (ampAngle + 10)){
+            if(armPosition < ampAngle){
+
+               if((armPosition > (ampAngle - extraSlowZone))){
+                  pivotMotor.set(extraSlowButtonSpeed);
+               } else if(armPosition > (ampAngle - slowZone)){
                   pivotMotor.set(slowButtonSpeed);
                } else{
                pivotMotor.set(buttonSpeed);
                }
-            } else if(armPosition < ampAngle){
-               if(armPosition > (ampAngle - 10)){
+
+            } else if(armPosition > ampAngle){
+
+               if(armPosition < (ampAngle + extraSlowZone)){
+                  pivotMotor.set(-extraSlowButtonSpeed);
+               } else if(armPosition < (ampAngle + slowZone)){
                   pivotMotor.set(-slowButtonSpeed);
                } else{
                pivotMotor.set(-buttonSpeed);
                }
+
             }
          //Primary Speaker Angle
          } else if(speakerButton1==true){
-            if(armPosition > speakerAngle1){
-               if(armPosition < (speakerAngle1 + 10)){
+            if(armPosition < speakerAngle1){
+
+               if(armPosition > (speakerAngle1 - extraSlowZone)) {
+                  pivotMotor.set(extraSlowButtonSpeed);
+               } else if(armPosition > (speakerAngle1 - slowZone)){
                   pivotMotor.set(slowButtonSpeed);
                } else{
                pivotMotor.set(buttonSpeed);
                }
-            } else if(armPosition < speakerAngle1){
-               if(armPosition > (speakerAngle1 - 10)){
+
+            } else if(armPosition > speakerAngle1){
+
+               if(armPosition < (speakerAngle1 + extraSlowZone)){
+                  pivotMotor.set(-extraSlowButtonSpeed);
+               }else if(armPosition < (speakerAngle1 + slowZone)){
                   pivotMotor.set(-slowButtonSpeed);
                } else{
                pivotMotor.set(-buttonSpeed);
                }
+
             }
          //Secondary Speaker Angle
          } else if(speakerButton2==true){
-            if(armPosition > speakerAngle2){
-               if(armPosition < (speakerAngle2 + 10)){
+            if(armPosition < speakerAngle2){
+
+               if(armPosition > (speakerAngle2 - extraSlowZone)){
+                  pivotMotor.set(extraSlowZone);
+               } else if(armPosition > (speakerAngle2 - slowZone)){
                   pivotMotor.set(slowButtonSpeed);
                } else{
                pivotMotor.set(buttonSpeed);
                }
-            } else if(armPosition < speakerAngle2){
-               if(armPosition > (speakerAngle2 - 10)){
+
+            } else if(armPosition > speakerAngle2){
+
+               if(armPosition < (speakerAngle2 + extraSlowZone)){
+                  pivotMotor.set(-extraSlowButtonSpeed);
+               } else if(armPosition < (speakerAngle2 + slowZone)){
                   pivotMotor.set(-slowButtonSpeed);
                } else{
                pivotMotor.set(-buttonSpeed);
                }
+
             }
          }
     /* ---------------------------------------------- Manual Pivot -------------------------------------------------- */

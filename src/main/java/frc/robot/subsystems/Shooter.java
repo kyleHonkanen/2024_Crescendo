@@ -35,11 +35,11 @@ public class Shooter extends Subsystem {
     public double rightSpeed = -ShooterFlywheelSpeed;
 
     //initializing constants
-    public double speakerSpeed = -0.6; //all 3 values are pretty much placeholders
+    public double speakerSpeed = -1; //all 3 values are pretty much placeholders
     public double speakerTargetSpeed = -3300;
     public double ampSpeed = -0.2;  // must be slower than speaker
     public double ampTargetSpeed = -1100;
-    public double intakeSpeed = 0.07; // must be opposite of speaker speed
+    public double intakeSpeed = 0.2; // must be opposite of speaker speed
 
     public Shooter(){
         //initializes all physical pieces

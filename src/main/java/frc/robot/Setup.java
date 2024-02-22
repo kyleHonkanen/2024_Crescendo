@@ -28,7 +28,7 @@ public class Setup {
     
   //offset of wheels sets the angle to start - CHANGE DIS BRO
   public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(0);
-  public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(0);
+  public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(300);
   public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(0);
   public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(0);
 

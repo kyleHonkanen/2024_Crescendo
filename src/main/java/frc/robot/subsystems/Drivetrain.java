@@ -100,10 +100,10 @@ public class Drivetrain {
                 //frontLeftCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
                 Mk2SwerveModuleBuilder frontLeftModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(Setup.instance.TRACKWIDTH / 2.0, Setup.instance.WHEELBASE / 2.0));
                 //frontLeftModuleBuilder.angleEncoder(-Math.toRadians(flSens.getVoltage()*72), Setup.instance.FRONT_LEFT_ANGLE_OFFSET);
-                frontLeftModuleBuilder.angleEncoder(-Math.toRadians(flSens.getVoltage()*109.090909091), Setup.instance.FRONT_LEFT_ANGLE_OFFSET);
+                //frontLeftModuleBuilder.angleEncoder(Math.toRadians(flSens.getVoltage()*109.090909091), Setup.instance.FRONT_LEFT_ANGLE_OFFSET);
+                frontLeftModuleBuilder.angleEncoder(flSens.getVoltage(), Setup.instance.FRONT_LEFT_ANGLE_OFFSET);
                 frontLeftModuleBuilder.angleMotor(flMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
                 frontLeftModuleBuilder.driveMotor(flMotDri,Mk2SwerveModuleBuilder.MotorType.NEO);
-                
                 frontLeftModule = frontLeftModuleBuilder.build();
 
 
@@ -111,7 +111,7 @@ public class Drivetrain {
                 //frontRightCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
                 Mk2SwerveModuleBuilder frontRightModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(Setup.instance.TRACKWIDTH / 2.0, -Setup.instance.WHEELBASE / 2.0));
                 //frontRightModuleBuilder.angleEncoder(-Math.toRadians(frSens.getVoltage()*72), Setup.instance.FRONT_RIGHT_ANGLE_OFFSET);
-                frontRightModuleBuilder.angleEncoder(-Math.toRadians(frSens.getVoltage()*109.090909091), Setup.instance.FRONT_RIGHT_ANGLE_OFFSET);
+                frontRightModuleBuilder.angleEncoder(frSens.getVoltage(), Setup.instance.FRONT_RIGHT_ANGLE_OFFSET);
                 frontRightModuleBuilder.angleMotor(frMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
                 frontRightModuleBuilder.driveMotor(frMotDri,Mk2SwerveModuleBuilder.MotorType.NEO);
                 frontRightModule = frontRightModuleBuilder.build();
@@ -120,7 +120,7 @@ public class Drivetrain {
                 //backLeftCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
                 Mk2SwerveModuleBuilder backLeftModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(-Setup.instance.TRACKWIDTH / 2.0, Setup.instance.WHEELBASE / 2.0));
                 //backLeftModuleBuilder.angleEncoder(-Math.toRadians(blSens.getVoltage()*72), Setup.instance.BACK_LEFT_ANGLE_OFFSET);
-                backLeftModuleBuilder.angleEncoder(-Math.toRadians(blSens.getVoltage()*109.090909091), Setup.instance.BACK_LEFT_ANGLE_OFFSET);
+                backLeftModuleBuilder.angleEncoder(blSens.getVoltage(), Setup.instance.BACK_LEFT_ANGLE_OFFSET);
                 backLeftModuleBuilder.angleMotor(blMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
                 backLeftModuleBuilder.driveMotor(blMotDri,Mk2SwerveModuleBuilder.MotorType.NEO);
                 backLeftModule = backLeftModuleBuilder.build();
@@ -129,7 +129,7 @@ public class Drivetrain {
                 //CANCoder backRightCANCoder = new CANCoder(Setup.DrivetrainSubsystem_BACK_RIGHT_ANGLE_ENCODER);
                 //backRightCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
                 Mk2SwerveModuleBuilder backRightModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(-Setup.instance.TRACKWIDTH / 2.0, -Setup.instance.WHEELBASE / 2.0));
-                backRightModuleBuilder.angleEncoder(-Math.toRadians(brSens.getVoltage()*109.090909091), Setup.instance.BACK_RIGHT_ANGLE_OFFSET);
+                backRightModuleBuilder.angleEncoder(brSens.getVoltage(), Setup.instance.BACK_RIGHT_ANGLE_OFFSET);
                 //backRightModuleBuilder.angleEncoder(-Math.toRadians(brSens.getVoltage()*72), Setup.instance.BACK_RIGHT_ANGLE_OFFSET);
                 backRightModuleBuilder.angleMotor(brMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
                 backRightModuleBuilder.driveMotor(brMotDri,Mk2SwerveModuleBuilder.MotorType.NEO);
