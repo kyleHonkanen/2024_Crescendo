@@ -24,10 +24,10 @@ public class Pivot extends Subsystem {
    public boolean speakerButton2;
 
    //Variables - All angles not final
-   public double pivotMaxAngle = 340;
+   public double pivotMaxAngle = 350;
    public double pivotMinAngle = 260;
-   public double sourceAngle = 316.5;
-   public double ampAngle = 270;
+   public double sourceAngle = 315;
+   public double ampAngle = 250;
    public double speakerAngle1 = 300;
    public double speakerAngle2 = 330;
    public double slowZone = 10;
@@ -57,7 +57,7 @@ public class Pivot extends Subsystem {
 
    @Override
    public void updateSubsystem(){
-      pivotMotorSpeed = Setup.getInstance().getSecondaryManualPivot();
+      pivotMotorSpeed = -Setup.getInstance().getSecondaryManualPivot();
       double armPosition = encoder.getPosition()*360;
 
       //Button assignments
@@ -68,8 +68,13 @@ public class Pivot extends Subsystem {
 
     /* ---------------------------------------------- Preset Angles -------------------------------------------------- */
       if (sourceButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
+   
+         //get outa da danger zone
+         if(armPosition > 0 && armPosition < 5){
+            pivotMotor.set(-0.4);
+
          //Source
-         if(sourceButton == true){
+         } else if(sourceButton == true){
             if(armPosition < sourceAngle){
 
                if(armPosition > (sourceAngle - extraSlowZone)){
@@ -91,6 +96,7 @@ public class Pivot extends Subsystem {
 
                }
             }
+
          //Amp
          } else if(ampButton==true){
             if(armPosition < ampAngle){
@@ -114,6 +120,7 @@ public class Pivot extends Subsystem {
                }
 
             }
+
          //Primary Speaker Angle
          } else if(speakerButton1==true){
             if(armPosition < speakerAngle1){
@@ -137,6 +144,7 @@ public class Pivot extends Subsystem {
                }
 
             }
+
          //Secondary Speaker Angle
          } else if(speakerButton2==true){
             if(armPosition < speakerAngle2){
@@ -164,14 +172,16 @@ public class Pivot extends Subsystem {
     /* ---------------------------------------------- Manual Pivot -------------------------------------------------- */
       } else if (pivotMotorSpeed < -.1 || pivotMotorSpeed > .1){
 
-         //Crescendo Limits & Soft Stops
-         if(armPosition > pivotMaxAngle && pivotMotorSpeed > 0){
+         //Limits & Soft Stops
+         if(armPosition > 0 && armPosition < 5){
+            pivotMotorSpeed = -0.1;
+         } else if(armPosition > pivotMaxAngle && pivotMotorSpeed > 0){
             pivotMotorSpeed = 0;
          } else if (armPosition < pivotMinAngle && pivotMotorSpeed < 0){
             pivotMotorSpeed = 0;
          } else if((armPosition > (pivotMaxAngle - 5)) || (armPosition < (pivotMinAngle + 5))){
             pivotMotorSpeed /= 2;
-         }
+         } 
 
          //Double Speed when Pressed
          if(Setup.getInstance().getSecondaryRightStickPressed()){

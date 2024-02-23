@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.util.drivers.Gyroscope;
 import frc.robot.util.drivers.NavX;
-import edu.wpi.first.wpilibj.Compressor;
 
 public class Setup {
     
@@ -27,10 +26,10 @@ public class Setup {
   public double WHEELBASE = 0.597;
     
   //offset of wheels sets the angle to start - CHANGE DIS BRO
-  public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(265);
-  public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(128);
-  public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(10);
+  public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(126);
+  public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(265.5);
   public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(40);
+  public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(14);
 
   //finds position of the wheels based on the position of the center
   public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(

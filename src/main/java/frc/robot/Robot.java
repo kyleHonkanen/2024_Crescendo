@@ -74,7 +74,6 @@ public class Robot extends TimedRobot {
   Setup setup;
 
   public void updateSubsystemsA(){
-    //climber.updateSubsystem();
     pivot.updateSubsystem();
     shooter.updateSubsystem();
     telescope.updateSubsystem();
@@ -83,6 +82,9 @@ public class Robot extends TimedRobot {
 
   public void updateSubsystemsB() {
     climber.updateSubsystem();
+    pivot.stop();
+    telescope.stop();
+    shooter.stop();
   }
 
   public void stopAllSubsystems(){

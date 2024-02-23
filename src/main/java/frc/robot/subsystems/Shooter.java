@@ -129,9 +129,7 @@ public class Shooter extends Subsystem {
     @Override
     public void stop(){
         ShooterFlywheelSpeed = 0;
-
-        //removed for testing - prevents pneumatics from firing without flywheels moving
-        //solenoidFast.set(false);
-        //solenoidSlow.set(false);
+        solenoidFast.set(false);
+        solenoidSlow.set(false);
     }
 }

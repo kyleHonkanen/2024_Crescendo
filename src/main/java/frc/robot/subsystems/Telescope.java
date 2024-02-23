@@ -24,7 +24,7 @@ public class Telescope extends Subsystem{
 
     //telescope limit variables
     public double telescopeMax = 6;
-    public double telescopeMin = 25;
+    public double telescopeMin = 25.5;
 
     public Telescope(){
         telescopeMotor = new CANSparkMax(Setup.TelescopeMotorID, MotorType.kBrushed);
@@ -63,5 +63,7 @@ public class Telescope extends Subsystem{
     }
 
     @Override
-    public void stop(){}
+    public void stop(){
+        telescopeMotor.set(0);
+    }
 }
