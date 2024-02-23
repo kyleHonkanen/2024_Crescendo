@@ -19,12 +19,12 @@ public class Mk2SwerveModuleBuilder {
     /**
      /* The gear ratio of the angle motor that ships with the standard kit.
      */
-    private static final double DEFAULT_ANGLE_REDUCTION = 6.12 / 1.0;
+    private static final double DEFAULT_ANGLE_REDUCTION = 12.8;
 
     /**
      * The gear ratio of the drive motor that ships with the standard kit.
      */
-    private static final double DEFAULT_DRIVE_REDUCTION = 6.12 / 1.0;
+    private static final double DEFAULT_DRIVE_REDUCTION = 6.75;
 
     /**
      * The diameter of the standard wheel in inches.
@@ -49,7 +49,7 @@ public class Mk2SwerveModuleBuilder {
     /**
      * Default constants for angle pid running on a Spark MAX using NEOs.
      */
-    private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(1.5, 0.0, 0.5);
+    private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(0.5, 0.0, 0.5);
 
     private final Vector2 modulePosition;
 
@@ -137,7 +137,7 @@ public class Mk2SwerveModuleBuilder {
 
         controller.setP(constants.p);
         controller.setI(constants.i);
-        controller.setD(constants.i);
+        controller.setD(constants.d);
 
 
         //Turns Wheels
