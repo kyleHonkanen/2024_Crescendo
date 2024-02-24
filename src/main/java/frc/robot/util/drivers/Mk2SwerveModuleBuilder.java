@@ -49,7 +49,7 @@ public class Mk2SwerveModuleBuilder {
     /**
      * Default constants for angle pid running on a Spark MAX using NEOs.
      */
-    private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(0.5, 0.0, 0.5);
+    private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(0.5, 0.0, 0.1);
 
     private final Vector2 modulePosition;
 

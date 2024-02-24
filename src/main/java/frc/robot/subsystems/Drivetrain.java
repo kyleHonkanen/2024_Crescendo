@@ -50,18 +50,11 @@ public class Drivetrain {
         public SparkAnalogSensor blSens;
         public SparkAnalogSensor brSens;
 
-        // //Init Angle Motors
-        // private CANSparkMax flAng;
-        // private CANSparkMax frAng;
-        // private CANSparkMax blAng;
-        // private CANSparkMax brAng;
-
         //Establishes Swerve Module variables
         public final SwerveModule frontLeftModule;
         public final SwerveModule frontRightModule;
         public final SwerveModule backLeftModule;
         public final SwerveModule backRightModule;
-
 
         //Establishes speed throttle
         public double speedChanger = 0;
@@ -161,7 +154,7 @@ public class Drivetrain {
         public void drive(Translation2d translation, double rotation, boolean fieldOriented, double throttle) {
                
                 //calculates how the wheel spins, converts rotational speeds to inches
-                rotation *= 12.0 /
+                rotation *= -12.0 /
                  Math.hypot(Setup.instance.WHEELBASE, Setup.instance.TRACKWIDTH);
 
                 if(fieldOriented) {
@@ -177,7 +170,8 @@ public class Drivetrain {
                 }
 
                 //calculates swerve module states, results in an array of angles and speeds
-                states = Setup.instance.kinematics.toSwerveModuleStates(speeds,new Translation2d(Setup.instance.TRACKWIDTH/2,0));
+                //states = Setup.instance.kinematics.toSwerveModuleStates(speeds,new Translation2d(Setup.instance.TRACKWIDTH/2,0));
+                states = Setup.instance.kinematics.toSwerveModuleStates(speeds,new Translation2d(0,0));
                
                 //makes it 0 to 1 instead of -1 to 1
                 speedChanger = ((throttle-1)/-2);
@@ -191,13 +185,13 @@ public class Drivetrain {
                 double z = Utilities.deadband(Setup.getInstance().getPrimaryZ(),.2);
 
                 //sets the modules and motors target velocity and angle in accordance with the joystick
-                if(x==0 && y==0 && z!=0){
-                        frontLeftModule.setTargetVelocity(z*speedChanger, -.25 * Math.PI);
-                        frontRightModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
-                        backLeftModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
-                        backRightModule.setTargetVelocity(-z*speedChanger, -.25 * Math.PI);
-                
-                } else 
+                //if(x==0 && y==0 && z!=0){
+                //       frontLeftModule.setTargetVelocity(z*speedChanger, -.25 * Math.PI);
+                //     frontRightModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
+                //   backLeftModule.setTargetVelocity(z*speedChanger, .25 * Math.PI);
+                // backRightModule.setTargetVelocity(-z*speedChanger, -.25 * Math.PI);
+                // } else
+                 
                 if (speeds.omegaRadiansPerSecond!=0 || speeds.vxMetersPerSecond!=0 || speeds.vyMetersPerSecond!=0){
                         frontLeftModule.setTargetVelocity(states[0].speedMetersPerSecond*speedChanger, states[0].angle.getRadians());
                         frontRightModule.setTargetVelocity(states[1].speedMetersPerSecond*speedChanger, states[1].angle.getRadians());
@@ -270,13 +264,13 @@ public class Drivetrain {
         public double getSpeed(String speedSetting) {
                 String whichSpeed = speedSetting;
                 if(whichSpeed == "fast"){
-                        speed=-.8;
+                        speed=-.7;
                 } else if(whichSpeed == "medium"){
-                        speed=.09;
+                        speed=0;
                 } else if(whichSpeed == "slow"){
-                        speed=.4;
+                        speed=0.1;
                 } else if(whichSpeed == "reallySlow"){
-                        speed = .6;
+                        speed = .5;
                 }
                 return speed;
         }
@@ -286,13 +280,13 @@ public class Drivetrain {
                 double rotate = rotation;
                 String whichSpeed = speedSetting;
                 if(whichSpeed == "fast"){
-                        rotate /=3;
+                        rotate /=8;
                 } else if(whichSpeed == "medium"){
-                        rotate /=3;
+                        rotate /=4;
                 } else if(whichSpeed == "slow"){
-                        rotate /=3.5;
+                        rotate /=6;
                 } else if(whichSpeed == "reallySlow"){
-                        rotate /=3.8;
+                        rotate /=4;
                 }
                 return rotate;
         }

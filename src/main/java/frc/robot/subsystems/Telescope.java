@@ -45,11 +45,13 @@ public class Telescope extends Subsystem{
         armExtend = Setup.getInstance().getSecondaryTelescope();
       
         if (armExtend < -.1 && telescopePotentiometer > telescopeMax) { // If the joystick is being pushed forwards and the arm is not at the maximum then make the arm move.
-            telescopeMotor.set(-armExtend/2); // As a safety pre-caution the robot will extend very slowly. Please edit this if you want it to go faster (not reccomended)
+            telescopeMotor.set(-armExtend); // As a safety pre-caution the robot will extend very slowly. Please edit this if you want it to go faster (not reccomended)
         
         } else {
-            if(telescopePotentiometer<telescopeMin && armExtend > -.05){
-            telescopeMotor.set(-.25);
+            if(telescopePotentiometer < telescopeMin && armExtend > -0.5 && telescopePotentiometer > telescopeMin - 4){
+                telescopeMotor.set(-0.1);
+            }else if(telescopePotentiometer < telescopeMin && armExtend > -.05){
+            telescopeMotor.set(-1);
             } else {
                 telescopeMotor.set(0);
             }

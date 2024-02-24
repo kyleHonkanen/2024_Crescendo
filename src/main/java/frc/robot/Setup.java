@@ -28,15 +28,15 @@ public class Setup {
   //offset of wheels sets the angle to start - CHANGE DIS BRO
   public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(126);
   public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(265.5);
-  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(40);
+  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(5);
   public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(14);
 
   //finds position of the wheels based on the position of the center
   public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-    new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
-    new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0),        
-    new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
-    new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0)
+    new Translation2d(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0),
+    new Translation2d(-TRACKWIDTH / 2.0, WHEELBASE / 2.0),        
+    new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0),
+    new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0)
   );
 
  //----------------------------------------------------------Primary----------------------------------------------------------------------
@@ -172,6 +172,8 @@ public class Setup {
   //Gyroscope
   public final Gyroscope gyroscope = NavX.getInstance();
 
+
+  //Compressor
   public Compressor CompressorHardware;
 
     public void setupCompressor(){

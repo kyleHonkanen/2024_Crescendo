@@ -25,10 +25,10 @@ public class Pivot extends Subsystem {
 
    //Variables - All angles not final
    public double pivotMaxAngle = 350;
-   public double pivotMinAngle = 260;
+   public double pivotMinAngle = 240;
    public double sourceAngle = 315;
-   public double ampAngle = 250;
-   public double speakerAngle1 = 300;
+   public double ampAngle = 237.5;
+   public double speakerAngle1 = 305;
    public double speakerAngle2 = 330;
    public double slowZone = 10;
    public double extraSlowZone = 2;
