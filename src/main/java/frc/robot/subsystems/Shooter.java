@@ -18,12 +18,12 @@ public class Shooter extends Subsystem {
     }
 
     // naming all physical pieces
-    CANSparkMax leftShooterMotor;
-    CANSparkMax rightShooterMotor;
-    RelativeEncoder leftShooterEncoder;
-    RelativeEncoder rightShooterEncoder;
+    public CANSparkMax leftShooterMotor;
+    public CANSparkMax rightShooterMotor;
+    public RelativeEncoder leftShooterEncoder;
+    public RelativeEncoder rightShooterEncoder;
     Solenoid solenoidSlow;
-    Solenoid solenoidFast;
+    public Solenoid solenoidFast;
 
     //naming mutible variables (assigned later)
     public boolean pushSolenoidSlow, pushSolenoidFast;

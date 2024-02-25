@@ -160,7 +160,7 @@ public class Drivetrain {
                 if(fieldOriented) {
 
                         //field oriented
-                        speeds = ChassisSpeeds.fromFieldRelativeSpeeds(Math.signum(translation.getX()), (translation.getY()), (rotation), Rotation2d.fromDegrees(Setup.instance.gyroscope.getAngle().toDegrees()));
+                        speeds = ChassisSpeeds.fromFieldRelativeSpeeds(Math.signum(translation.getX()), (translation.getY()), (rotation), Rotation2d.fromDegrees(Setup.instance.gyroscope.getAngle().toDegrees()+180));
                      
                 } else {
         
@@ -264,7 +264,7 @@ public class Drivetrain {
         public double getSpeed(String speedSetting) {
                 String whichSpeed = speedSetting;
                 if(whichSpeed == "fast"){
-                        speed=-.7;
+                        speed=-.5;
                 } else if(whichSpeed == "medium"){
                         speed=0;
                 } else if(whichSpeed == "slow"){

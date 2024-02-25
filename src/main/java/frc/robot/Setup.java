@@ -130,19 +130,19 @@ public class Setup {
 
   //Shooter
   public double getSecondarySpeaker(){
-    return secondaryJoystick.getRawAxis(2);
-  }
-
-  public boolean getSecondarySpeakerShoot(){
-    return secondaryJoystick.getRawButton(5);
-  }
-    
-  public double getSecondaryAmp(){
     return secondaryJoystick.getRawAxis(3);
   }
 
-  public boolean getSecondaryAmpShoot(){
+  public boolean getSecondarySpeakerShoot(){
     return secondaryJoystick.getRawButton(6);
+  }
+    
+  public double getSecondaryAmp(){
+    return secondaryJoystick.getRawAxis(2);
+  }
+
+  public boolean getSecondaryAmpShoot(){
+    return secondaryJoystick.getRawButton(5);
   }
 
 

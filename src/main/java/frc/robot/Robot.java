@@ -41,30 +41,34 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.Utilities;
+import frc.robot.util.drivers.NavX;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.VideoSource;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.TimedRobot;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
+import frc.robot.AutoCode.Blue;
+import frc.robot.AutoCode.Red;
+// import edu.wpi.first.cscore.VideoSource;
+// import edu.wpi.first.cameraserver.CameraServer;
+// import edu.wpi.first.cscore.CvSink;
+// import edu.wpi.first.cscore.CvSource;
+// import edu.wpi.first.cscore.UsbCamera;
+// import edu.wpi.first.wpilibj.TimedRobot;
+// import org.opencv.core.Mat;
+// import org.opencv.core.Point;
+// import org.opencv.core.Scalar;
+// import org.opencv.imgproc.Imgproc;
 
 public class Robot extends TimedRobot {
   boolean fieldOriented = false;
   double forward, strafe, rotation, flTurn, frTurn, blTurn, brTurn;
-  boolean orient = false, toggle = false;
+  boolean orient = true, toggle = false;
   CameraServer cServer;
   Climber climber;
   Pivot pivot;
@@ -72,6 +76,18 @@ public class Robot extends TimedRobot {
   Telescope telescope;
   Drivetrain drivetrain;
   Setup setup;
+  private static final String notMove = "noMove";
+  private static final String blueSE = "blueShootEsc";
+  private static final String blueSER = "blueShootEscRight";
+  private static final String blueSEL = "blueShootEscLeft";
+  private static final String blueE = "blueEscape";
+  private static final String redSER = "redShootEsc";
+  private static final String redSEL = "redShootEscRight";
+  private static final String redSE = "redShootEscLeft";
+  private static final String redE = "redEscape";
+  private SendableChooser<String> chooser=new SendableChooser<>();
+  String Chooser;
+
 
   public void updateSubsystemsA(){
     pivot.updateSubsystem();
@@ -109,11 +125,27 @@ public class Robot extends TimedRobot {
     shooter = Shooter.getInstance();
     telescope = Telescope.getInstance();
     setup = Setup.getInstance();
+    chooser.setDefaultOption(notMove, "noMove");
+    chooser.addOption(blueSE, "blueShootEsc");
+    chooser.addOption(blueSER, "blueShootEscRight");
+    chooser.addOption(blueSEL, "blueShootEscLeft");
+    chooser.addOption(blueE, "blueEscape");
+    chooser.addOption(redSE, "redShootEsc");
+    chooser.addOption(redSER, "redShootEscRight");
+    chooser.addOption(redSEL, "redShootEscLeft");
+    chooser.addOption(redE, "redEscape");
+    SmartDashboard.putData("Options", chooser);
   }
 
   @Override
   public void robotPeriodic() {
     // SparkMax SmartDashboard Output
+    SmartDashboard.putNumber("counter", Blue.getInstance().counter);
+    SmartDashboard.putNumber("Step", Blue.getInstance().step);
+    SmartDashboard.putNumber("X", NavX.getInstance().getX());
+    SmartDashboard.putNumber("Y", NavX.getInstance().getY());
+    SmartDashboard.putNumber("leftFlyWheelSpeed", Shooter.getInstance().leftShooterEncoder.getVelocity());
+    SmartDashboard.putNumber("rightFlyWheelSpeed", Shooter.getInstance().rightShooterEncoder.getVelocity());
     SmartDashboard.putNumber("flMotAng", (Drivetrain.getInstance().flSens.getVoltage()*109.090909091));
     SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
     SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
@@ -121,10 +153,41 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    Chooser = chooser.getSelected();
+  }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    fieldOriented = true;
+        SmartDashboard.putString("Auto", Chooser);
+switch (Chooser) {
+    case blueSE:
+    Blue.getInstance().Shootdrive();
+        break;
+case blueSER:
+    Blue.getInstance().Shootdriveright();
+    break;
+case blueSEL:
+    Blue.getInstance().Shootdriveleft();
+    break;
+case blueE:
+    Blue.getInstance().Esc();
+        break;
+case redSE:
+    Red.getInstance().Shootdrive();
+        break;
+    case redSER:
+    Red.getInstance().Shootdriveright();
+    break;
+case redSEL:
+    Red.getInstance().Shootdriveleft();
+    break;
+case redE:
+    Red.getInstance().Esc();
+            break;
+}
+  }
 
   @Override
   public void teleopInit() {
@@ -135,30 +198,31 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
 
     //TOGGLE
-    if (toggle) {
-      updateSubsystemsB();
-      if (setup.getSecondaryToggleClimberMode()) {
-        toggle=false;
-      }
-    } else if (!toggle) {
-      updateSubsystemsA();
-      if (setup.getSecondaryToggleClimberMode()) {
+     if (toggle) {
+       updateSubsystemsB();
+       if (setup.getSecondaryToggleClimberMode()) {
+         toggle=false;
+       }
+     } else if (!toggle) {
+       updateSubsystemsA();
+       if (setup.getSecondaryToggleClimberMode()) {
         toggle=true;
-      }
-    }
+       }
+     }
 
     //field oriented
-    if (orient) {
-      fieldOriented = true;
-      if(setup.getFieldOriented()){
-        orient = false;
-      }
+     if (orient) {
+       fieldOriented = true;
+       if(setup.getFieldOriented()){
+     orient = false;
+       }
     } else if (!orient) {
-      fieldOriented = false;
-      if(setup.getFieldOriented()) {
-        orient = true;
-      }
-    }
+       fieldOriented = false;
+       if(setup.getFieldOriented()) {
+         orient = true;
+       }
+     }
+
 
     outputAllSmartDashboard();
 
