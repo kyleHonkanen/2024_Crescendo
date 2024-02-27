@@ -1,9 +1,11 @@
 package frc.robot.AutoCode;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.Setup;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
+import frc.robot.util.drivers.NavX;
 //import edu.wpi.first.networktables.NetworkTable;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
@@ -135,6 +137,7 @@ public class Blue {
                 counter++;
             } else {
             drivetrain.stop();
+            step++;
             }
             break;
     }
@@ -194,8 +197,16 @@ public class Blue {
                 step++;
             }
                 break;
-
             case 5:
+                if (Setup.instance.gyroscope.getAngle().toDegrees() <= 180) {
+                    Drivetrain.getInstance().drive(new Translation2d(0, 0), .2, false, .5);
+                    drivetrain.periodic();
+                } else {
+                    drivetrain.stop();
+                    step++;
+                }
+                    break;
+            case 6:
                 drivetrain.stop();
                 drivetrain.periodic();
                 break;

@@ -140,6 +140,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // SparkMax SmartDashboard Output
+    SmartDashboard.putNumber("Chasis angle", Setup.instance.gyroscope.getAngle().toDegrees());
     SmartDashboard.putNumber("counter", Blue.getInstance().counter);
     SmartDashboard.putNumber("Step", Blue.getInstance().step);
     SmartDashboard.putNumber("X", NavX.getInstance().getX());
