@@ -237,7 +237,7 @@ public abstract class SwerveModule {
             targetSpeed = this.targetSpeed;
         }
 
-        final double currentAngle = getCurrentAngle();
+        //final double currentAngle = getCurrentAngle();
 /* 
         // Change the target angle so the delta is in the range [-pi, pi) instead of [0, 2pi)
         double delta = targetAngle - currentAngle;

@@ -180,9 +180,9 @@ public class Drivetrain {
                 speedChanger = (speedChanger*speedChanger);
 
                 //deadbanding these values is VERY important, otherwise it'll never spin
-                double x = Utilities.deadband(Setup.getInstance().getPrimaryX(),.2);
-                double y = Utilities.deadband(Setup.getInstance().getPrimaryY(),.2);
-                double z = Utilities.deadband(Setup.getInstance().getPrimaryZ(),.2);
+                //double x = Utilities.deadband(Setup.getInstance().getPrimaryX(),.2);
+                //double y = Utilities.deadband(Setup.getInstance().getPrimaryY(),.2);
+                //double z = Utilities.deadband(Setup.getInstance().getPrimaryZ(),.2);
 
                 //sets the modules and motors target velocity and angle in accordance with the joystick
                 //if(x==0 && y==0 && z!=0){

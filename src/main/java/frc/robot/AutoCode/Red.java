@@ -1,15 +1,11 @@
 package frc.robot.AutoCode;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.Robot;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.drivers.NavX;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Notifier;
+//import edu.wpi.first.networktables.NetworkTable;
+//import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 
 public class Red {
@@ -27,7 +23,7 @@ public class Red {
     Pivot pivot = Pivot.getInstance();
     Shooter shooter = Shooter.getInstance();
     Timer timer = new Timer();
-    private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    //private NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 
 
     public int step = 0;
