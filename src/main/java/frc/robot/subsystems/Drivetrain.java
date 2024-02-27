@@ -247,11 +247,13 @@ public class Drivetrain {
 
         //determine which speed setting the driver sets
         public String getSpeedSetting(){
-                if(Setup.getInstance().getPrimaryDriverXButton()){
+                if(Setup.getInstance().getDeathButton()){
+                        speedSetting = "death";
+                } else if(Setup.getInstance().getPrimaryDriverXButton()){
                         speedSetting = "fast";
-                } else if(Setup.getInstance().getPrimaryDriverAButton()){
-                        speedSetting = "medium";
                 } else if(Setup.getInstance().getPrimaryDriverBButton()){
+                        speedSetting = "medium";
+                } else if(Setup.getInstance().getPrimaryDriverAButton()){
                         speedSetting = "slow";
                 } else if(Setup.getInstance().getPrimaryDriverYButton()){
                         speedSetting = "reallySlow";
@@ -263,7 +265,9 @@ public class Drivetrain {
         //set the speed based on the current speed setting
         public double getSpeed(String speedSetting) {
                 String whichSpeed = speedSetting;
-                if(whichSpeed == "fast"){
+                if(whichSpeed == "death"){
+                        speed =-1;
+                } else if(whichSpeed == "fast"){
                         speed=-.5;
                 } else if(whichSpeed == "medium"){
                         speed=0;
@@ -275,11 +279,14 @@ public class Drivetrain {
                 return speed;
         }
 
+
         //change rotation based on the current speed setting
         public double getRotation(String speedSetting, double rotation) {
                 double rotate = rotation;
                 String whichSpeed = speedSetting;
-                if(whichSpeed == "fast"){
+                if(whichSpeed == "death"){
+                        rotate /=1;
+                }else if(whichSpeed == "fast"){
                         rotate /=8;
                 } else if(whichSpeed == "medium"){
                         rotate /=4;

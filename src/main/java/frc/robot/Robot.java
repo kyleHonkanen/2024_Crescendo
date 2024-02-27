@@ -155,8 +155,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Chooser = chooser.getSelected();
-   // Blue.getInstance().step = 0;
-    //Red.getInstance().step = 0;
+    Blue.getInstance().step = 0;
+    Red.getInstance().step = 0;
   }
 
   @Override

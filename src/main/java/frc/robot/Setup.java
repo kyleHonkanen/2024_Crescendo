@@ -83,7 +83,11 @@ public class Setup {
 
   //field oriented
   public boolean getFieldOriented(){
-    return primaryJoystick.getRawButtonPressed(2);
+    return primaryJoystick.getRawButtonPressed(4);
+  }
+
+  public boolean getDeathButton(){
+    return primaryJoystick.getRawButton(2);
   }
 
   //-----------------------------------------------------secondary--------------------------------------------------------------------
