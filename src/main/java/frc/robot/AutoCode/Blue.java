@@ -140,6 +140,15 @@ public class Blue {
             step++;
             }
             break;
+        case 5:
+            if (Setup.instance.gyroscope.getAngle().toDegrees() <= 180) {
+                Drivetrain.getInstance().drive(new Translation2d(0, 0), .2, false, .5);
+                drivetrain.periodic();
+            } else {
+                drivetrain.stop();
+                step++;
+            }
+                break;
     }
     }
     
