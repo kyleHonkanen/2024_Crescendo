@@ -1,6 +1,7 @@
 package frc.robot.AutoCode;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.Setup;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
