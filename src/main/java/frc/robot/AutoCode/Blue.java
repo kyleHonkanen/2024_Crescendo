@@ -21,6 +21,8 @@ public class Blue {
         return instance;
     }
 
+    
+
     Drivetrain drivetrain = Drivetrain.getInstance();
     Pivot pivot = Pivot.getInstance();
     Shooter shooter = Shooter.getInstance();
@@ -83,7 +85,7 @@ public class Blue {
         }
     }
 
-    public void Shootdriveleft() {
+    public void Shootdriveright() {
 
     switch (step) {
         case 0:
@@ -109,6 +111,8 @@ public class Blue {
 
         case 2:
             if (counter < 60) {
+                drivetrain.stop();
+                drivetrain.periodic();
                 counter++;
             } else {
                 step++;
@@ -120,7 +124,7 @@ public class Blue {
                 shooter.leftShooterMotor.set(0);
                 shooter.rightShooterMotor.set(0);
                 shooter.solenoidFast.set(false);
-                drivetrain.drive(new Translation2d(-1, -3), 0, false, .4);
+                drivetrain.drive(new Translation2d(-1, 3), 0, false, .4);
                 drivetrain.periodic();
                 counter++;
             } else {
@@ -140,11 +144,24 @@ public class Blue {
             step++;
             }
             break;
-    }
+        case 5:
+                if (Setup.instance.gyroscope.getAngle().toDegrees() <= 180) {
+                    Drivetrain.getInstance().drive(new Translation2d(0, 0), .2, false, .5);
+                    drivetrain.periodic();
+                } else {
+                    drivetrain.stop();
+                    step++;
+                }
+                    break;
+        case 6:
+                drivetrain.stop();
+                drivetrain.periodic();
+                break;
+        }
     }
     
 
-    public void Shootdriveright() {
+    public void Shootdriveleft() {
 
         switch (step) {
             case 0:
@@ -159,7 +176,6 @@ public class Blue {
                 break;
 
             case 1:
-            
                 Shooter.getInstance().leftShooterMotor.set(-.6);
                 Shooter.getInstance().rightShooterMotor.set(.6);
                 if (Math.abs(Shooter.getInstance().rightShooterEncoder.getVelocity()) >= 3300) {
@@ -170,6 +186,8 @@ public class Blue {
 
             case 2:
                 if (counter < 60) {
+                    drivetrain.stop();
+                    drivetrain.periodic();
                     counter++;
                 } else {
                     step++;
@@ -181,7 +199,7 @@ public class Blue {
                     shooter.leftShooterMotor.set(0);
                     shooter.rightShooterMotor.set(0);
                     shooter.solenoidFast.set(false);
-                    drivetrain.drive(new Translation2d(-.3, .6), 0, false, -.1);
+                    drivetrain.drive(new Translation2d(-.3, -.6), 0, false, -.1);
                     drivetrain.periodic();
                     counter++;
                 } else {
