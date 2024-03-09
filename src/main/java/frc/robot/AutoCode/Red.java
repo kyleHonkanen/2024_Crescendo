@@ -120,7 +120,6 @@ public class Red {
                     step++;
                 }
                 break;
-    
             case 4:
                 drivetrain.stop();
                 drivetrain.periodic();
@@ -135,7 +134,7 @@ public class Red {
                 }
                     break;
         }
-        }
+    }
         
     
         public void Shootdriveright() {

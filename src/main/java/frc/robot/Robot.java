@@ -52,6 +52,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.cameraserver.CameraServer;
+import frc.robot.AutoCode.AutoAim;
 import frc.robot.AutoCode.Blue;
 import frc.robot.AutoCode.Red;
 // import edu.wpi.first.cscore.VideoSource;
@@ -76,6 +77,8 @@ public class Robot extends TimedRobot {
   Telescope telescope;
   Drivetrain drivetrain;
   Setup setup;
+  private static final String aaRed = "AutoAimRed";
+  private static final String aaBlue = "AutoAimBlue";
   private static final String notMove = "noMove";
   private static final String blueSE = "blueShootEsc";
   private static final String blueSER = "blueShootEscRight";
@@ -86,6 +89,8 @@ public class Robot extends TimedRobot {
   private static final String redSE = "redShootEscLeft";
   private static final String redE = "redEscape";
   private SendableChooser<String> chooser=new SendableChooser<>();
+  private SendableChooser<String> options=new SendableChooser<>();
+  String Option;
   String Chooser;
 
 
@@ -126,6 +131,8 @@ public class Robot extends TimedRobot {
     telescope = Telescope.getInstance();
     setup = Setup.getInstance();
     chooser.setDefaultOption(notMove, "noMove");
+    options.addOption(aaBlue, "autoAimBlue");
+    options.addOption(aaRed, "autoAimRed");
     chooser.addOption(blueSE, "blueShootEsc");
     chooser.addOption(blueSER, "blueShootEscRight");
     chooser.addOption(blueSEL, "blueShootEscLeft");
@@ -135,6 +142,7 @@ public class Robot extends TimedRobot {
     chooser.addOption(redSEL, "redShootEscLeft");
     chooser.addOption(redE, "redEscape");
     SmartDashboard.putData("Options", chooser);
+    SmartDashboard.putData("Options", options);
   }
 
   @Override
@@ -156,6 +164,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Chooser = chooser.getSelected();
+    Option = options.getSelected();
     Blue.getInstance().step = 0;
     Red.getInstance().step = 0;
   }
@@ -190,6 +199,15 @@ case redE:
     Red.getInstance().Esc();
             break;
 }
+switch (Option) {
+    case aaBlue:
+        AutoAim.getInstance().autoOrientBlue();
+        break;
+    case aaRed:
+        AutoAim.getInstance().autoOrientRed();
+        break;
+}
+
   }
 
   @Override
@@ -199,6 +217,8 @@ case redE:
   
   @Override
   public void teleopPeriodic() {
+
+
 
     //TOGGLE
      if (toggle) {
