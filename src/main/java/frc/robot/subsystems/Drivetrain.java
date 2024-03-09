@@ -166,7 +166,6 @@ public class Drivetrain {
         
                         //robot oriented
                         speeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        
                 }
 
                 //calculates swerve module states, results in an array of angles and speeds
@@ -268,31 +267,31 @@ public class Drivetrain {
                 if(whichSpeed == "death"){
                         speed =-1;
                 } else if(whichSpeed == "fast"){
-                        speed=-.5;
+                        speed=-.825;
                 } else if(whichSpeed == "medium"){
                         speed=0;
                 } else if(whichSpeed == "slow"){
-                        speed=0.1;
+                        speed=0.325;
                 } else if(whichSpeed == "reallySlow"){
                         speed = .5;
                 }
                 return speed;
         }
 
-
         //change rotation based on the current speed setting
         public double getRotation(String speedSetting, double rotation) {
                 double rotate = rotation;
                 String whichSpeed = speedSetting;
                 if(whichSpeed == "death"){
-                        rotate /=1;
+                        rotate /=.975;
                 }else if(whichSpeed == "fast"){
-                        rotate /=8;
+                        rotate /=.7;
                 } else if(whichSpeed == "medium"){
                         rotate /=4;
                 } else if(whichSpeed == "slow"){
                         rotate /=6;
                 } else if(whichSpeed == "reallySlow"){
+                        
                         rotate /=4;
                 }
                 return rotate;

@@ -26,9 +26,9 @@ public class Pivot extends Subsystem {
    //Variables - All angles not final
    public double pivotMaxAngle = 350;
    public double pivotMinAngle = 240;
-   public double sourceAngle = 315;
+   public double sourceAngle = 314;
    public double ampAngle = 237.5;
-   public double speakerAngle1 = 303;
+   public double speakerAngle1 = 300;
    public double speakerAngle2 = 330;
    public double slowZone = 10;
    public double extraSlowZone = 2;
@@ -150,9 +150,9 @@ public class Pivot extends Subsystem {
             if(armPosition < speakerAngle2){
 
                if(armPosition > (speakerAngle2 - extraSlowZone)){
-                  pivotMotor.set(extraSlowZone);
-               } else if(armPosition > (speakerAngle2 - slowZone)){
                   pivotMotor.set(slowButtonSpeed);
+               } else if(armPosition > (speakerAngle2 - slowZone)){
+                  pivotMotor.set(extraSlowButtonSpeed);
                } else{
                pivotMotor.set(buttonSpeed);
                }
@@ -160,9 +160,9 @@ public class Pivot extends Subsystem {
             } else if(armPosition > speakerAngle2){
 
                if(armPosition < (speakerAngle2 + extraSlowZone)){
-                  pivotMotor.set(-extraSlowButtonSpeed);
-               } else if(armPosition < (speakerAngle2 + slowZone)){
                   pivotMotor.set(-slowButtonSpeed);
+               } else if(armPosition < (speakerAngle2 + slowZone)){
+                  pivotMotor.set(-extraSlowButtonSpeed);
                } else{
                pivotMotor.set(-buttonSpeed);
                }

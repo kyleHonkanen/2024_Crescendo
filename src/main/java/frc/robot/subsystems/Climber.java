@@ -24,7 +24,7 @@ public class Climber extends Subsystem{
     double LPot, RPot;
     boolean LFast, RFast;
     double leftMin = 14;
-    double rightMin = 12;
+    double rightMin = 14;
     double leftMax = 40;
     double rightMax = 40;
     double speed = .5;

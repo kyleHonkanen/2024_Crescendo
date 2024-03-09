@@ -84,9 +84,9 @@ public class Robot extends TimedRobot {
   private static final String blueSER = "blueShootEscRight";
   private static final String blueSEL = "blueShootEscLeft";
   private static final String blueE = "blueEscape";
-  private static final String redSER = "redShootEsc";
-  private static final String redSEL = "redShootEscRight";
-  private static final String redSE = "redShootEscLeft";
+  private static final String redSE = "redShootEsc";
+  private static final String redSER = "redShootEscRight";
+  private static final String redSEL = "redShootEscLeft";
   private static final String redE = "redEscape";
   private SendableChooser<String> chooser=new SendableChooser<>();
   private SendableChooser<String> options=new SendableChooser<>();
@@ -167,6 +167,8 @@ public class Robot extends TimedRobot {
     Option = options.getSelected();
     Blue.getInstance().step = 0;
     Red.getInstance().step = 0;
+    Blue.getInstance().counter = 0;
+    Red.getInstance().counter = 0;
   }
 
   @Override
