@@ -81,6 +81,12 @@ public class Setup {
   }
 
 
+  //ground intake
+  public boolean getPrimaryGroundIntake(){
+    return primaryJoystick.getRawButton(1);
+  }
+
+
   //field oriented
   public boolean getFieldOriented(){
     return primaryJoystick.getRawButtonPressed(4);
@@ -126,12 +132,6 @@ public class Setup {
   }
 
 
-  //Telescope
-  public double getSecondaryTelescope(){
-    return secondaryJoystick.getRawAxis(1);
-  }
-
-
   //Shooter
   public double getSecondarySpeaker(){
     return secondaryJoystick.getRawAxis(3);
@@ -163,14 +163,6 @@ public class Setup {
     return secondaryJoystick.getRawAxis(1);
   }
 
-  public boolean getSecondaryRightClimberButton(){
-    return secondaryJoystick.getRawButton(10);
-  }
-
-  public boolean getSecondaryLeftClimberButton(){
-    return secondaryJoystick.getRawButton(9);
-  }
-
   //---------------------------------------------------------Hardware------------------------------------------------------------------------
 
   //Gyroscope
@@ -200,22 +192,23 @@ public class Setup {
   public static final int DrivetrainSubsystem_FRONT_RIGHT_DRIVE_MOTOR = 16; 
   public static final int DrivetrainSubsystem_FRONT_RIGHT_ANGLE_MOTOR = 17; 
   
-  //Pivot
-  public static final int PivotMotorID = 20;
+    //Pivot
+    public static final int PivotMotorID = 20;
     
-  //telescope
-  public static final int TelescopeMotorID = 21;
-  public static final int TelescopePotentiometer = 1;
-
-  //Shooter
-  public static final int ShooterMotorLeftID = 22;
-  public static final int ShooterMotorRightID = 23;
-  public static final int ShooterSolenoidSlowID = 0;
-  public static final int ShooterSolenoidFastID = 1;
-
-  //Climber
-  public static final int ClimberMotorLeftID = 24;
-  public static final int ClimberMotorRightID = 25;
-  public static final int ClimberPotentiometerLeft = 2;
-  public static final int ClimberPotentiometerRight = 3;
+    //Ground Intake
+    public static final int IntakeMotorFrontID = 21;
+    public static final int IntakeMotorBackID = 22;
+    public static final int GamePieceSensorID = 0;
+  
+    //Shooter
+    public static final int ShooterFeedingMotorLeftID = 23;
+    public static final int ShooterFeedingMotorRightID = 24;
+    public static final int ShooterFlywheelMotorTopID = 25;
+    public static final int ShooterFlywheelMotorBotttomID = 26;
+  
+    //Climber
+    public static final int ClimberMotorLeftID = 27;
+    public static final int ClimberMotorRightID = 28;
+    public static final int ClimberPotentiometerLeft = 1;
+    public static final int ClimberPotentiometerRight = 2;
 }

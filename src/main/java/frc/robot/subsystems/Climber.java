@@ -20,9 +20,9 @@ public class Climber extends Subsystem{
     AnalogPotentiometer ClimberPotentiometerRight;
     CANSparkMax LeftClimbermotor;
     CANSparkMax RightClimbermotor;
+    
     double LY, RY;
     double LPot, RPot;
-    boolean LFast, RFast;
     double leftMin = 14;
     double rightMin = 14;
     double leftMax = 40;
@@ -49,8 +49,6 @@ public class Climber extends Subsystem{
     public void updateSubsystem(){
         LY = Setup.getInstance().getSecondaryLeftClimber();
         RY = Setup.getInstance().getSecondaryRightClimber();
-        LFast = Setup.getInstance().getSecondaryLeftClimberButton();
-        RFast = Setup.getInstance().getSecondaryRightClimberButton();
         LPot = ClimberPotentiometerLeft.get();
         RPot = ClimberPotentiometerRight.get();
 
@@ -79,13 +77,6 @@ public class Climber extends Subsystem{
             RightClimbermotor.set(0);
         } else {
             RightClimbermotor.set(-RY*speed);
-        }
-
-        //change speed when either joystick is held down
-        if (LFast || RFast) {
-            speed=500;
-        } else {
-            speed=.5;
         }
     }
 

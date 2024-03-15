@@ -49,7 +49,7 @@ import frc.robot.util.drivers.NavX;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Telescope;
+import frc.robot.subsystems.GroundIntake;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.AutoCode.AutoAim;
@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
   Climber climber;
   Pivot pivot;
   Shooter shooter;
-  Telescope telescope;
+  GroundIntake groundIntake;
   Drivetrain drivetrain;
   Setup setup;
   private static final String aaRed = "AutoAimRed";
@@ -97,14 +97,14 @@ public class Robot extends TimedRobot {
   public void updateSubsystemsA(){
     pivot.updateSubsystem();
     shooter.updateSubsystem();
-    telescope.updateSubsystem();
+    groundIntake.updateSubsystem();
     climber.stop();
   }
 
   public void updateSubsystemsB() {
     climber.updateSubsystem();
     pivot.stop();
-    telescope.stop();
+    groundIntake.stop();
     shooter.stop();
   }
 
@@ -112,7 +112,7 @@ public class Robot extends TimedRobot {
     climber.stop();
     pivot.stop();
     shooter.stop();
-    telescope.stop();
+    groundIntake.stop();
   }
 
   public void outputAllSmartDashboard(){
@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
     climber.outputToSmartDashboard();
     pivot.outputToSmartDashboard();
     shooter.outputToSmartDashboard();
-    telescope.outputToSmartDashboard();
+    groundIntake.outputToSmartDashboard();
   }
 
   @Override
@@ -128,7 +128,7 @@ public class Robot extends TimedRobot {
     climber = Climber.getInstance();
     pivot = Pivot.getInstance();
     shooter = Shooter.getInstance();
-    telescope = Telescope.getInstance();
+    groundIntake = GroundIntake.getInstance();
     setup = Setup.getInstance();
     chooser.setDefaultOption(notMove, "noMove");
     options.addOption(aaBlue, "autoAimBlue");
@@ -153,8 +153,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Step", Blue.getInstance().step);
     SmartDashboard.putNumber("X", NavX.getInstance().getX());
     SmartDashboard.putNumber("Y", NavX.getInstance().getY());
-    SmartDashboard.putNumber("leftFlyWheelSpeed", Shooter.getInstance().leftShooterEncoder.getVelocity());
-    SmartDashboard.putNumber("rightFlyWheelSpeed", Shooter.getInstance().rightShooterEncoder.getVelocity());
+    SmartDashboard.putNumber("leftFlyWheelSpeed", Shooter.getInstance().shooterEncoderLeft.getVelocity());
+    SmartDashboard.putNumber("rightFlyWheelSpeed", Shooter.getInstance().shooterEncoderRight.getVelocity());
     SmartDashboard.putNumber("flMotAng", (Drivetrain.getInstance().flSens.getVoltage()*109.090909091));
     SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
     SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
