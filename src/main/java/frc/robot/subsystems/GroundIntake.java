@@ -39,15 +39,25 @@ public class GroundIntake extends Subsystem {
         frontIntakeMotor.set(outtakeSpeed);
         backIntakeMotor.set(-outtakeSpeed);
     }
+
+    public boolean getNoteInShooter(){
+        return gamePieceSensor.get();
+    }
     
     @Override
     public void updateSubsystem(){
-        noteInShooter = gamePieceSensor.get();
 
-
-
-
-
+        if (Setup.getPrimaryGroundIntake() && getNoteInShooter() == false){ // Intake
+            frontIntakeMotor.set(intakeSpeed);
+            backIntakeMotor.set(-intakeSpeed);
+         } else if (Setup.getPrimaryOutake() && getNoteInShooter() == true){ // Outtake
+            frontIntakeMotor.set(outtakeSpeed);
+            backIntakeMotor.set(-outtakeSpeed);
+         } else {
+          frontIntakeMotor.set(0);
+          backIntakeMotor.set(0);
+         }
+         
     }
 
     @Override
