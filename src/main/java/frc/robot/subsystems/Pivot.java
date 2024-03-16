@@ -18,7 +18,8 @@ public class Pivot extends Subsystem {
    public CANSparkMax pivotMotor;
    public AbsoluteEncoder encoder;
    private double pivotMotorSpeed = 0;
-   public boolean sourceButton;
+   public boolean intakeButton;
+   public boolean primaryIntakeButton;
    public boolean ampButton;
    public boolean speakerButton1;
    public boolean speakerButton2;
@@ -26,7 +27,7 @@ public class Pivot extends Subsystem {
    //Variables - All angles not final
    public double pivotMaxAngle = 350;
    public double pivotMinAngle = 240;
-   public double sourceAngle = 314;
+   public double intakeAngle = 314;
    public double ampAngle = 237.5;
    public double speakerAngle1 = 300;
    public double speakerAngle2 = 330;
@@ -61,35 +62,36 @@ public class Pivot extends Subsystem {
       double armPosition = encoder.getPosition()*360;
 
       //Button assignments
-      sourceButton = Setup.getInstance().getSecondaryYButton();
+      intakeButton = Setup.getInstance().getSecondaryYButton();
+      primaryIntakeButton = Setup.getInstance().getPrimaryGroundIntake();
       ampButton = Setup.getInstance().getSecondaryAButton();
       speakerButton1 = Setup.getInstance().getSecondaryBButton();
       speakerButton2 = Setup.getInstance().getSecondaryXButton();
 
     /* ---------------------------------------------- Preset Angles -------------------------------------------------- */
-      if (sourceButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
+      if (primaryIntakeButton == true || intakeButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
    
          //get outa da danger zone
          if(armPosition > 0 && armPosition < 5){
             pivotMotor.set(-0.4);
 
          //Source
-         } else if(sourceButton == true){
-            if(armPosition < sourceAngle){
+         } else if(primaryIntakeButton == true || intakeButton == true){
+            if(armPosition < intakeAngle){
 
-               if(armPosition > (sourceAngle - extraSlowZone)){
+               if(armPosition > (intakeAngle - extraSlowZone)){
                   pivotMotor.set(extraSlowButtonSpeed);
-               } else if(armPosition > (sourceAngle - slowZone)){ 
+               } else if(armPosition > (intakeAngle - slowZone)){ 
                   pivotMotor.set(slowButtonSpeed);
                } else{ 
                pivotMotor.set(buttonSpeed);
                }
 
-            } else if(armPosition > sourceAngle){
+            } else if(armPosition > intakeAngle){
 
-               if(armPosition < (sourceAngle + extraSlowZone)){
+               if(armPosition < (intakeAngle + extraSlowZone)){
                   pivotMotor.set(-extraSlowButtonSpeed);
-               } else if(armPosition < (sourceAngle + slowZone)){
+               } else if(armPosition < (intakeAngle + slowZone)){
                   pivotMotor.set(-slowButtonSpeed);
                }else{
                pivotMotor.set(-buttonSpeed);

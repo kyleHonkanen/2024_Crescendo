@@ -22,7 +22,7 @@ public class GroundIntake extends Subsystem {
 
     public double intakeSpeed = 0.5; //placeholder value
     public double outtakeSpeed = -0.7; //placeholder value
-    public boolean noteInShooter, intake, outtake;
+    public boolean intake, outtake;
 
     public GroundIntake(){
         frontIntakeMotor = new CANSparkMax(Setup.IntakeMotorFrontID, MotorType.kBrushless);
@@ -46,15 +46,13 @@ public class GroundIntake extends Subsystem {
     
     @Override
     public void updateSubsystem(){
-        intake = Setup.getPrimaryGroundIntake();
-        outtake = Setup.getPrimaryOuttake();
+        intake = Setup.getInstance().getPrimaryGroundIntake();
+        outtake = Setup.getInstance().getPrimaryOuttake();
 
         if (intake && getNoteInShooter() == false){ // Intake
-            frontIntakeMotor.set(intakeSpeed);
-            backIntakeMotor.set(-intakeSpeed);
+            Intake();
          } else if (outtake){ // Outtake
-            frontIntakeMotor.set(outtakeSpeed);
-            backIntakeMotor.set(-outtakeSpeed);
+            Outtake();
          } else {
             frontIntakeMotor.set(0);
             backIntakeMotor.set(0);
@@ -63,8 +61,7 @@ public class GroundIntake extends Subsystem {
 
     @Override
     public void outputToSmartDashboard() {
-        SmartDashboard.putBoolean("intake",intake);
-        SmartDashboard.putBoolean("outtake",outtake);
+        SmartDashboard.putBoolean("NoteInShooter", getNoteInShooter());
     }
 
     @Override

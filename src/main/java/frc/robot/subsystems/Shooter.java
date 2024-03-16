@@ -64,6 +64,16 @@ public class Shooter extends Subsystem {
         flywheelMotorBottom.set(-ampTargetSpeed);
     }
 
+    public void feedForward(double speed){
+        feedingMotorLeft.set(speed);
+        feedingMotorRight.set(-speed);
+    }
+
+    public void feedBackward(double speed){
+        feedingMotorLeft.set(-speed);
+        feedingMotorRight.set(speed);
+    }
+
     @Override
     public void updateSubsystem(){
         rightShoot = Setup.getInstance().getSecondaryAmpShoot(); 
@@ -82,11 +92,9 @@ public class Shooter extends Subsystem {
         }
 
         if (rightShoot){ // speaker // belt control
-            feedingMotorRight.set(-1);
-            feedingMotorLeft.set(1);
+            feedForward(1);
         } else if (leftShoot){ // amp
-            feedingMotorLeft.set(-0.5);
-            feedingMotorLeft.set(0.5);
+            feedForward(.5);
         } else {
             feedingMotorLeft.set(0);
             feedingMotorRight.set(0);
@@ -95,12 +103,10 @@ public class Shooter extends Subsystem {
         //--------------------------------Ground Intake--------------------------------//
      // All speeds are placeholders. This is because we havn't actually gotten the robot yet.
 
-        if (Setup.getPrimaryGroundIntake() && GroundIntake.getInstance().getNoteInShooter() == false){ // Intake
-            feedingMotorLeft.set(GroundIntake.getInstance().intakeSpeed);
-            feedingMotorRight.set(-GroundIntake.getInstance().intakeSpeed);
-        } else if (Setup.getPrimaryOuttake()){ // Outtake
-            feedingMotorLeft.set(GroundIntake.getInstance().outtakeSpeed);
-            feedingMotorRight.set(-GroundIntake.getInstance().outtakeSpeed);
+        if (Setup.getInstance().getPrimaryGroundIntake() && GroundIntake.getInstance().getNoteInShooter() == false){ // Intake
+            feedForward(GroundIntake.getInstance().intakeSpeed);
+        } else if (Setup.getInstance().getPrimaryOuttake()){ // Outtake
+            feedBackward(GroundIntake.getInstance().outtakeSpeed);
         } else {
             feedingMotorLeft.set(0);
             feedingMotorRight.set(0);
