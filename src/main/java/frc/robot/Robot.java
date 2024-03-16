@@ -51,10 +51,24 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Limelight;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.AutoCode.AutoAim;
 import frc.robot.AutoCode.Blue;
 import frc.robot.AutoCode.Red;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Setup;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Shooter;
+import frc.robot.util.drivers.NavX;
+import frc.robot.subsystems.Limelight;
+//import edu.wpi.first.networktables.NetworkTable;
+//import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 // import edu.wpi.first.cscore.VideoSource;
 // import edu.wpi.first.cameraserver.CameraServer;
 // import edu.wpi.first.cscore.CvSink;
@@ -76,7 +90,10 @@ public class Robot extends TimedRobot {
   Shooter shooter;
   Telescope telescope;
   Drivetrain drivetrain;
+  AutoAim autoaim;
   Setup setup;
+  boolean buttpress = false;
+  Limelight limelight;
   private static final String aaRed = "AutoAimRed";
   private static final String aaBlue = "AutoAimBlue";
   private static final String notMove = "noMove";
@@ -148,6 +165,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     // SparkMax SmartDashboard Output
+    SmartDashboard.putNumber("rotSpeed", AutoAim.getInstance().rotspeed);
+    SmartDashboard.putNumber("AngNum", Limelight.getInstance().table.getEntry("tx").getDouble(0));
     SmartDashboard.putNumber("Chasis angle", Setup.instance.gyroscope.getAngle().toDegrees());
     SmartDashboard.putNumber("counter", Blue.getInstance().counter);
     SmartDashboard.putNumber("Step", Blue.getInstance().step);
@@ -164,7 +183,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     Chooser = chooser.getSelected();
-    Option = options.getSelected();
     Blue.getInstance().step = 0;
     Red.getInstance().step = 0;
     Blue.getInstance().counter = 0;
@@ -201,27 +219,28 @@ case redE:
     Red.getInstance().Esc();
             break;
 }
-switch (Option) {
-    case aaBlue:
-        AutoAim.getInstance().autoOrientBlue();
-        break;
-    case aaRed:
-        AutoAim.getInstance().autoOrientRed();
-        break;
-}
 
   }
 
   @Override
   public void teleopInit() {
     Setup.getInstance();
+    AutoAim.getInstance();
+    Option = options.getSelected();
   }
   
   @Override
   public void teleopPeriodic() {
-
-
-
+    SmartDashboard.putString("AutoAim", Option);
+    switch (Option) {
+        case aaBlue:
+            AutoAim.getInstance().autoOrientBlue();
+            break;
+        case aaRed:
+            AutoAim.getInstance().autoOrientRed();
+            break;
+    }
+    AutoAim.getInstance().autoOrientBlue();
     //TOGGLE
      if (toggle) {
        updateSubsystemsB();
@@ -250,9 +269,8 @@ switch (Option) {
 
 
     outputAllSmartDashboard();
-
     if (Setup.getInstance().getPrimaryJoystick().getRawButton(15)) {
-      Drivetrain.getInstance().drive(new Translation2d(.00000000000000000000000001, 0), 0, false, 0);
+      Drivetrain.getInstance().drive(new Translation2d(-.00000000000000000000000001, 0), 0, false, 0);
     } else {
       double speed = Drivetrain.getInstance().getSpeed(Drivetrain.getInstance().getSpeedSetting());
 
@@ -264,6 +282,27 @@ switch (Option) {
       strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
 
       rotation = setup.getPrimaryZ();
+      
+
+      //AutoAim.getInstance().autoOrientBlue();
+      //rotspeed = Limelight.getInstance().table.getEntry("tx").getDouble(0);
+
+
+    //   if (Setup.getInstance().getPrimaryJoystick().getRawButtonPressed(9)) {
+    //     buttpress = true;
+    // } else {
+    //     if (Setup.getInstance().getPrimaryJoystick().getRawButtonReleased(9)) {
+    //         buttpress = false;
+    //     }
+    // }
+      if (Setup.getInstance().getPrimaryJoystick().getRawButton(9)) {
+        //autoaim.getInstance().autoOrientBlue();
+
+        speed = Drivetrain.getInstance().getSpeed(Drivetrain.getInstance().getSpeedSetting());
+        Drivetrain.getInstance().speedSetting = "medium";
+        Drivetrain.getInstance().drive(new Translation2d(-forward, -strafe), AutoAim.getInstance().rotspeed, fieldOriented, speed);
+        Drivetrain.getInstance().periodic();
+      } else {
       rotation = Utilities.deadband(rotation);
       rotation = Drivetrain.getInstance().getRotation(Drivetrain.getInstance().getSpeedSetting(), rotation);
 
@@ -271,6 +310,7 @@ switch (Option) {
       Drivetrain.getInstance().periodic();
 
       SmartDashboard.putBoolean("FieldOriented", fieldOriented);
+      }
     }
   }
 }

@@ -1,14 +1,21 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+
+import javax.swing.text.html.Option;
+
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAnalogSensor;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.robot.Robot;
 import frc.robot.Setup;
+import frc.robot.AutoCode.AutoAim;
 import frc.robot.util.math.Vector2;
 import frc.robot.util.Utilities;
 import frc.robot.util.drivers.Mk2SwerveModuleBuilder;
@@ -60,7 +67,7 @@ public class Drivetrain {
         public double speedChanger = 0;
 
         double speed = .15;
-        String speedSetting = "medium";
+        public String speedSetting = "medium";
 
 
         public Drivetrain() {
@@ -152,7 +159,7 @@ public class Drivetrain {
 
         //calculates where it's moving
         public void drive(Translation2d translation, double rotation, boolean fieldOriented, double throttle) {
-               
+
                 //calculates how the wheel spins, converts rotational speeds to inches
                 rotation *= -12.0 /
                  Math.hypot(Setup.instance.WHEELBASE, Setup.instance.TRACKWIDTH);
@@ -208,8 +215,9 @@ public class Drivetrain {
                         frontRightModule.setTargetVelocity(0, fronttRightMotor);
                         backLeftModule.setTargetVelocity(0, backRightMotor);
                         backRightModule.setTargetVelocity(0, backLeftMotor);
-                }
+                
         }
+    }
 
         public void driveForAuto(ChassisSpeeds moveSpeeds) {
                 double rotation = moveSpeeds.omegaRadiansPerSecond *=-12 /
