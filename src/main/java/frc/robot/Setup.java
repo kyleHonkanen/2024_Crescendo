@@ -86,7 +86,7 @@ public class Setup {
     return primaryJoystick.getRawButton(1);
   }
 
-  public static boolean getPrimaryOutake(){
+  public static boolean getPrimaryOuttake(){
     return primaryJoystick.getRawButton(10);
   }
 
