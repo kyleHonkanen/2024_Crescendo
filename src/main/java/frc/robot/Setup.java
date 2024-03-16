@@ -82,9 +82,15 @@ public class Setup {
 
 
   //ground intake
-  public boolean getPrimaryGroundIntake(){
+  public static boolean getPrimaryGroundIntake(){
     return primaryJoystick.getRawButton(1);
   }
+
+  public static boolean getPrimaryOutake(){
+    return primaryJoystick.getRawButton(10);
+  }
+
+
 
 
   //field oriented
