@@ -127,17 +127,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic(){
     // SparkMax SmartDashboard Output
-    SmartDashboard.putNumber("rotSpeed", AutoAim.getInstance().rotspeed);
-    SmartDashboard.putNumber("AngNum", Limelight.getInstance().table.getEntry("tx").getDouble(0));
-    SmartDashboard.putNumber("Chasis angle", Setup.instance.gyroscope.getAngle().toDegrees());
-    SmartDashboard.putNumber("X", NavX.getInstance().getX());
-    SmartDashboard.putNumber("Y", NavX.getInstance().getY());
-    SmartDashboard.putNumber("leftFlyWheelSpeed", Shooter.getInstance().shooterEncoderLeft.getVelocity());
-    SmartDashboard.putNumber("rightFlyWheelSpeed", Shooter.getInstance().shooterEncoderRight.getVelocity());
-    SmartDashboard.putNumber("flMotAng", (Drivetrain.getInstance().flSens.getVoltage()*109.090909091));
-    SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
-    SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
-    SmartDashboard.putNumber("brMotAng", (Drivetrain.getInstance().brSens.getVoltage()*109.090909091));
+    //SmartDashboard.putNumber("rotSpeed", AutoAim.getInstance().rotspeed);
+    //SmartDashboard.putNumber("AngNum", Limelight.getInstance().table.getEntry("tx").getDouble(0));
+    //SmartDashboard.putNumber("Chasis angle", Setup.instance.gyroscope.getAngle().toDegrees());
+    //SmartDashboard.putNumber("X", NavX.getInstance().getX());
+    //SmartDashboard.putNumber("Y", NavX.getInstance().getY());
+    //SmartDashboard.putNumber("flMotAng", (Drivetrain.getInstance().flSens.getVoltage()*109.090909091));
+    //SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
+    //SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
+    //SmartDashboard.putNumber("brMotAng", (Drivetrain.getInstance().brSens.getVoltage()*109.090909091));
   }
 
   @Override

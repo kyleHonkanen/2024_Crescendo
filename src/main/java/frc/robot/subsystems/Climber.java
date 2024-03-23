@@ -27,7 +27,7 @@ public class Climber extends Subsystem{
     double rightMin = 14;
     double leftMax = 40;
     double rightMax = 40;
-    double speed = .5;
+    double speed = 1;
 
     public double getPotentiometerLeft(){
         return ClimberPotentiometerLeft.get();

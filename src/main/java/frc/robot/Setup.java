@@ -2,9 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import frc.robot.util.drivers.Gyroscope;
 import frc.robot.util.drivers.NavX;
 
@@ -173,14 +171,6 @@ public class Setup {
 
   //Gyroscope
   public final Gyroscope gyroscope = NavX.getInstance();
-
-
-  //Compressor
-  public Compressor CompressorHardware;
-
-    public void setupCompressor(){
-    CompressorHardware = new Compressor(2, PneumaticsModuleType.CTREPCM);
-  }
 
   //-----------------------------------------------------------IDs------------------------------------------------------------------------------
 

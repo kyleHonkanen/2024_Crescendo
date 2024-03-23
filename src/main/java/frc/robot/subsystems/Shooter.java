@@ -27,10 +27,10 @@ public class Shooter extends Subsystem {
 
     public double leftTrig, rightTrig, PIDValue;
     public boolean leftShoot, rightShoot, timeToShoot; 
-    public double speakerTargetSpeed = -3300;
-    public double ampTargetSpeed = .5;
-    public final double shooterP = 0.00013;
-    public final double shooterI = 0.000004;
+    public double speakerTargetSpeed = -5000;
+    public double ampTargetSpeed = .4;
+    public final double shooterP = 0.0002;
+    public final double shooterI = 0.0001;
     public final double shooterD = 0;
 
     public Shooter(){
@@ -56,11 +56,11 @@ public class Shooter extends Subsystem {
     public void speakerShoot(){
         PIDValue = shooterController.calculate(getLeftShooterEncoder(),speakerTargetSpeed);
         flywheelMotorTop.set(PIDValue);
-        flywheelMotorBottom.set(-PIDValue);
+        flywheelMotorBottom.set(PIDValue);
     }
 
     public void ampShoot(){
-        flywheelMotorTop.set(ampTargetSpeed);
+        flywheelMotorTop.set(-ampTargetSpeed);
         flywheelMotorBottom.set(-ampTargetSpeed);
     }
 
@@ -76,11 +76,11 @@ public class Shooter extends Subsystem {
 
     @Override
     public void updateSubsystem(){
-        rightShoot = Setup.getInstance().getSecondaryAmpShoot(); 
-        rightTrig = Setup.getInstance().getSecondaryAmp();
+        rightShoot = Setup.getInstance().getSecondarySpeakerShoot(); 
+        rightTrig = Setup.getInstance().getSecondarySpeaker();
 
-        leftShoot = Setup.getInstance().getSecondarySpeakerShoot(); 
-        leftTrig = Setup.getInstance().getSecondarySpeaker();
+        leftShoot = Setup.getInstance().getSecondaryAmpShoot(); 
+        leftTrig = Setup.getInstance().getSecondaryAmp();
 
         if (rightTrig >= 0.7){ // flywheel control
             speakerShoot();
@@ -91,31 +91,25 @@ public class Shooter extends Subsystem {
             flywheelMotorBottom.set(0);
         }
 
-        if (rightShoot){ // speaker // belt control
+       
+        if (Setup.getInstance().getPrimaryGroundIntake() && GroundIntake.getInstance().getNoteInShooter() == true){ // Intake
+            feedForward(GroundIntake.getInstance().intakeSpeed);
+        } else if (Setup.getInstance().getPrimaryOuttake()){ // Outtake
+            feedBackward(GroundIntake.getInstance().outtakeSpeed);
+        } else if(rightShoot){
             feedForward(1);
-        } else if (leftShoot){ // amp
+        } else if(leftShoot){
             feedForward(.5);
         } else {
             feedingMotorLeft.set(0);
             feedingMotorRight.set(0);
         }
-
-        //--------------------------------Ground Intake--------------------------------//
-     // All speeds are placeholders. This is because we havn't actually gotten the robot yet.
-
-        if (Setup.getInstance().getPrimaryGroundIntake() && GroundIntake.getInstance().getNoteInShooter() == false){ // Intake
-            feedForward(GroundIntake.getInstance().intakeSpeed);
-        } else if (Setup.getInstance().getPrimaryOuttake()){ // Outtake
-            feedBackward(GroundIntake.getInstance().outtakeSpeed);
-        } else {
-            feedingMotorLeft.set(0);
-            feedingMotorRight.set(0);
-        }
+    
     }
 
     @Override
     public void outputToSmartDashboard(){
-        SmartDashboard.putNumber("PIDValue", PIDValue);
+        SmartDashboard.putNumber("PIDValue", getLeftShooterEncoder());
     }
 
     @Override

@@ -20,24 +20,24 @@ public class GroundIntake extends Subsystem {
     public CANSparkMax backIntakeMotor;
     public DigitalInput gamePieceSensor;
 
-    public double intakeSpeed = 0.5; //placeholder value
-    public double outtakeSpeed = -0.7; //placeholder value
+    public double intakeSpeed = 1; //placeholder value
+    public double outtakeSpeed = 0.7; //placeholder value
     public boolean intake, outtake;
 
     public GroundIntake(){
-        frontIntakeMotor = new CANSparkMax(Setup.IntakeMotorFrontID, MotorType.kBrushless);
-        backIntakeMotor = new CANSparkMax(Setup.IntakeMotorBackID, MotorType.kBrushless);
+        frontIntakeMotor = new CANSparkMax(Setup.IntakeMotorFrontID, MotorType.kBrushed);
+        backIntakeMotor = new CANSparkMax(Setup.IntakeMotorBackID, MotorType.kBrushed);
         gamePieceSensor = new DigitalInput(Setup.GamePieceSensorID);
     }
 
     public void Intake(){
-        frontIntakeMotor.set(intakeSpeed);
+        frontIntakeMotor.set(-intakeSpeed);
         backIntakeMotor.set(-intakeSpeed);
     }
 
     public void Outtake(){
         frontIntakeMotor.set(outtakeSpeed);
-        backIntakeMotor.set(-outtakeSpeed);
+        backIntakeMotor.set(outtakeSpeed);
     }
 
     public boolean getNoteInShooter(){
@@ -49,7 +49,7 @@ public class GroundIntake extends Subsystem {
         intake = Setup.getInstance().getPrimaryGroundIntake();
         outtake = Setup.getInstance().getPrimaryOuttake();
 
-        if (intake && getNoteInShooter() == false){ // Intake
+        if (intake && getNoteInShooter() == true){ // Intake
             Intake();
          } else if (outtake){ // Outtake
             Outtake();
@@ -61,7 +61,7 @@ public class GroundIntake extends Subsystem {
 
     @Override
     public void outputToSmartDashboard() {
-        SmartDashboard.putBoolean("NoteInShooter", getNoteInShooter());
+        SmartDashboard.putBoolean("NoteInShooter", !getNoteInShooter());
     }
 
     @Override

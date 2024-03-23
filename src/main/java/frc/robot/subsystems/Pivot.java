@@ -26,11 +26,11 @@ public class Pivot extends Subsystem {
 
    //Variables - All angles not final
    public double pivotMaxAngle = 350;
-   public double pivotMinAngle = 240;
+   public double pivotMinAngle = 255;
    public double intakeAngle = 314;
-   public double ampAngle = 237.5;
-   public double speakerAngle1 = 300;
-   public double speakerAngle2 = 330;
+   public double ampAngle = 260;
+   public double speakerAngle1 = 310;
+   public double speakerAngle2 = 329;
    public double slowZone = 10;
    public double extraSlowZone = 2;
 
@@ -152,9 +152,9 @@ public class Pivot extends Subsystem {
             if(armPosition < speakerAngle2){
 
                if(armPosition > (speakerAngle2 - extraSlowZone)){
-                  pivotMotor.set(slowButtonSpeed);
-               } else if(armPosition > (speakerAngle2 - slowZone)){
                   pivotMotor.set(extraSlowButtonSpeed);
+               } else if(armPosition > (speakerAngle2 - slowZone)){
+                  pivotMotor.set(slowButtonSpeed);
                } else{
                pivotMotor.set(buttonSpeed);
                }
@@ -162,9 +162,9 @@ public class Pivot extends Subsystem {
             } else if(armPosition > speakerAngle2){
 
                if(armPosition < (speakerAngle2 + extraSlowZone)){
-                  pivotMotor.set(-slowButtonSpeed);
-               } else if(armPosition < (speakerAngle2 + slowZone)){
                   pivotMotor.set(-extraSlowButtonSpeed);
+               } else if(armPosition < (speakerAngle2 + slowZone)){
+                  pivotMotor.set(-slowButtonSpeed);
                } else{
                pivotMotor.set(-buttonSpeed);
                }
@@ -200,7 +200,6 @@ public class Pivot extends Subsystem {
    @Override
    public void outputToSmartDashboard(){
       SmartDashboard.putNumber("pivot angle",encoder.getPosition()*360);
-      SmartDashboard.putNumber("pivotMotorSpeed",pivotMotorSpeed);
    }
 
    @Override
