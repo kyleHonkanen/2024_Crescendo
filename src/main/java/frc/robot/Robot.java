@@ -44,6 +44,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.Utilities;
 import frc.robot.util.drivers.NavX;
@@ -77,6 +79,9 @@ public class Robot extends TimedRobot {
   private SendableChooser<String> options=new SendableChooser<>();
   String Option;
   String Chooser;
+
+  Command autoCommand;
+  RobotContainer robotContainer;
 
 
   public void updateSubsystemsA(){
@@ -145,6 +150,13 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit(){
     Chooser = chooser.getSelected();
+    fieldOriented=false;
+    autoCommand = robotContainer.getAutonomousCommand();
+    autoCommand.initialize();
+    if (autoCommand != null) {
+      autoCommand.schedule();
+    }
+    autoCommand.execute();
   }
 
   @Override

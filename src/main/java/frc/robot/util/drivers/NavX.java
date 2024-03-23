@@ -2,6 +2,7 @@ package frc.robot.util.drivers;
 
 import com.kauailabs.navx.frc.AHRS;
 import frc.robot.util.math.Rotation2;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SerialPort;
 
 public final class NavX extends Gyroscope {
@@ -43,6 +44,9 @@ public final class NavX extends Gyroscope {
         return navX.getVelocityY();
     }
 
+    public Rotation2d getRotation2d() {
+        return navX.getRotation2d();
+    }
 
     @Override
     public void calibrate() {

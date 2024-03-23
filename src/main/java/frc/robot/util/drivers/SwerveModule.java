@@ -1,10 +1,16 @@
 package frc.robot.util.drivers;
 
+//import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+//import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.util.math.Rotation2;
 import frc.robot.util.math.Vector2;
 
 public abstract class SwerveModule {
     private final Vector2 modulePosition;
+    private SwerveModulePosition currentPos = new SwerveModulePosition();
+    //private SwerveModuleState moduleState = new SwerveModuleState(0, new Rotation2d(0));
+
 
     private final Object sensorMutex = new Object();
     private double currentAngle = 0.0;
@@ -20,8 +26,13 @@ public abstract class SwerveModule {
 
     private String name = "Unknown";
 
-    public SwerveModule(Vector2 modulePosition) {
-        this.modulePosition = modulePosition;
+    public SwerveModule(Vector2 modulePos, SwerveModulePosition posmodule) {
+        this.modulePosition = modulePos;
+        this.currentPos = posmodule;
+    }
+
+    public SwerveModulePosition getCurrentPos() {
+        return currentPos;
     }
 
     /**
