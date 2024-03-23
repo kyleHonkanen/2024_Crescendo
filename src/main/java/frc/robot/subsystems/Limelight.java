@@ -16,8 +16,6 @@ public class Limelight extends Subsystem {
         }
         return instance;
     }
-
-
     public NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     
     //sees if the limelight sees any acceptable targets
@@ -29,6 +27,19 @@ public class Limelight extends Subsystem {
             Target = false;
         }
         return Target;
+    }
+/**
+ * Distance - When given proper parameters, will find the distance from limelight to apriltag/ target
+ * h1 - Represents height of Limelight off of ground
+ * h2 - Represents height of target off of ground
+ * a - Represents angle of Limelight relative to the ground
+ * ty - Represents angle of center of Limelight to the target. This double is coming from the Limelight itself
+ * *Note* Some of these parameters will need to be changed from year-to-year, such as h1,h2, and a1
+ * Resources: https://learn.texastorque.org/Tutorials/Vendor/Limelight
+ * @return
+ */
+    public double getDistance(double h1, double h2, double a) {
+        return (h2-h1)/Math.tan(a+Limelight.getInstance().table.getEntry("ty").getDouble(0));
     }
 
     //changes the limelight pipeline
@@ -53,8 +64,8 @@ public class Limelight extends Subsystem {
 }
 /* List of Important Values to get (limelight.getTable().getEntry(<put desired value here in quotes>).getDouble(0.0);)
  * "tv" is there a target
- * "tx" X offset of apriltag
- * "ty" Y offset of apriltag
+ * "tx" X offset of apriltag in degrees
+ * "ty" Y offset of apriltag in degrees
  * "ta" area of apriltag on camera (finds the distance between the AprilTag and the LimeLight)
  * more can be found on the official website at https://docs.limelightvision.io/en/latest/networktables_api.html
  */

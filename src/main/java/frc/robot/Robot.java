@@ -161,9 +161,13 @@ public class Robot extends TimedRobot {
     switch (Option) {
         case aaBlue:
             AutoAim.getInstance().autoOrientBlue();
+            AutoAim.getInstance().autoAimBlue();
+            Limelight.getInstance().setPipe(0);
             break;
         case aaRed:
             AutoAim.getInstance().autoOrientRed();
+            AutoAim.getInstance().autoAimRed();
+            Limelight.getInstance().setPipe(1);
             break;
     }
     AutoAim.getInstance().autoOrientBlue();
@@ -220,10 +224,15 @@ public class Robot extends TimedRobot {
     //         buttpress = false;
     //     }
     // }
+    if (Setup.getInstance().getSecondaryJoystick().getRawButton(0)) {
+        Pivot.getInstance().pivotMotor.set(AutoAim.getInstance().pivSpeed);
+        Drivetrain.getInstance().periodic();
+    } else {
+        pivot.getInstance();
+    }
+
 
       if (Setup.getInstance().getPrimaryJoystick().getRawButton(9)) {
-        //autoaim.getInstance().autoOrientBlue();
-
         speed = Drivetrain.getInstance().getSpeed(Drivetrain.getInstance().getSpeedSetting());
         Drivetrain.getInstance().speedSetting = "medium";
         Drivetrain.getInstance().drive(new Translation2d(-forward, -strafe), AutoAim.getInstance().rotspeed, fieldOriented, speed);
