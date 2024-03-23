@@ -1,20 +1,29 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.revrobotics.CANSparkLowLevel;
 import com.revrobotics.SparkAnalogSensor;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Setup;
 import frc.robot.util.math.Vector2;
 import frc.robot.util.Utilities;
 import frc.robot.util.drivers.Mk2SwerveModuleBuilder;
+import frc.robot.util.drivers.NavX;
 import frc.robot.util.drivers.SwerveModule;
 
-public class Drivetrain {
+public class Drivetrain extends SubsystemBase{
+        
            
         //get instance
         private static Drivetrain instance;
@@ -56,6 +65,8 @@ public class Drivetrain {
         public final SwerveModule backLeftModule;
         public final SwerveModule backRightModule;
 
+        SwerveDriveOdometry odometry;
+
         //Establishes speed throttle
         public double speedChanger = 0;
 
@@ -91,7 +102,7 @@ public class Drivetrain {
 
                 //CANCoder frontLeftCANCoder = new CANCoder(Setup.DrivetrainSubsystem_FRONT_LEFT_ANGLE_ENCODER);
                 //frontLeftCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
-                Mk2SwerveModuleBuilder frontLeftModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(Setup.instance.TRACKWIDTH / 2.0, Setup.instance.WHEELBASE / 2.0));
+                Mk2SwerveModuleBuilder frontLeftModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(Setup.instance.TRACKWIDTH / 2.0, Setup.instance.WHEELBASE / 2.0),new SwerveModulePosition(0.0, new Rotation2d(Setup.instance.FRONT_LEFT_ANGLE_OFFSET)));
                 //frontLeftModuleBuilder.angleEncoder(-Math.toRadians(flSens.getVoltage()*72), Setup.instance.FRONT_LEFT_ANGLE_OFFSET);
                 frontLeftModuleBuilder.angleEncoder(Math.toRadians(flSens.getVoltage()*109.090909091), Setup.instance.FRONT_LEFT_ANGLE_OFFSET);
                 frontLeftModuleBuilder.angleMotor(flMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
@@ -101,7 +112,7 @@ public class Drivetrain {
 
                 //CANCoder frontRightCANCoder = new CANCoder(Setup.DrivetrainSubsystem_FRONT_RIGHT_ANGLE_ENCODER);
                 //frontRightCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
-                Mk2SwerveModuleBuilder frontRightModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(Setup.instance.TRACKWIDTH / 2.0, -Setup.instance.WHEELBASE / 2.0));
+                Mk2SwerveModuleBuilder frontRightModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(Setup.instance.TRACKWIDTH / 2.0, -Setup.instance.WHEELBASE / 2.0),new SwerveModulePosition(0.0, new Rotation2d(Setup.instance.FRONT_RIGHT_ANGLE_OFFSET)));
                 //frontRightModuleBuilder.angleEncoder(-Math.toRadians(frSens.getVoltage()*72), Setup.instance.FRONT_RIGHT_ANGLE_OFFSET);
                 frontRightModuleBuilder.angleEncoder(Math.toRadians(frSens.getVoltage()*109.090909091), Setup.instance.FRONT_RIGHT_ANGLE_OFFSET);
                 frontRightModuleBuilder.angleMotor(frMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
@@ -110,7 +121,7 @@ public class Drivetrain {
 
                 //CANCoder backLeftCANCoder = new CANCoder(Setup.DrivetrainSubsystem_BACK_LEFT_ANGLE_ENCODER);
                 //backLeftCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
-                Mk2SwerveModuleBuilder backLeftModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(-Setup.instance.TRACKWIDTH / 2.0, Setup.instance.WHEELBASE / 2.0));
+                Mk2SwerveModuleBuilder backLeftModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(-Setup.instance.TRACKWIDTH / 2.0, Setup.instance.WHEELBASE / 2.0),new SwerveModulePosition(0.0, new Rotation2d(Setup.instance.BACK_LEFT_ANGLE_OFFSET)));
                 //backLeftModuleBuilder.angleEncoder(-Math.toRadians(blSens.getVoltage()*72), Setup.instance.BACK_LEFT_ANGLE_OFFSET);
                 backLeftModuleBuilder.angleEncoder(Math.toRadians(blSens.getVoltage()*109.090909091), Setup.instance.BACK_LEFT_ANGLE_OFFSET);
                 backLeftModuleBuilder.angleMotor(blMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
@@ -120,7 +131,7 @@ public class Drivetrain {
 
                 //CANCoder backRightCANCoder = new CANCoder(Setup.DrivetrainSubsystem_BACK_RIGHT_ANGLE_ENCODER);
                 //backRightCANCoder.setStatusFramePeriod(CANCoderStatusFrame.SensorData,100,100);
-                Mk2SwerveModuleBuilder backRightModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(-Setup.instance.TRACKWIDTH / 2.0, -Setup.instance.WHEELBASE / 2.0));
+                Mk2SwerveModuleBuilder backRightModuleBuilder = new Mk2SwerveModuleBuilder(new Vector2(-Setup.instance.TRACKWIDTH / 2.0, -Setup.instance.WHEELBASE / 2.0),new SwerveModulePosition(0.0, new Rotation2d(Setup.instance.BACK_RIGHT_ANGLE_OFFSET)));
                 backRightModuleBuilder.angleEncoder(Math.toRadians(brSens.getVoltage()*109.090909091), Setup.instance.BACK_RIGHT_ANGLE_OFFSET);
                 //backRightModuleBuilder.angleEncoder(-Math.toRadians(brSens.getVoltage()*72), Setup.instance.BACK_RIGHT_ANGLE_OFFSET);
                 backRightModuleBuilder.angleMotor(brMotAng,Mk2SwerveModuleBuilder.MotorType.NEO);
@@ -129,6 +140,22 @@ public class Drivetrain {
 
                 Setup.instance.gyroscope.setInverted(true);                 
 
+                odometry = new SwerveDriveOdometry(Setup.getInstance().kinematics, 
+                NavX.getInstance().getRotation2d(), getPositions());
+
+                AutoBuilder.configureHolonomic(
+                        this::getPose,
+                        this::resetPose,
+                        this::getSpeeds,
+                        this::driveForAuto, 
+                        Setup.pathFollowConfig, 
+                        ()-> {var alliance = DriverStation.getAlliance();
+                                if (alliance.isPresent()) {
+                                return alliance.get()==DriverStation.Alliance.Red;
+                                }
+                        return false;
+                        }, 
+                        this);
         } 
 
         //updates sensors and corresponding states periodically
@@ -144,6 +171,7 @@ public class Drivetrain {
                 backLeftModule.updateState(TimedRobot.kDefaultPeriod);
                 backRightModule.updateState(TimedRobot.kDefaultPeriod);
 
+                odometry.update(NavX.getInstance().getRotation2d(), getPositions());
         }
 
         //Assigning x,y,z coordinates in m/s to the swerve modules and initializing them as 0
@@ -309,5 +337,33 @@ public class Drivetrain {
         //resets the gyro
         public void resetGyroscope() {
                 Setup.instance.gyroscope.setAdjustmentAngle(Setup.instance.gyroscope.getUnadjustedAngle());
+        }
+
+        public SwerveModulePosition[] getPositions() {
+        SwerveModulePosition[] list= new SwerveModulePosition[4];
+        list[0]=frontLeftModule.getCurrentPos();
+        list[1]=frontRightModule.getCurrentPos();
+        list[2]=backRightModule.getCurrentPos();
+        list[3]=backLeftModule.getCurrentPos();
+        return list;
+        }
+
+        public Pose2d getPose() {
+                return odometry.getPoseMeters();
+        }
+
+        public void resetPose(Pose2d pose) {
+                odometry.resetPosition(NavX.getInstance().getRotation2d(), getPositions(), pose);
+        }
+
+        public ChassisSpeeds getSpeeds() {
+                return Setup.getInstance().kinematics.toChassisSpeeds(states);
+        }
+        //makes wheels point straight
+        public void straightenA() {
+                frontLeftModule.setTargetVelocity(0, Setup.getInstance().FRONT_LEFT_ANGLE_OFFSET);
+                frontRightModule.setTargetVelocity(0, Setup.getInstance().FRONT_RIGHT_ANGLE_OFFSET);
+                backRightModule.setTargetVelocity(0, Setup.getInstance().BACK_RIGHT_ANGLE_OFFSET);
+                backLeftModule.setTargetVelocity(0, Setup.getInstance().BACK_LEFT_ANGLE_OFFSET);
         }
 }

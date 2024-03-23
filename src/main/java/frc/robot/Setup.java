@@ -1,5 +1,9 @@
 package frc.robot;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.Compressor;
@@ -217,4 +221,13 @@ public class Setup {
     public static final int ClimberMotorRightID = 28;
     public static final int ClimberPotentiometerLeft = 1;
     public static final int ClimberPotentiometerRight = 2;
+
+    //PathPlanner
+    public static final double maxSpeeds = 1;
+    public static final HolonomicPathFollowerConfig pathFollowConfig = new HolonomicPathFollowerConfig(
+      new PIDConstants(0.5, 0.0, 0.1), 
+      new PIDConstants(0.5, 0.0, 0.1), 
+      maxSpeeds, 
+      new Translation2d(0.6 / 2.0, 0.6 / 2.0).getNorm(), 
+      new ReplanningConfig());
 }

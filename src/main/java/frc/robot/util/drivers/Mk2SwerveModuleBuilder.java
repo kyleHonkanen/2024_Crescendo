@@ -5,6 +5,7 @@ import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkBase.ControlType;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import frc.robot.util.control.PidConstants;
 import frc.robot.util.control.PidController;
@@ -52,6 +53,7 @@ public class Mk2SwerveModuleBuilder {
     private static final PidConstants DEFAULT_CAN_SPARK_MAX_ANGLE_CONSTANTS = new PidConstants(0.5, 0.0, 0.1);
 
     private final Vector2 modulePosition;
+    private final SwerveModulePosition modulePos;
 
     private DoubleSupplier angleSupplier;
     private DoubleSupplier currentDrawSupplier;
@@ -64,8 +66,9 @@ public class Mk2SwerveModuleBuilder {
     private DoubleConsumer initializeAngleCallback;
     private List<BiConsumer<SwerveModule, Double>> updateCallbacks = new ArrayList<>();
 
-    public Mk2SwerveModuleBuilder(Vector2 modulePosition) {
+    public Mk2SwerveModuleBuilder(Vector2 modulePosition,SwerveModulePosition posModule) {
         this.modulePosition = modulePosition;
+        this.modulePos = posModule;
     }
 
     /**
@@ -313,7 +316,7 @@ public class Mk2SwerveModuleBuilder {
         private double velocity = 0.0;
 
         public SwerveModuleImpl() {
-            super(modulePosition);
+            super(modulePosition,modulePos);
 
             if (initializeAngleCallback != null) {
                 initializeAngleCallback.accept(angleSupplier.getAsDouble());
