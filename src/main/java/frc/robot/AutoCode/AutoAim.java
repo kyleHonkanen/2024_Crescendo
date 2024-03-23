@@ -34,6 +34,9 @@ public class AutoAim {
     Drivetrain drivetrain = Drivetrain.getInstance();
     public double rotspeed;
     public double pivSpeed;
+    public double pivAng;
+    public double distance;
+
 
     public void autoOrientRed() {
         if (limelight.table.getEntry("tx").getDouble(0) <= -2) {
@@ -55,10 +58,13 @@ public class AutoAim {
     }
 
     public void autoAimBlue() {
-        if (limelight.table.getEntry("ty").getDouble(0) <= Limelight.getInstance().getDistance(pivSpeed, pivSpeed, rotspeed, pivSpeed)-4) {
-            pivSpeed = Limelight.getInstance().table.getEntry("ty").getDouble(0) / -300;
-        } else if (limelight.table.getEntry("ty").getDouble(0) >= -2) {
-            pivSpeed = Limelight.getInstance().table.getEntry("ty").getDouble(0) / 300;
+        distance = (2.14 / Limelight.getInstance().getDistance(1.47, .52, 12.3));
+        pivAng = Math.acos(distance);
+        //pivAng = distance /10;
+        if (Pivot.getInstance().getPivotPosition() >= pivAng) {
+            pivSpeed = (Pivot.getInstance().getPivotPosition() - pivAng) / 300;
+        } else if (Pivot.getInstance().getPivotPosition() <= pivAng) {
+            pivSpeed = (Pivot.getInstance().getPivotPosition() - pivAng) / -300;
         }
     }
     public void autoAimRed() {

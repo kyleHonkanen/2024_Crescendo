@@ -21,14 +21,14 @@ public class Shooter extends Subsystem {
     public CANSparkMax feedingMotorRight;
     public CANSparkMax flywheelMotorTop;
     public CANSparkMax flywheelMotorBottom;
-    public RelativeEncoder shooterEncoderLeft;
-    public RelativeEncoder shooterEncoderRight;
+    public RelativeEncoder shooterEncoderTop;
+    public RelativeEncoder shooterEncoderBottom;
     public PIDController shooterController;
 
     public double leftTrig, rightTrig, PIDValue;
     public boolean leftShoot, rightShoot, timeToShoot; 
     public double speakerTargetSpeed = -5000;
-    public double ampTargetSpeed = .4;
+    public double ampTargetSpeed = .5;
     public final double shooterP = 0.0002;
     public final double shooterI = 0.0001;
     public final double shooterD = 0;
@@ -39,22 +39,22 @@ public class Shooter extends Subsystem {
         flywheelMotorTop = new CANSparkMax(Setup.ShooterFlywheelMotorTopID, MotorType.kBrushless);
         flywheelMotorBottom = new CANSparkMax(Setup.ShooterFlywheelMotorBotttomID,MotorType.kBrushless);
         shooterController = new PIDController(shooterP, shooterI, shooterD);
-        shooterEncoderLeft = flywheelMotorTop.getEncoder();
-        shooterEncoderRight = flywheelMotorBottom.getEncoder();
+        shooterEncoderTop = flywheelMotorTop.getEncoder();
+        shooterEncoderBottom = flywheelMotorBottom.getEncoder();
         shooterController.setSetpoint(speakerTargetSpeed);
-        shooterController.setTolerance(50, 20);
+        //shooterController.setTolerance(50, 20);
     }
 
-    public double getLeftShooterEncoder(){
-        return shooterEncoderLeft.getVelocity();
+    public double getTopShooterEncoder(){
+        return shooterEncoderTop.getVelocity();
     }
 
-    public double getRightShooterEncoder(){
-        return shooterEncoderRight.getVelocity();
+    public double getBottomShooterEncoder(){
+        return shooterEncoderBottom.getVelocity();
     }
 
     public void speakerShoot(){
-        PIDValue = shooterController.calculate(getLeftShooterEncoder(),speakerTargetSpeed);
+        PIDValue = shooterController.calculate(getTopShooterEncoder(),speakerTargetSpeed);
         flywheelMotorTop.set(PIDValue);
         flywheelMotorBottom.set(PIDValue);
     }
@@ -109,7 +109,8 @@ public class Shooter extends Subsystem {
 
     @Override
     public void outputToSmartDashboard(){
-        SmartDashboard.putNumber("PIDValue", getLeftShooterEncoder());
+        SmartDashboard.putNumber("TopPID", getTopShooterEncoder());
+        SmartDashboard.putNumber("BottomPID",getBottomShooterEncoder());
     }
 
     @Override

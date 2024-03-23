@@ -126,6 +126,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic(){
+    //SmartDashboard.putString("Option =", Option);
+    SmartDashboard.putNumber("Distance", AutoAim.getInstance().distance);
+    SmartDashboard.putNumber("pivAng", AutoAim.getInstance().pivAng);
+    SmartDashboard.putNumber("pivot Speed", AutoAim.getInstance().pivSpeed);
     // SparkMax SmartDashboard Output
     //SmartDashboard.putNumber("rotSpeed", AutoAim.getInstance().rotspeed);
     //SmartDashboard.putNumber("AngNum", Limelight.getInstance().table.getEntry("tx").getDouble(0));
@@ -157,20 +161,25 @@ public class Robot extends TimedRobot {
   
   @Override
   public void teleopPeriodic(){
-    SmartDashboard.putString("AutoAim", Option);
-    switch (Option) {
-        case aaBlue:
-            AutoAim.getInstance().autoOrientBlue();
-            AutoAim.getInstance().autoAimBlue();
-            Limelight.getInstance().setPipe(0);
-            break;
-        case aaRed:
-            AutoAim.getInstance().autoOrientRed();
-            AutoAim.getInstance().autoAimRed();
-            Limelight.getInstance().setPipe(1);
-            break;
-    }
-    AutoAim.getInstance().autoOrientBlue();
+
+    // SmartDashboard.putString("AutoAim", Option);
+    // switch (Option) {
+    //     case aaBlue:
+    //         //AutoAim.getInstance().autoOrientBlue();
+    //         AutoAim.getInstance().autoAimBlue();
+    //         Limelight.getInstance().setPipe(0);
+    //         break;
+    //     case aaRed:
+    //         AutoAim.getInstance().autoOrientRed();
+    //         AutoAim.getInstance().autoAimRed();
+    //         Limelight.getInstance().setPipe(1);
+    //         break;
+    //     default:
+    //         AutoAim.getInstance().autoAimBlue();
+    //         Limelight.getInstance().setPipe(0);
+    //         break;
+            
+    // }
 
     //TOGGLE
      if (toggle) {
@@ -224,9 +233,21 @@ public class Robot extends TimedRobot {
     //         buttpress = false;
     //     }
     // }
-    if (Setup.getInstance().getSecondaryJoystick().getRawButton(0)) {
+    if (Setup.getInstance().getSecondaryJoystick().getRawButton(7)) {
+        if (Option == aaBlue) {
+            AutoAim.getInstance().autoOrientBlue();
+            AutoAim.getInstance().autoAimBlue();
+            Limelight.getInstance().setPipe(0);
+        } else if (Option == aaRed) {
+            AutoAim.getInstance().autoOrientRed();
+            AutoAim.getInstance().autoAimRed();
+            Limelight.getInstance().setPipe(1);
+        } else {
+            AutoAim.getInstance().autoAimBlue();
+            Limelight.getInstance().setPipe(0);
+        }
         Pivot.getInstance().pivotMotor.set(AutoAim.getInstance().pivSpeed);
-        Drivetrain.getInstance().periodic();
+        //Pivot.getInstance().pivotMotor.set(0.1);
     } else {
         pivot.getInstance();
     }
