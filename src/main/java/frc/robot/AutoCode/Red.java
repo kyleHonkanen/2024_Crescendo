@@ -8,7 +8,7 @@ import frc.robot.subsystems.Shooter;
 //import edu.wpi.first.networktables.NetworkTable;
 //import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.Setup;
+// import frc.robot.Setup;
 
 public class Red {
 

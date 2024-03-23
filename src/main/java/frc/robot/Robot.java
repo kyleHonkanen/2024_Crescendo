@@ -52,23 +52,23 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Telescope;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Limelight;
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.robot.AutoCode.AutoAim;
 import frc.robot.AutoCode.Blue;
 import frc.robot.AutoCode.Red;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.robot.Setup;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Shooter;
-import frc.robot.util.drivers.NavX;
-import frc.robot.subsystems.Limelight;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.math.geometry.Translation2d;
+// import edu.wpi.first.networktables.NetworkTable;
+// import edu.wpi.first.networktables.NetworkTableInstance;
+// import frc.robot.Setup;
+// import frc.robot.subsystems.Drivetrain;
+// import frc.robot.subsystems.Pivot;
+// import frc.robot.subsystems.Shooter;
+// import frc.robot.util.drivers.NavX;
+// import frc.robot.subsystems.Limelight;
 //import edu.wpi.first.networktables.NetworkTable;
 //import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.Timer;
+// import edu.wpi.first.wpilibj.Timer;
 // import edu.wpi.first.cscore.VideoSource;
 // import edu.wpi.first.cameraserver.CameraServer;
 // import edu.wpi.first.cscore.CvSink;
@@ -235,9 +235,13 @@ case redE:
     switch (Option) {
         case aaBlue:
             AutoAim.getInstance().autoOrientBlue();
+            AutoAim.getInstance().autoAimBlue();
+            Limelight.getInstance().setPipe(0);
             break;
         case aaRed:
             AutoAim.getInstance().autoOrientRed();
+            AutoAim.getInstance().autoAimRed();
+            Limelight.getInstance().setPipe(1);
             break;
     }
     AutoAim.getInstance().autoOrientBlue();
@@ -295,9 +299,15 @@ case redE:
     //         buttpress = false;
     //     }
     // }
-      if (Setup.getInstance().getPrimaryJoystick().getRawButton(9)) {
-        //autoaim.getInstance().autoOrientBlue();
+    if (Setup.getInstance().getSecondaryJoystick().getRawButton(0)) {
+        Pivot.getInstance().pivotMotor.set(AutoAim.getInstance().pivSpeed);
+        Drivetrain.getInstance().periodic();
+    } else {
+        pivot.getInstance();
+    }
 
+
+      if (Setup.getInstance().getPrimaryJoystick().getRawButton(9)) {
         speed = Drivetrain.getInstance().getSpeed(Drivetrain.getInstance().getSpeedSetting());
         Drivetrain.getInstance().speedSetting = "medium";
         Drivetrain.getInstance().drive(new Translation2d(-forward, -strafe), AutoAim.getInstance().rotspeed, fieldOriented, speed);
