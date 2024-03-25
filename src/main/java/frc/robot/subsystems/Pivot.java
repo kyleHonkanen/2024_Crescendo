@@ -27,7 +27,7 @@ public class Pivot extends Subsystem {
    //Variables - All angles not final
    public double pivotMaxAngle = 350;
    public double pivotMinAngle = 255;
-   public double intakeAngle = 260;
+   public double intakeAngle = 320;
    public double ampAngle = 260;
    public double speakerAngle1 = 310;
    public double speakerAngle2 = 329;
@@ -69,7 +69,7 @@ public class Pivot extends Subsystem {
       speakerButton2 = Setup.getInstance().getSecondaryXButton();
 
     /* ---------------------------------------------- Preset Angles -------------------------------------------------- */
-      if (primaryIntakeButton == true || intakeButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
+      if (/*primaryIntakeButton == true || */intakeButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
    
          //get outa da danger zone
          if(armPosition > 0 && armPosition < 5){

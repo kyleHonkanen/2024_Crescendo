@@ -127,6 +127,8 @@ public class Robot extends TimedRobot {
     options.addOption(aaRed, "autoAimRed");
     SmartDashboard.putData("Options", chooser);
     SmartDashboard.putData("Options", options);
+    drivetrain = Drivetrain.getInstance();
+    robotContainer = new RobotContainer();
   }
 
   @Override
@@ -145,6 +147,7 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("frMotAng", (Drivetrain.getInstance().frSens.getVoltage()*109.090909091));
     //SmartDashboard.putNumber("blMotAng", (Drivetrain.getInstance().blSens.getVoltage()*109.090909091));
     //SmartDashboard.putNumber("brMotAng", (Drivetrain.getInstance().brSens.getVoltage()*109.090909091));
+    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -156,12 +159,12 @@ public class Robot extends TimedRobot {
     if (autoCommand != null) {
       autoCommand.schedule();
     }
-    autoCommand.execute();
+    drivetrain.straightenA();
   }
 
   @Override
   public void autonomousPeriodic(){
-    fieldOriented = true;
+    //fieldOriented = true;
   }
 
   @Override

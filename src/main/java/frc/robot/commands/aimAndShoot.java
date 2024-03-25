@@ -27,12 +27,13 @@ public class aimAndShoot extends Command{
     }
     @Override
     public void execute() {
-        if (pivot.getPivotPosition()>pivot.speakerAngle1+1) {
-            pivot.getPivotMotor().set(-1);
-        } else if (pivot.getPivotPosition()<pivot.speakerAngle1-1) {
-            pivot.getPivotMotor().set(1);
-        } else {
+        if (pivot.getPivotPosition()>pivot.speakerAngle1+5) {
+            pivot.getPivotMotor().set(-.2);
+        } else if (pivot.getPivotPosition()<pivot.speakerAngle1-5) {
+            pivot.getPivotMotor().set(.2);
+        } else if((shooter.getTopShooterEncoder()<-4000)&&(pivot.getPivotPosition()>pivot.speakerAngle1+5)&&(pivot.getPivotPosition()<pivot.speakerAngle1-5)) {
             timer.start();
+            shooter.feedForward(1);
             //shoot the thing
         }
     }
@@ -40,9 +41,11 @@ public class aimAndShoot extends Command{
     public void end(boolean interrupted) {
         shooter.flywheelMotorBottom.set(0);
         shooter.flywheelMotorTop.set(0);
+        pivot.getPivotMotor().set(0);
+        shooter.feedForward(0);
     }
     @Override
     public boolean isFinished() {
-        return timer.get()>3;
+        return timer.get()>1;
     }
 }

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.aimAndShoot;
+import frc.robot.commands.groundIntake;
 import frc.robot.commands.stopTheBot;
 
 public class RobotContainer {
@@ -17,6 +18,7 @@ public class RobotContainer {
     public RobotContainer(){
         NamedCommands.registerCommand("aimAndShoot", new aimAndShoot());
         NamedCommands.registerCommand("stop robot", new stopTheBot());
+        NamedCommands.registerCommand("pickup", new groundIntake());
         
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();

@@ -151,6 +151,7 @@ public class Drivetrain extends SubsystemBase{
                         Setup.pathFollowConfig, 
                         ()-> {var alliance = DriverStation.getAlliance();
                                 if (alliance.isPresent()) {
+                                        //trying not for flipping
                                 return alliance.get()==DriverStation.Alliance.Red;
                                 }
                         return false;
@@ -361,9 +362,9 @@ public class Drivetrain extends SubsystemBase{
         }
         //makes wheels point straight
         public void straightenA() {
-                frontLeftModule.setTargetVelocity(0, Setup.getInstance().FRONT_LEFT_ANGLE_OFFSET);
-                frontRightModule.setTargetVelocity(0, Setup.getInstance().FRONT_RIGHT_ANGLE_OFFSET);
-                backRightModule.setTargetVelocity(0, Setup.getInstance().BACK_RIGHT_ANGLE_OFFSET);
-                backLeftModule.setTargetVelocity(0, Setup.getInstance().BACK_LEFT_ANGLE_OFFSET);
+                frontLeftModule.setTargetVelocity(0, 0);
+                frontRightModule.setTargetVelocity(0, 0);
+                backRightModule.setTargetVelocity(0, 0);
+                backLeftModule.setTargetVelocity(0, 0);
         }
 }

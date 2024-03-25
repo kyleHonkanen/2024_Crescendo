@@ -30,7 +30,7 @@ public class Setup {
   //offset of wheels sets the angle to start - CHANGE DIS BRO
   public double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(123.579545);
   public double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(260.795455);
-  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(10.227273);
+  public double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(0);
   public double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(18.579545);
 
   //finds position of the wheels based on the position of the center
