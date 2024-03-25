@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Pivot;
 import frc.robot.subsystems.Shooter;
@@ -27,15 +28,33 @@ public class aimAndShoot extends Command{
     }
     @Override
     public void execute() {
-        if (pivot.getPivotPosition()>pivot.speakerAngle1+5) {
-            pivot.getPivotMotor().set(-.2);
-        } else if (pivot.getPivotPosition()<pivot.speakerAngle1-5) {
-            pivot.getPivotMotor().set(.2);
-        } else if((shooter.getTopShooterEncoder()<-4000)&&(pivot.getPivotPosition()>pivot.speakerAngle1+5)&&(pivot.getPivotPosition()<pivot.speakerAngle1-5)) {
-            timer.start();
+        SmartDashboard.putNumber("speed", shooter.getTopShooterEncoder());
+        SmartDashboard.putNumber("angle", pivot.getPivotPosition());
+        if(pivot.getPivotPosition() < pivot.speakerAngle1-3){
+
+            if(pivot.getPivotPosition() > (pivot.speakerAngle1 - pivot.extraSlowZone)) {
+               pivot.getPivotMotor().set(pivot.extraSlowButtonSpeed);
+            } else if(pivot.getPivotPosition() > (pivot.speakerAngle1 - pivot.slowZone)){
+               pivot.getPivotMotor().set(pivot.slowButtonSpeed);
+            } else{
+            pivot.getPivotMotor().set(pivot.buttonSpeed);
+            }
+
+         } else if(pivot.getPivotPosition() > pivot.speakerAngle1-1){
+
+            if(pivot.getPivotPosition() < (pivot.speakerAngle1 + pivot.extraSlowZone)){
+               pivot.getPivotMotor().set(-pivot.extraSlowButtonSpeed);
+            }else if(pivot.getPivotPosition() < (pivot.speakerAngle1 + pivot.slowZone)){
+               pivot.getPivotMotor().set(-pivot.slowButtonSpeed);
+            } else{
+            pivot.getPivotMotor().set(-pivot.buttonSpeed);
+            }
+
+         } else if (shooter.getTopShooterEncoder()<-4500) {
             shooter.feedForward(1);
-            //shoot the thing
-        }
+            timer.start();
+         }
+
     }
     @Override
     public void end(boolean interrupted) {
