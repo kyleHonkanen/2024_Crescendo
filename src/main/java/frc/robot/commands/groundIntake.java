@@ -11,16 +11,22 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.GroundIntake;
 
 public class groundIntake extends Command{
-    private final CANSparkMax m_bintake;
-    private final CANSparkMax m_fintake;
+    private final GroundIntake groundIntake;
+    private final Shooter shooter;
+    private final Pivot pivot;
     private Timer m_timer;
     public double IntakeSpeedConstant = 0.5;//placeholder value
     public double frontSpeed = -IntakeSpeedConstant;
     public double backSpeed = IntakeSpeedConstant;
+    public boolean end = false;
+    public double feedSpeed = 0.3;
+    public double margin = 5;
+    public double IDEALPOS = 320;
 
     public groundIntake() {
-        m_fintake= GroundIntake.getInstance().frontIntakeMotor;
-        m_bintake = GroundIntake.getInstance().backIntakeMotor;
+        groundIntake = GroundIntake.getInstance();
+        shooter = Shooter.getInstance();
+        pivot=Pivot.getInstance();
         m_timer=new Timer();
     }
 
@@ -37,18 +43,36 @@ public class groundIntake extends Command{
     }
     @Override
     public void execute() {
-        m_fintake.set(frontSpeed);
-        m_bintake.set(backSpeed);
-        m_timer.start();
+        if(pivot.getPivotPosition()*360< margin-IDEALPOS){
+            pivot.getInstance().getPivotMotor().set(0.1);
+        }else if (pivot.getPivotPosition()*360> margin+IDEALPOS){
+            pivot.getInstance().getPivotMotor().set(-0.1);
+        }else{
+            groundIntake.Intake();
+            shooter.feedForward(feedSpeed);
+            m_timer.start();
+            if (GroundIntake.getInstance().getNoteInShooter()!=true){
+                end = true;
+            }else{
+                end=false;
+            }
+            end(end);
+
+        }
+        
+
     }
     @Override
     public void end(boolean interrupted) {
-        m_fintake.set(0);
-        m_bintake.set(0);
-        SmartDashboard.putBoolean("Auto Intake active?", !isFinished());
+        if (interrupted){
+            groundIntake.stop();
+            SmartDashboard.putBoolean("Auto Intake active?", !isFinished());
+
+        }
     }
     @Override
     public boolean isFinished() {
+        end = false;
         return m_timer.get()>4;
     }
 
