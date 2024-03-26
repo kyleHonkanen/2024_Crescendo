@@ -40,33 +40,37 @@ public class groundIntake extends Command{
         Shuffleboard.getEntry("Intake")
         */
         SmartDashboard.putBoolean("Auto Intake active?", !isFinished());
+        m_timer.stop();
+        m_timer.reset();
     }
     @Override
     public void execute() {
-        if(pivot.getPivotPosition()< IDEALPOS-margin){
+        if(pivot.getPivotPosition() < IDEALPOS-margin){
             pivot.getPivotMotor().set(0.1);
-        }else if (pivot.getPivotPosition()> margin+IDEALPOS){
+
+        } else if(pivot.getPivotPosition() > IDEALPOS+margin){
             pivot.getPivotMotor().set(-0.1);
-        }else{
+
+        } else {
             pivot.getPivotMotor().set(0);
-            groundIntake.Intake();
-            shooter.feedForward(feedSpeed);
-            m_timer.start();
-            if (GroundIntake.getInstance().getNoteInShooter()!=true){
-                end = true;
-            }else{
-                end=false;
-            }
-            end(end);
-
         }
+        groundIntake.Intake();
+        shooter.feedForward(feedSpeed);
+        m_timer.start();
+        if (GroundIntake.getInstance().getNoteInShooter()!=true){
+            end = true;
+        }else{
+            end=false;
+        }
+        end(end);
         
-
     }
+
     @Override
     public void end(boolean interrupted) {
         if (interrupted){
             groundIntake.stop();
+            pivot.getPivotMotor().set(0);
             SmartDashboard.putBoolean("Auto Intake active?", !isFinished());
 
         }
