@@ -12,6 +12,8 @@ public class aimAndShoot extends Command{
     private final Shooter shooter;
     private final Pivot pivot;
     private Timer timer;
+    
+
 
     public aimAndShoot() {
         shooter=Shooter.getInstance();
@@ -19,6 +21,7 @@ public class aimAndShoot extends Command{
         timer=new Timer();
     }
     @Override
+
     public void initialize() {
         //make flywheels start spinning and makes time
         shooter.flywheelMotorTop.set(shooter.speakerTargetSpeed);
@@ -30,31 +33,29 @@ public class aimAndShoot extends Command{
     public void execute() {
         SmartDashboard.putNumber("speed", shooter.getTopShooterEncoder());
         SmartDashboard.putNumber("angle", pivot.getPivotPosition());
-        if(pivot.getPivotPosition() < pivot.speakerAngle1-3){
-
-            if(pivot.getPivotPosition() > (pivot.speakerAngle1 - pivot.extraSlowZone)) {
-               pivot.getPivotMotor().set(pivot.extraSlowButtonSpeed);
-            } else if(pivot.getPivotPosition() > (pivot.speakerAngle1 - pivot.slowZone)){
-               pivot.getPivotMotor().set(pivot.slowButtonSpeed);
-            } else{
-            pivot.getPivotMotor().set(pivot.buttonSpeed);
+        double targetSpeed = ((pivot.speakerAngle1-pivot.getPivotPosition())/pivot.speakerAngle1);
+        double max = pivot.speakerAngle1+20;
+        double min = pivot.speakerAngle1-20;
+        double Speed = 0;
+        
+            if (pivot.getPivotPosition()>max) {
+               Speed=-1;
+            } else if (pivot.getPivotPosition()<min) {
+               Speed=1;
+            } else {
+               Speed =(pivot.getPivotPosition()-min)/(max-min)*-2-1;
             }
 
-         } else if(pivot.getPivotPosition() > pivot.speakerAngle1-1){
-
-            if(pivot.getPivotPosition() < (pivot.speakerAngle1 + pivot.extraSlowZone)){
-               pivot.getPivotMotor().set(-pivot.extraSlowButtonSpeed);
-            }else if(pivot.getPivotPosition() < (pivot.speakerAngle1 + pivot.slowZone)){
-               pivot.getPivotMotor().set(-pivot.slowButtonSpeed);
-            } else{
-            pivot.getPivotMotor().set(-pivot.buttonSpeed);
-            }
-
-         } else if (shooter.getTopShooterEncoder()<-4500) {
+         if((pivot.getPivotPosition() > pivot.speakerAngle1+5)&&(pivot.getPivotPosition() < pivot.speakerAngle1-5)){
+            pivot.getPivotMotor().set(Speed);
+         } else if (shooter.getTopShooterEncoder()<-4750) {
+            pivot.getPivotMotor().set(0);
             shooter.feedForward(1);
             timer.start();
+         } else {
+            pivot.getPivotMotor().set(0);
          }
-
+         SmartDashboard.putNumber("speed", Speed);
     }
     @Override
     public void end(boolean interrupted) {

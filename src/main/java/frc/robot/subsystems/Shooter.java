@@ -93,9 +93,9 @@ public class Shooter extends Subsystem {
 
        
         if (Setup.getInstance().getPrimaryGroundIntake() && GroundIntake.getInstance().getNoteInShooter() == true){ // Intake
-            feedForward(GroundIntake.getInstance().intakeSpeed);
+            feedForward(1);
         } else if (Setup.getInstance().getPrimaryOuttake()){ // Outtake
-            feedBackward(GroundIntake.getInstance().outtakeSpeed);
+            feedBackward(1);
         } else if(rightShoot){
             feedForward(1);
         } else if(leftShoot){

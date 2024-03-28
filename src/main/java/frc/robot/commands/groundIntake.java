@@ -20,8 +20,10 @@ public class groundIntake extends Command{
     public double backSpeed = IntakeSpeedConstant;
     public boolean end = false;
     public double feedSpeed = 0.3;
-    public double margin = 5;
-    public double IDEALPOS = 320;
+    public double margin = 3;
+    public double IDEALPOS = 275;
+    public double extraSlowZone =6;
+    public double slowZone=20;
 
     public groundIntake() {
         groundIntake = GroundIntake.getInstance();
@@ -43,42 +45,38 @@ public class groundIntake extends Command{
         m_timer.stop();
         m_timer.reset();
     }
+
     @Override
     public void execute() {
-        if(pivot.getPivotPosition() < IDEALPOS-margin){
-            pivot.getPivotMotor().set(0.1);
+        if (pivot.getPivotPosition()>IDEALPOS+margin) {
+            if(pivot.getPivotPosition() < IDEALPOS+extraSlowZone){
+                pivot.getPivotMotor().set(-pivot.extraSlowButtonSpeed);
+            } else if (pivot.getPivotPosition()<IDEALPOS+slowZone) {
+                pivot.getPivotMotor().set(-pivot.slowButtonSpeed);
+            } else {
+                pivot.getPivotMotor().set(-.5);
+            }
 
-        } else if(pivot.getPivotPosition() > IDEALPOS+margin){
-            pivot.getPivotMotor().set(-0.1);
-
+        } else if(pivot.getPivotPosition() < IDEALPOS-margin){
+                pivot.getPivotMotor().set(.15);
         } else {
             pivot.getPivotMotor().set(0);
         }
-        groundIntake.Intake();
+        groundIntake.Intake(.5);
         shooter.feedForward(feedSpeed);
         m_timer.start();
-        if (GroundIntake.getInstance().getNoteInShooter()!=true){
-            end = true;
-        }else{
-            end=false;
-        }
-        end(end);
-        
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (interrupted){
-            groundIntake.stop();
+            groundIntake.Intake(0);
+            shooter.feedForward(0);
             pivot.getPivotMotor().set(0);
             SmartDashboard.putBoolean("Auto Intake active?", !isFinished());
-
-        }
     }
     @Override
     public boolean isFinished() {
-        end = false;
-        return m_timer.get()>4;
+        return !GroundIntake.getInstance().getNoteInShooter();
     }
 
 }

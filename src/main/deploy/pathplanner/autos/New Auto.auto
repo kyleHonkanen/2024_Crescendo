@@ -3,7 +3,7 @@
   "startingPose": {
     "position": {
       "x": 2.0,
-      "y": 7.0
+      "y": 5.5
     },
     "rotation": 0
   },
@@ -14,7 +14,51 @@
         {
           "type": "named",
           "data": {
-            "name": "pickup"
+            "name": "aimAndShoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "pickup"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "forward"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Score"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "stop robot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "aimAndShoot"
+                }
+              }
+            ]
           }
         }
       ]

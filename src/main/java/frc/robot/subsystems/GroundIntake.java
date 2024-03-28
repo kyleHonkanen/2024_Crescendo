@@ -20,7 +20,6 @@ public class GroundIntake extends Subsystem {
     public CANSparkMax backIntakeMotor;
     public DigitalInput gamePieceSensor;
 
-    public double intakeSpeed = 1; //placeholder value
     public double outtakeSpeed = 0.7; //placeholder value
     public boolean intake, outtake;
 
@@ -30,7 +29,7 @@ public class GroundIntake extends Subsystem {
         gamePieceSensor = new DigitalInput(Setup.GamePieceSensorID);
     }
 
-    public void Intake(){
+    public void Intake(double intakeSpeed){
         frontIntakeMotor.set(-intakeSpeed);
         backIntakeMotor.set(-intakeSpeed);
     }
@@ -50,7 +49,7 @@ public class GroundIntake extends Subsystem {
         outtake = Setup.getInstance().getPrimaryOuttake();
 
         if (intake && getNoteInShooter() == true){ // Intake
-            Intake();
+            Intake(1);
          } else if (outtake){ // Outtake
             Outtake();
          } else {
