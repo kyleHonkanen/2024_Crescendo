@@ -24,38 +24,41 @@ public class aimAndShoot extends Command{
 
     public void initialize() {
         //make flywheels start spinning and makes time
-        shooter.flywheelMotorTop.set(shooter.speakerTargetSpeed);
-        shooter.flywheelMotorBottom.set(shooter.speakerTargetSpeed);
+        shooter.speakerShoot();
         timer.restart();
         timer.stop();
     }
     @Override
     public void execute() {
+         double target = 305;
         SmartDashboard.putNumber("speed", shooter.getTopShooterEncoder());
         SmartDashboard.putNumber("angle", pivot.getPivotPosition());
+        
         double targetSpeed = ((pivot.speakerAngle1-pivot.getPivotPosition())/pivot.speakerAngle1);
-        double max = pivot.speakerAngle1+20;
-        double min = pivot.speakerAngle1-20;
+        double max = target+20;
+        double min = target-20;
         double Speed = 0;
+        SmartDashboard.putNumber("min", min);
         
             if (pivot.getPivotPosition()>max) {
-               Speed=-1;
+               Speed=-.1;
             } else if (pivot.getPivotPosition()<min) {
-               Speed=1;
+               Speed=.1;
             } else {
-               Speed =(pivot.getPivotPosition()-min)/(max-min)*-2-1;
+               Speed =((pivot.getPivotPosition()-min)/(max-min)*-2-1)*.1;
             }
 
-         if((pivot.getPivotPosition() > pivot.speakerAngle1+5)&&(pivot.getPivotPosition() < pivot.speakerAngle1-5)){
+         if((pivot.getPivotPosition()>target+5)||(pivot.getPivotPosition()<target-5)){
             pivot.getPivotMotor().set(Speed);
-         } else if (shooter.getTopShooterEncoder()<-4750) {
-            pivot.getPivotMotor().set(0);
-            shooter.feedForward(1);
-            timer.start();
          } else {
             pivot.getPivotMotor().set(0);
+            if (shooter.getTopShooterEncoder()<-4750&&shooter.getBottomShooterEncoder()<-4750) {
+               pivot.getPivotMotor().set(0);
+               shooter.feedForward(1);
+               timer.start();
          }
-         SmartDashboard.putNumber("speed", Speed);
+         }
+         SmartDashboard.putNumber("pivotspeed", Speed);
     }
     @Override
     public void end(boolean interrupted) {

@@ -20,13 +20,7 @@ public class Limelight extends Subsystem {
     
     //sees if the limelight sees any acceptable targets
     public boolean Target() {
-        boolean Target;
-        if(table.getEntry("tv").getDouble(0.0)==1) {
-            Target = true;
-        } else {
-            Target = false;
-        }
-        return Target;
+        return table.getEntry("tv").getDouble(0.0)==1;
     }
 /**
  * Distance - When given proper parameters, will find the distance from limelight to apriltag/ target

@@ -21,7 +21,7 @@ public class groundIntake extends Command{
     public boolean end = false;
     public double feedSpeed = 0.3;
     public double margin = 3;
-    public double IDEALPOS = 275;
+    public double IDEALPOS = 290;
     public double extraSlowZone =6;
     public double slowZone=20;
 
