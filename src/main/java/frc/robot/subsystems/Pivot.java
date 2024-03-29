@@ -174,27 +174,30 @@ public class Pivot extends Subsystem {
     /* ---------------------------------------------- Manual Pivot -------------------------------------------------- */
       } else if (pivotMotorSpeed < -.1 || pivotMotorSpeed > .1){
 
-         //Limits & Soft Stops
-         if(armPosition > 0 && armPosition < 5){
-            pivotMotorSpeed = -0.1;
-         } else if(armPosition > pivotMaxAngle && pivotMotorSpeed > 0){
-            pivotMotorSpeed = 0;
-         } else if (armPosition < pivotMinAngle && pivotMotorSpeed < 0){
-            pivotMotorSpeed = 0;
-         } else if((armPosition > (pivotMaxAngle - 5)) || (armPosition < (pivotMinAngle + 5))){
-            pivotMotorSpeed /= 2;
-         } 
+            //Limits & Soft Stops
+            if(armPosition > 0 && armPosition < 5){
+                pivotMotorSpeed = -0.1;
+            } else if(armPosition > pivotMaxAngle && pivotMotorSpeed > 0){
+                pivotMotorSpeed = 0;
+            } else if (armPosition < pivotMinAngle && pivotMotorSpeed < 0){
+                pivotMotorSpeed = 0;
+            } else if((armPosition > (pivotMaxAngle - 5)) || (armPosition < (pivotMinAngle + 5))){
+                pivotMotorSpeed /= 2;
+            }     
 
-         //Double Speed when Pressed
-         if(Setup.getInstance().getSecondaryRightStickPressed()){
-            pivotMotorSpeed *= 2;
-         }
+            //Double Speed when Pressed
+            if(Setup.getInstance().getSecondaryRightStickPressed()){
+                pivotMotorSpeed *= 2;
+            }
 
-         pivotMotor.set(pivotMotorSpeed/2.2);
+            pivotMotor.set(pivotMotorSpeed/2.2);
 
-      } else{
-         pivotMotor.set(0);
-      } 
+        } else if(Setup.getInstance().getSecondaryJoystick().getRawButton(7)){
+            //DONT DO ANYTHING (for auto aim)
+
+        } else {
+            pivotMotor.set(0);
+        } 
    } 
          
    @Override

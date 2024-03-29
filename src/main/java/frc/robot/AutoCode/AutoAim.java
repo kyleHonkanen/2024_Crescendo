@@ -1,19 +1,12 @@
 package frc.robot.AutoCode;
 
-// import javax.swing.RowFilter.Entry;
-// import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-// import frc.robot.Setup;
 import frc.robot.subsystems.Drivetrain;
-// import frc.robot.subsystems.Pivot;
-// import frc.robot.subsystems.Shooter;
-// import frc.robot.util.drivers.NavX;
 import frc.robot.subsystems.Limelight;
-//import edu.wpi.first.networktables.NetworkTable;
-//import edu.wpi.first.networktables.NetworkTableInstance;
-// import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Pivot;
+import frc.robot.util.math.Vector2;
+import edu.wpi.first.math.MathUtil;
 
 
 public class AutoAim {
@@ -59,7 +52,7 @@ public class AutoAim {
 
     public void autoAimBlue() {
         distance = (2.14 / Limelight.getInstance().getDistance(1.47, .52, 12.3));
-        pivAng = Math.acos(distance);
+        pivAng = Math.toDegrees(Math.acos(2.14/distance));
         //pivAng = distance /10;
         if (Pivot.getInstance().getPivotPosition() >= pivAng) {
             pivSpeed = (Pivot.getInstance().getPivotPosition() - pivAng) / 300;
