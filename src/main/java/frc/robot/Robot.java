@@ -248,23 +248,25 @@ public class Robot extends TimedRobot {
     //         buttpress = false;
     //     }
     // }
-    if (Setup.getInstance().getSecondaryJoystick().getRawButton(7)) {
+    if (Setup.getInstance().getSecondaryJoystick().getRawButton(7) && Limelight.getInstance().Target()) {
         if (Option == aaBlue) {
             AutoAim.getInstance().autoOrientBlue();
             AutoAim.getInstance().autoAimBlue();
-            Limelight.getInstance().setPipe(0);
+           Limelight.getInstance().setPipe(0);
         } else if (Option == aaRed) {
             AutoAim.getInstance().autoOrientRed();
             AutoAim.getInstance().autoAimRed();
             Limelight.getInstance().setPipe(1);
         } else {
+            AutoAim.getInstance().autoOrientBlue();
             AutoAim.getInstance().autoAimBlue();
             Limelight.getInstance().setPipe(0);
         }
-        Pivot.getInstance().pivotMotor.set(AutoAim.getInstance().pivSpeed);
+        Pivot.getInstance().pivotMotor.set(-AutoAim.getInstance().pivSpeed);
+        rotation = -AutoAim.getInstance().rotspeed;
         //Pivot.getInstance().pivotMotor.set(0.1);
     } else {
-        pivot.getInstance();
+        //Pivot.getInstance().pivotMotor.set(0);
     }
 
 
