@@ -41,10 +41,10 @@ public class AutoAim {
     }
 }
     public void autoOrientBlue() {
-        if (limelight.table.getEntry("tx").getDouble(0) <= -2) {
+        if (limelight.table.getEntry("tx").getDouble(0) <= 4) {
             rotspeed = Limelight.getInstance().table.getEntry("tx").getDouble(0) / -152;
             } else {
-            if (limelight.table.getEntry("tx").getDouble(0) >= 2) {
+            if (limelight.table.getEntry("tx").getDouble(0) >= 8) {
             rotspeed = Limelight.getInstance().table.getEntry("tx").getDouble(0) / -152;
             }
         }
@@ -61,10 +61,18 @@ public class AutoAim {
         }
     }
     public void autoAimRed() {
-        if (limelight.table.getEntry("ty").getDouble(0) <= -4) {
-            pivSpeed = Limelight.getInstance().table.getEntry("ty").getDouble(0) / -300;
-        } else if (limelight.table.getEntry("ty").getDouble(0) >= -2) {
-            pivSpeed = Limelight.getInstance().table.getEntry("ty").getDouble(0) / 300;
+        // if (limelight.table.getEntry("ty").getDouble(0) <= -4) {
+        //     pivSpeed = Limelight.getInstance().table.getEntry("ty").getDouble(0) / -300;
+        // } else if (limelight.table.getEntry("ty").getDouble(0) >= -2) {
+        //     pivSpeed = Limelight.getInstance().table.getEntry("ty").getDouble(0) / 300;
+                distance = (2.14 / Limelight.getInstance().getDistance(1.47, .52, 12.3));
+        pivAng = Math.toDegrees(Math.acos(2.14/distance));
+        //pivAng = distance /10;
+        if (Pivot.getInstance().getPivotPosition() >= pivAng) {
+            pivSpeed = (Pivot.getInstance().getPivotPosition() - pivAng) / 300;
+        } else if (Pivot.getInstance().getPivotPosition() <= pivAng) {
+            pivSpeed = (Pivot.getInstance().getPivotPosition() - pivAng) / -300;
+        
+            }
         }
     }
-}

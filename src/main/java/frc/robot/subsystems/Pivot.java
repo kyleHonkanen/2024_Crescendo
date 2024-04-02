@@ -26,11 +26,11 @@ public class Pivot extends Subsystem {
 
    //Variables - All angles not final
    public double pivotMaxAngle = 350;
-   public double pivotMinAngle = 280;
-   public double intakeAngle = 300;
-   public double ampAngle = 300;
-   public double speakerAngle1 = 310;
-   public double speakerAngle2 = 329;
+   public double pivotMinAngle = 290;
+   public double intakeAngle = 320;
+   public double ampAngle = 305;
+   public double speakerAngle1 = 305;
+   public double speakerAngle2 = 325;
    public double slowZone = 10;
    public double extraSlowZone = 2;
 
@@ -69,7 +69,7 @@ public class Pivot extends Subsystem {
       speakerButton2 = Setup.getInstance().getSecondaryXButton();
 
     /* ---------------------------------------------- Preset Angles -------------------------------------------------- */
-      if (/*primaryIntakeButton == true || */intakeButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
+      if (primaryIntakeButton == true || intakeButton == true || ampButton == true || speakerButton1 == true || speakerButton2 == true) {
    
          //get outa da danger zone
          if(armPosition > 0 && armPosition < 5){
@@ -192,9 +192,6 @@ public class Pivot extends Subsystem {
 
             pivotMotor.set(pivotMotorSpeed/2.2);
 
-        } else if(Setup.getInstance().getSecondaryJoystick().getRawButton(7)){
-            //DONT DO ANYTHING (for auto aim)
-
         } else {
             pivotMotor.set(0);
         } 
@@ -207,6 +204,5 @@ public class Pivot extends Subsystem {
 
    @Override
    public void stop(){
-   pivotMotor.set(0);
    }
 }

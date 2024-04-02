@@ -175,7 +175,7 @@ public class Drivetrain extends SubsystemBase{
                 odometry.update(NavX.getInstance().getRotation2d(), getPositions());
         }
 
-        //Assigning x,y,z coordinates in m/s to the swerve modules and initializing them as 0
+        //Assigning x,y,z coordinates in m/s to the swerve modules and initializ ing them as 0
         ChassisSpeeds speeds;
         public SwerveModuleState[] states=Setup.instance.kinematics.toSwerveModuleStates(new ChassisSpeeds(0, 0, 0));
 
@@ -280,9 +280,9 @@ public class Drivetrain extends SubsystemBase{
                         speedSetting = "death";
                 } else if(Setup.getInstance().getPrimaryDriverXButton()){
                         speedSetting = "fast";
-                } else if(Setup.getInstance().getPrimaryDriverBButton()){
-                        speedSetting = "medium";
                 } else if(Setup.getInstance().getPrimaryDriverAButton()){
+                        speedSetting = "medium";
+                } else if(Setup.getInstance().getPrimaryDriverBButton()){
                         speedSetting = "slow";
                 } else if(Setup.getInstance().getPrimaryDriverYButton()){
                         speedSetting = "reallySlow";
@@ -315,7 +315,7 @@ public class Drivetrain extends SubsystemBase{
                 if(whichSpeed == "death"){
                         rotate /=.975;
                 }else if(whichSpeed == "fast"){
-                        rotate /=.7;
+                        rotate /=2.75;
                 } else if(whichSpeed == "medium"){
                         rotate /=4;
                 } else if(whichSpeed == "slow"){
@@ -366,5 +366,13 @@ public class Drivetrain extends SubsystemBase{
                 frontRightModule.setTargetVelocity(0, 0);
                 backRightModule.setTargetVelocity(0, 0);
                 backLeftModule.setTargetVelocity(0, 0);
+        }
+
+        //for pathplanner
+        public void makePathplannerWork() {
+                frontLeftMotor = states[0].angle.getRadians();
+                fronttRightMotor = states[1].angle.getRadians();
+                backLeftMotor = states[2].angle.getRadians();
+                backRightMotor = states[3].angle.getRadians();
         }
 }

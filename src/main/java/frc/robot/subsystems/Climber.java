@@ -47,6 +47,14 @@ public class Climber extends Subsystem{
 
     @Override
     public void updateSubsystem(){
+
+        if(Pivot.getInstance().getPivotPosition()<330 && Pivot.getInstance().getPivotPosition()>5){
+            Pivot.getInstance().pivotMotor.set(.1);
+        } else {
+            Pivot.getInstance().pivotMotor.set(0);
+        }
+
+
         LY = Setup.getInstance().getSecondaryLeftClimber();
         RY = Setup.getInstance().getSecondaryRightClimber();
         LPot = ClimberPotentiometerLeft.get();

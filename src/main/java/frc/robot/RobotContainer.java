@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.aimAndShoot;
 import frc.robot.commands.groundIntake;
+import frc.robot.commands.startAuto;
 import frc.robot.commands.stopTheBot;
 
 public class RobotContainer {
@@ -19,6 +20,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("aimAndShoot", new aimAndShoot());
         NamedCommands.registerCommand("stop robot", new stopTheBot());
         NamedCommands.registerCommand("pickup", new groundIntake());
+        NamedCommands.registerCommand("Start", new startAuto());
         
         configureBindings();
         autoChooser = AutoBuilder.buildAutoChooser();

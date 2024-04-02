@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 3.0,
+        "x": 3.2,
         "y": 5.5
       },
       "prevControl": {
-        "x": 2.0,
+        "x": 2.2,
         "y": 5.5
       },
       "nextControl": null,
@@ -32,19 +32,26 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "pickup",
-      "waypointRelativePos": 0.75,
+      "name": "New Event Marker",
+      "waypointRelativePos": 1.0,
       "command": {
         "type": "sequential",
         "data": {
-          "commands": []
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "stop robot"
+              }
+            }
+          ]
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 0.3,
-    "maxAcceleration": 0.3,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 90.0,
     "maxAngularAcceleration": 180.0
   },

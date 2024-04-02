@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 5.5
+      "x": 1.0,
+      "y": 4.5
     },
-    "rotation": 0
+    "rotation": -45.0
   },
   "command": {
     "type": "sequential",
@@ -18,47 +18,9 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "pickup"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "forward"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Score"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "stop robot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "aimAndShoot"
-                }
-              }
-            ]
+            "pathName": "Score at right"
           }
         }
       ]

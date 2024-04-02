@@ -48,7 +48,7 @@ public class groundIntake extends Command{
 
     @Override
     public void execute() {
-        if (pivot.getPivotPosition()>IDEALPOS+margin) {
+        /*if (pivot.getPivotPosition()>IDEALPOS+margin) {
             if(pivot.getPivotPosition() < IDEALPOS+extraSlowZone){
                 pivot.getPivotMotor().set(-pivot.extraSlowButtonSpeed);
             } else if (pivot.getPivotPosition()<IDEALPOS+slowZone) {
@@ -61,7 +61,7 @@ public class groundIntake extends Command{
                 pivot.getPivotMotor().set(.15);
         } else {
             pivot.getPivotMotor().set(0);
-        }
+        }*/
         groundIntake.Intake(.5);
         shooter.feedForward(feedSpeed);
         m_timer.start();

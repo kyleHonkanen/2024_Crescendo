@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8910065241883673,
-        "y": 4.046009500260453
+        "x": 1.5735764363510458,
+        "y": 3.6808479557110085
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.0,
-        "y": 4.0
+        "x": 2.5,
+        "y": 3.75
       },
       "prevControl": {
-        "x": 1.1089934758116353,
-        "y": 4.453990499739536
+        "x": 2.007596123493895,
+        "y": 3.8368240888334606
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,16 +32,16 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "name": "stop",
+      "waypointRelativePos": 1.0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "aimAndShoot"
+                "name": "stop robot"
               }
             }
           ]
@@ -57,11 +57,11 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
-    "rotateFast": true
+    "rotation": -45.0,
+    "rotateFast": false
   },
   "reversed": false,
-  "folder": "start tilted",
+  "folder": null,
   "previewStartingState": {
     "rotation": -45.0,
     "velocity": 0

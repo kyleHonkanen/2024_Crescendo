@@ -25,22 +25,22 @@ public class aimAndShoot extends Command{
     public void initialize() {
         //make flywheels start spinning and makes time
         shooter.speakerShoot();
-        timer.restart();
+        timer.reset();
         timer.stop();
     }
     @Override
     public void execute() {
-         double target = 305;
+         double target = 308;
         SmartDashboard.putNumber("speed", shooter.getTopShooterEncoder());
         SmartDashboard.putNumber("angle", pivot.getPivotPosition());
         
-        double targetSpeed = ((pivot.speakerAngle1-pivot.getPivotPosition())/pivot.speakerAngle1);
+        double targetSpeed = ((target-pivot.getPivotPosition())/target)*10;
         double max = target+20;
         double min = target-20;
         double Speed = 0;
         SmartDashboard.putNumber("min", min);
         
-            if (pivot.getPivotPosition()>max) {
+        /*  if (pivot.getPivotPosition()>max) {
                Speed=-.1;
             } else if (pivot.getPivotPosition()<min) {
                Speed=.1;
@@ -48,17 +48,18 @@ public class aimAndShoot extends Command{
                Speed =((pivot.getPivotPosition()-min)/(max-min)*-2-1)*.1;
             }
 
-         if((pivot.getPivotPosition()>target+5)||(pivot.getPivotPosition()<target-5)){
-            pivot.getPivotMotor().set(Speed);
+         if((pivot.getPivotPosition()>target+3)||(pivot.getPivotPosition()<target-3)){
+            pivot.getPivotMotor().set(targetSpeed);
          } else {
-            pivot.getPivotMotor().set(0);
-            if (shooter.getTopShooterEncoder()<-4750&&shooter.getBottomShooterEncoder()<-4750) {
+            pivot.getPivotMotor().set(0);*/
+            if (shooter.getTopShooterEncoder()<-4450&&shooter.getBottomShooterEncoder()<-4450) {
                pivot.getPivotMotor().set(0);
                shooter.feedForward(1);
                timer.start();
-         }
-         }
-         SmartDashboard.putNumber("pivotspeed", Speed);
+            }
+            SmartDashboard.putNumber("time", timer.get());
+         //}
+         SmartDashboard.putNumber("pivotspeed", targetSpeed);
     }
     @Override
     public void end(boolean interrupted) {
@@ -66,6 +67,7 @@ public class aimAndShoot extends Command{
         shooter.flywheelMotorTop.set(0);
         pivot.getPivotMotor().set(0);
         shooter.feedForward(0);
+        timer.reset();
     }
     @Override
     public boolean isFinished() {
